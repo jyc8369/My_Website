@@ -1,0 +1,370 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision Note | Project Detail</title>
+  <meta name="description" content="Vision Note 프로젝트 상세 페이지">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg: #000000;
+  --surface: #050505;
+  --line: #1f1f1f;
+  --text: #f5f5f5;
+  --sub: rgba(245, 245, 245, 0.66);
+  --accent: #f5f5f5;
+  --accent-soft: #050505;
+  --radius: 18px;
+  --max: 1080px;
+}
+
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --line: #eaeaea;
+  --text: #171717;
+  --sub: rgba(23, 23, 23, 0.7);
+  --accent: #171717;
+  --accent-soft: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: "Space Grotesk", sans-serif;
+  background: var(--bg);
+}
+
+a { color: inherit; text-decoration: none; }
+
+.container {
+  width: min(var(--max), calc(100vw - 40px));
+  margin: 0 auto;
+}
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.top-nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+}
+
+.brand {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.06em;
+}
+
+.links {
+  display: flex;
+  gap: 16px;
+  color: var(--sub);
+  font-size: 14px;
+}
+
+.links a:hover,
+.links a[aria-current="page"] { color: var(--text); }
+
+.hero {
+  padding: 70px 0 34px;
+}
+
+.kicker {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 16px 0 10px;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(52px, 11vw, 118px);
+  line-height: 0.9;
+  letter-spacing: 0.03em;
+}
+
+.summary {
+  margin: 0;
+  color: var(--sub);
+  max-width: 62ch;
+  line-height: 1.7;
+}
+
+.actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 9px 15px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn.primary {
+  border-color: transparent;
+  background: var(--text);
+  color: var(--bg);
+}
+
+section {
+  padding: 34px 0;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 24px;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: clamp(26px, 4vw, 36px);
+}
+
+p {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--sub);
+}
+
+.demo {
+  margin-top: 16px;
+  min-height: 320px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 82%, var(--bg));
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.feature-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.feature {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  background: var(--surface);
+}
+
+.feature strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.arch-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.arch-node {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.related {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.related a {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.theme-toggle {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.related small { color: var(--sub); }
+
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 50px;
+  text-align: center;
+  color: var(--sub);
+  font-size: 14px;
+  padding: 24px 0 36px;
+}
+
+@media (max-width: 760px) {
+  .container { width: min(var(--max), calc(100vw - 24px)); }
+  .arch-grid { grid-template-columns: 1fr; }
+  .related { grid-template-columns: 1fr; }
+  .links { gap: 10px; font-size: 12px; }
+}
+
+</style>
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="container">
+      <a class="brand" href="main.html">JYC8369</a>
+      <div class="links">
+        <a href="main.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="blog.html">Blog</a>
+        <a href="project-vision-note.html" aria-current="page">Detail</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="라이트 모드로 전환">Light</button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <span class="kicker">Project Detail</span>
+      <h1>VISION NOTE</h1>
+      <p class="summary">이미지와 텍스트 메모를 한 화면에서 조합해 아이디어를 연결하는 시각 메모 실험 프로젝트입니다. 읽는 설명보다 직접 보는 흐름을 우선하는 상세 구성으로 작성되었습니다.</p>
+      <div class="actions">
+        <a class="btn primary" href="project-vision-note.html">Demo</a>
+        <a class="btn" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn" href="projects.html">목록으로</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="demo">
+      <div class="container panel">
+        <h2>Demo</h2>
+        <p>영상 영역 자리입니다. 실제 데모 영상이 준비되면 iframe 또는 video 태그로 교체할 수 있습니다.</p>
+        <div class="demo">Demo Placeholder</div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container panel">
+        <h2>Features</h2>
+        <div class="feature-list">
+          <div class="feature"><strong>Quick Capture</strong>아이디어를 즉시 기록하고, 카드 형태로 시각화합니다.</div>
+          <div class="feature"><strong>Visual Linking</strong>연관된 메모를 선으로 연결해 맥락을 한눈에 확인합니다.</div>
+          <div class="feature"><strong>Focus Mode</strong>선택한 노드 중심으로 화면을 정리해 사고 흐름을 유지합니다.</div>
+          <div class="feature"><strong>Snapshot Export</strong>현재 보드 상태를 이미지로 저장해 공유합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <div class="container panel">
+        <h2>Architecture</h2>
+        <p>정적 호스팅 조건에 맞춰 클라이언트 렌더링 중심으로 단순화한 구조입니다.</p>
+        <div class="arch-grid">
+          <div class="arch-node">UI Layer</div>
+          <div class="arch-node">State Manager</div>
+          <div class="arch-node">Storage Adapter</div>
+          <div class="arch-node">Canvas Engine</div>
+          <div class="arch-node">Interaction Handler</div>
+          <div class="arch-node">Export Module</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="repository">
+      <div class="container panel">
+        <h2>Repository</h2>
+        <p>프로젝트 코드와 이슈, 릴리즈 노트를 GitHub에서 확인할 수 있습니다.</p>
+        <div class="actions">
+          <a class="btn primary" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="related">
+      <div class="container panel">
+        <h2>Related Projects</h2>
+        <div class="related">
+          <a href="projects.html">
+            Minimal Team OS<br>
+            <small>경량 협업 대시보드</small>
+          </a>
+          <a href="projects.html">
+            Motion Story Commerce<br>
+            <small>스크롤 기반 제품 소개 경험</small>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© 2026 jyc8369. Vision Note detail page.</div>
+  </footer>
+  <script>
+const themeRoot = document.documentElement;
+const themeKey = 'theme-preference';
+const themeButton = document.getElementById('theme-toggle');
+const savedTheme = localStorage.getItem(themeKey);
+themeRoot.dataset.theme = savedTheme === 'light' ? 'light' : 'dark';
+
+const updateThemeButton = () => {
+  if (!themeButton) return;
+  const isLight = themeRoot.dataset.theme === 'light';
+  themeButton.textContent = isLight ? 'Dark' : 'Light';
+  themeButton.setAttribute('aria-label', isLight ? '다크 모드로 전환' : '라이트 모드로 전환');
+};
+
+if (themeButton) {
+  themeButton.addEventListener('click', () => {
+    themeRoot.dataset.theme = themeRoot.dataset.theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem(themeKey, themeRoot.dataset.theme);
+    updateThemeButton();
+  });
+}
+
+updateThemeButton();
+  </script>
+</body>
+</html>
+
