@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vision Note | Project Detail</title>
-  <meta name="description" content="Vision Note 프로젝트 상세 페이지">
+  <title>Subculture Tracker | Project Detail</title>
+  <meta name="description" content="Subculture Tracker 프로젝트 상세 페이지">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -256,7 +256,7 @@ footer {
         <a href="main.html">Home</a>
         <a href="projects.html">Projects</a>
         <a href="blog.html">Blog</a>
-        <a href="project-vision-note.html" aria-current="page">Detail</a>
+        <a href="project/subculture_tacker/subculture_tracker.html" aria-current="page">Detail</a>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="라이트 모드로 전환">Light</button>
       </div>
     </div>
@@ -265,11 +265,11 @@ footer {
   <header class="hero">
     <div class="container">
       <span class="kicker">Project Detail</span>
-      <h1>VISION NOTE</h1>
-      <p class="summary">이미지와 텍스트 메모를 한 화면에서 조합해 아이디어를 연결하는 시각 메모 실험 프로젝트입니다. 읽는 설명보다 직접 보는 흐름을 우선하는 상세 구성으로 작성되었습니다.</p>
+      <h1>Subculture Tracker</h1>
+      <p class="summary">자동화를 통한 가챠 기록 확인 및 추출 도구 프로젝트입니다. 읽는 설명보다 직접 보는 흐름을 우선하는 상세 구성으로 작성되었습니다.</p>
       <div class="actions">
-        <a class="btn primary" href="project-vision-note.html">Demo</a>
-        <a class="btn" href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="btn primary" href="project-subculture_tracker.html">Demo</a>
+        <a class="btn" href="https://github.com/jyc8369/subculture_tracker" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a class="btn" href="projects.html">목록으로</a>
       </div>
     </div>
@@ -279,8 +279,10 @@ footer {
     <section id="demo">
       <div class="container panel">
         <h2>Demo</h2>
-        <p>영상 영역 자리입니다. 실제 데모 영상이 준비되면 iframe 또는 video 태그로 교체할 수 있습니다.</p>
-        <div class="demo">Demo Placeholder</div>
+        <p>프로젝트 데모 GIF입니다. 애니메이션으로 진행 흐름을 확인할 수 있습니다.</p>
+        <div class="demo">
+          <img src="source/video.gif" alt="Subculture Tracker demo animation">
+        </div>
       </div>
     </section>
 
@@ -288,25 +290,11 @@ footer {
       <div class="container panel">
         <h2>Features</h2>
         <div class="feature-list">
-          <div class="feature"><strong>Quick Capture</strong>아이디어를 즉시 기록하고, 카드 형태로 시각화합니다.</div>
-          <div class="feature"><strong>Visual Linking</strong>연관된 메모를 선으로 연결해 맥락을 한눈에 확인합니다.</div>
-          <div class="feature"><strong>Focus Mode</strong>선택한 노드 중심으로 화면을 정리해 사고 흐름을 유지합니다.</div>
-          <div class="feature"><strong>Snapshot Export</strong>현재 보드 상태를 이미지로 저장해 공유합니다.</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="architecture">
-      <div class="container panel">
-        <h2>Architecture</h2>
-        <p>정적 호스팅 조건에 맞춰 클라이언트 렌더링 중심으로 단순화한 구조입니다.</p>
-        <div class="arch-grid">
-          <div class="arch-node">UI Layer</div>
-          <div class="arch-node">State Manager</div>
-          <div class="arch-node">Storage Adapter</div>
-          <div class="arch-node">Canvas Engine</div>
-          <div class="arch-node">Interaction Handler</div>
-          <div class="arch-node">Export Module</div>
+          <div class="feature-list">
+          <div class="feature"><strong>Auto Capture</strong>게임 로그·캐시에서 가챠 URL과 토큰을 자동으로 감지하여 수집을 시작합니다.</div>
+          <div class="feature"><strong>Multi-Game Support</strong>Wuthering Waves와 Arknights Endfield의 가챠 기록을 단일 도구로 추적합니다.</div>
+          <div class="feature"><strong>Unified JSON Export</strong>게임별 데이터를 공통 JSON 스키마로 변환하여 <code>data/</code> 폴더에 저장합니다.</div>
+          <div class="feature"><strong>Native & Browser Mode</strong>pywebview 네이티브 창 또는 <code>-dev</code> 옵션으로 브라우저에서 UI를 확인합니다.</div>
         </div>
       </div>
     </section>
