@@ -1,0 +1,11 @@
+{
+  "name": "jyc8369-dev-static",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs ./site/",
+    "build": "node scripts/build.mjs",
+    "start": "node server.mjs ./dist/"
+  }
+}
