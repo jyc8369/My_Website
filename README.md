@@ -39,8 +39,9 @@ deployment without uploading it. Authentication stays outside the repository.
 The Worker serves the HTML, CSS, and JavaScript assets directly, including the
 custom 404 page and security headers in `site/_headers`.
 
-The default public URL is `https://jyc8369-dev-static.jyc8369.workers.dev`.
-Custom domains and automatic GitHub deployments are not configured.
+The custom domain is `https://jyc8369.dev`. The default public URL
+`https://jyc8369-dev-static.jyc8369.workers.dev` also remains available.
+Automatic GitHub deployments are not configured.
 
 ## Pages
 

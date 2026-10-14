@@ -6,6 +6,7 @@ export default defineConfig({
     name: "jyc8369-dev-static",
     compatibilityDate: "2026-10-14",
     workersDev: true,
+    domains: ["jyc8369.dev"],
     assets: {
       htmlHandling: "auto-trailing-slash",
       notFoundHandling: "404-page",
