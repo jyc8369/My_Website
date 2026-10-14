@@ -10,4 +10,6 @@ yarn-debug.log*
 pnpm-debug.log*
 
 dist/
+.cloudflare/
+.wrangler/
 

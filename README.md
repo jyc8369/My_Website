@@ -19,14 +19,28 @@ npm start
 
 `npm run build` copies the deployable static files into `dist/`. `npm start` serves that folder locally.
 
-## Cloudflare Pages settings
+The `site/` folder is the source of truth; `dist/` is generated.
 
-- Framework preset: None
-- Build command: `npm run build`
-- Build output directory: `dist`
-- Root directory: `/`
+## Cloudflare Workers Static Assets
 
-The `site/` folder is the source of truth; `dist/` is generated. Cloudflare Pages deployment is intentionally not configured or run yet.
+The deployment target is `jyc8369-dev-static` on Cloudflare Workers Static Assets.
+`cloudflare.config.ts` defines the account and Worker settings; `wrangler.config.ts`
+selects `dist/` as the asset directory for the cf CLI's build tool.
+
+```sh
+npm ci
+npx cf auth login
+npm run deploy:check
+npm run deploy
+```
+
+Both deployment commands rebuild the site first. `deploy:check` validates the
+deployment without uploading it. Authentication stays outside the repository.
+The Worker serves the HTML, CSS, and JavaScript assets directly, including the
+custom 404 page and security headers in `site/_headers`.
+
+The default public URL is `https://jyc8369-dev-static.jyc8369.workers.dev`.
+Custom domains and automatic GitHub deployments are not configured.
 
 ## Pages
 
@@ -36,4 +50,4 @@ The `site/` folder is the source of truth; `dist/` is generated. Cloudflare Page
 - `/en/lab/`, `/ko/lab/` — Lab coming soon
 - `/en/about/`, `/ko/about/` — About and contact details
 
-The blog and lab do not show placeholder entries. There is no CMS, database, authentication, admin area, or live API. Cloudflare Pages deployment is intentionally not configured or run yet.
+The blog and lab do not show placeholder entries. There is no CMS, database, authentication, admin area, or live API.

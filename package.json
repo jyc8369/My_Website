@@ -6,6 +6,12 @@
   "scripts": {
     "dev": "node server.mjs ./site/",
     "build": "node scripts/build.mjs",
-    "start": "node server.mjs ./dist/"
+    "start": "node server.mjs ./dist/",
+    "deploy": "npm run build && cf deploy",
+    "deploy:check": "npm run build && cf deploy --dry-run"
+  },
+  "devDependencies": {
+    "cf": "1.0.0-beta.17",
+    "wrangler": "4.151.0"
   }
 }
