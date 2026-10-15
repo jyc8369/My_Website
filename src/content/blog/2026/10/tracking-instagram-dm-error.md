@@ -11,6 +11,12 @@ description_ja: "Instagram DMブリッジの開発中に遭遇したエラーと
 <!-- lang:ko -->
 ## `2534022` 오류를 이틀 동안 추적한 이야기
 
+### 급하신 분들을 위한 세 줄 요약
+
+- `403 / IGApiException / 10 / 2534022` 오류를 이틀 동안 추적했습니다.
+- 제 경우에는 웹훅 수신기를 설정한 뒤 API 테스트가 성공했습니다.
+- 웹훅이 원인이었다고 단정할 수는 없지만, 비슷한 오류가 있다면 웹훅 설정도 확인해 보세요.
+
 새로운 브리징 플러그인을 만들고 있습니다. 인스타그램 DM을 다른 서비스에서 읽고, 그 서비스에서 답장도 보낼 수 있도록 연결하는 도구입니다. Meta for Developers에서 앱을 만들고 API를 붙이는 과정에서 다음 오류를 만났습니다.
 
 ```text
@@ -56,6 +62,12 @@ Meta 앱을 실제 서비스에서 사용하려면 앱 검수가 필요할 수 �
 <!-- lang:en -->
 ## Two Days Chasing the `2534022` Error
 
+### Three-line summary
+
+- I spent two days investigating the `403 / IGApiException / 10 / 2534022` error.
+- In my case, the API test succeeded after I configured a webhook receiver.
+- I cannot say the webhook caused the issue, but it is worth checking the webhook setup if you see a similar error.
+
 I am building a new bridging plugin: a tool that connects Instagram DMs to another service, so messages can be read there and replied to from there. While creating an app in Meta for Developers and connecting the API, I ran into this error:
 
 ```text
@@ -100,6 +112,12 @@ The search left me pretty worn out, but now I can continue with the next part of
 
 <!-- lang:ja -->
 ## `2534022`エラーを2日間追いかけた話
+
+### お急ぎの方向け・3行まとめ
+
+- `403 / IGApiException / 10 / 2534022`エラーの調査に2日かかりました。
+- 私の環境では、Webhook受信側を設定したあとにAPIテストが成功しました。
+- Webhookが原因だとは断定できませんが、同じようなエラーが出たらWebhookの設定も確認してみてください。
 
 新しいブリッジプラグインを作っています。InstagramのDMを別のサービスで読み、そのサービスから返信できるようにつなぐツールです。Meta for Developersでアプリを作成し、APIを接続しているときに、次のエラーに遭遇しました。
 
