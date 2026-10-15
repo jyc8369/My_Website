@@ -8,8 +8,9 @@
     // Browser language detection remains available if storage is disabled.
   }
 
-  if (language !== "en" && language !== "ko") {
-    language = navigator.language?.toLowerCase().startsWith("ko") ? "ko" : "en";
+  if (!["en", "ko", "ja"].includes(language)) {
+    const browserLanguage = navigator.language?.toLowerCase() || "";
+    language = browserLanguage.startsWith("ko") ? "ko" : browserLanguage.startsWith("ja") ? "ja" : "en";
   }
 
   window.location.replace(`/${language}${route}`);

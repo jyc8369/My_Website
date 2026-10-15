@@ -1,53 +1,41 @@
-# Static blog generator
+# Static multilingual blog generator
 
-The blog is authored as Korean Markdown and rendered to static HTML as part of the site build. No runtime framework or external package is required for article generation.
+Each post is one Markdown file at `src/content/blog/YYYY/MM/english-slug.md`. A post is published only when all required metadata and all three language bodies are present. Invalid files are logged and skipped independently.
 
-## Content format
-
-Put each article at `src/content/blog/YYYY/MM/english-slug.md`. The date must be a real `YYYY-MM-DD` value and match the year/month folders. Filenames use lowercase English letters, numbers, and hyphens.
-
-Required single-line frontmatter fields:
+## Metadata and body format
 
 ```yaml
 ---
 title: "한국어 제목"
 title_en: "English title"
-date: 2026-10-14
-description: "한국어 요약"
+title_ja: "日本語タイトル"
+date: "2026-10-14"
+description: "한국어 소개"
+description_en: "Short English introduction"
+description_ja: "日本語の短い紹介"
 ---
+
+<!-- lang:ko -->
+## 한국어 소제목
+한국어 본문입니다.
+
+<!-- lang:en -->
+## English heading
+The English article body goes here.
+
+<!-- lang:ja -->
+## 日本語の見出し
+日本語の本文をここに書きます。
 ```
 
-The English title is used in the English blog list. Korean Markdown is rendered on the Korean detail route; the English detail route contains an English notice linking to the original.
+Each marker must be on its own line. Markers inside fenced code blocks are treated as code, not section boundaries. Do not put text before the first marker. Every section must contain actual content. The marker is removed during rendering. This syntax was selected as the implementation default because v4.1 left the exact delimiter syntax open.
 
-See [`src/content/blog/README.md`](../../src/content/blog/README.md) for the complete authoring guide and copyable post example.
+Supported Markdown includes headings (`#` through `###`), paragraphs, lists, blockquotes, fenced code, inline code, emphasis, and safe links. A table of contents is generated independently for each language when headings exist. Images and downloadable attachments are outside the initial publishing workflow.
 
-## Generated pages
+## Generated behavior
 
-- Article: `/ko/blog/YYYY/MM/slug/`
-- English notice: `/en/blog/YYYY/MM/slug/`
-- Blog lists sorted by date, with 20 posts per page
-- Home page `Coming Soon` label removed after at least one valid article is generated
-
-Invalid articles are logged and skipped; valid articles continue to generate. The generator supports headings (`#` through `###`), paragraphs, lists, blockquotes, fenced code, inline code, emphasis, links, and image syntax. Raw HTML is escaped. Article content should remain text-first; images and downloadable attachments are not part of the current publishing workflow.
-
-## Build integration
-
-`scripts/build.mjs` copies `site/` to `dist/`, then runs `generateBlog`. From the repository root:
-
-```sh
-npm run build
-```
-
-For direct use, the module exports `generateBlog`:
-
-```js
-import { generateBlog } from "./blog/generate.mjs";
-
-const result = await generateBlog({
-  contentDir: "src/content/blog",
-  outputDir: "dist",
-});
-console.log(`Generated ${result.generated}; skipped ${result.skipped}.`);
-```
-
-`contentDir`, `outputDir`, and `siteName` are optional. Defaults are `src/content/blog`, `dist`, and `jyc8369.dev`. The function returns the generated and skipped counts plus the article slug, date, and output paths.
+- Routes: `/ko/blog/YYYY/MM/slug/`, `/en/blog/YYYY/MM/slug/`, and `/ja/blog/YYYY/MM/slug/`.
+- Lists are date-sorted, 20 posts per page, and use localized titles.
+- With zero valid posts, Blog stays Coming Soon and is marked `noindex`; Lab is always Coming Soon and `noindex`.
+- A post with a missing or invalid translation is excluded in all languages; other valid posts continue building.
+- `npm test` checks three-language output, per-file rejection, and marker handling in code blocks.

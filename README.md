@@ -1,34 +1,25 @@
 # jyc8369.dev
 
-A bilingual, static personal website built with plain HTML, CSS, and JavaScript. The blog is authored in Markdown and converted to static pages during the build. No client framework, database, CMS, or server runtime is required to serve the finished site.
+A minimal, editorial personal website built with static HTML, CSS, and JavaScript. It supports Korean, English, and Japanese routes and builds multilingual Markdown posts into static pages for Cloudflare Workers Static Assets.
 
-## Local development
+## Local preview and checks
 
 ```sh
 npm run dev
-```
-
-This builds the site into `dist/` and serves it at `http://127.0.0.1:3000`. To rebuild after editing Markdown while the server is running, run `npm run build` again. `npm start` serves the existing build without rebuilding.
-
-## Build output
-
-```sh
+npm test
 npm run build
 ```
 
-The build copies `site/` into `dist/`, validates and renders any blog Markdown under `src/content/blog/YYYY/MM/slug.md`, and writes static language-specific blog pages. A missing content folder or zero valid posts leaves Blog in its Coming Soon state. Invalid posts are logged and excluded without preventing other posts from building.
-
-`dist/` is the static output directory for Cloudflare Workers Static Assets. GitHub Actions builds and deploys pushes to `main` through the `production` environment. Add `CLOUDFLARE_API_TOKEN` as an environment secret, scoped to this Cloudflare account with Workers Scripts edit permission. The token remains in GitHub Secrets and is never stored in the repository.
+The local server listens on `http://127.0.0.1:3000`. Build output is written to `dist/`.
 
 ## Routes
 
-- `/` — Selects a saved language preference or the browser language and opens `/en/` or `/ko/`.
-- `/en/`, `/ko/` — Home, interests, and links to the other sections.
-- `/en/blog/`, `/ko/blog/` — Coming Soon until a valid post exists; then a date-sorted list with 20 posts per page.
-- `/en/blog/YYYY/MM/slug/`, `/ko/blog/YYYY/MM/slug/` — English translation notice and Korean Markdown article.
-- `/en/lab/`, `/ko/lab/` — Coming Soon.
-- `/en/about/`, `/ko/about/` — About and contact details.
+- `/` selects a saved language or uses the browser language, falling back to English.
+- `/ko/`, `/en/`, `/ja/` are localized home pages.
+- `/{ko,en,ja}/about/`, `/{ko,en,ja}/blog/`, and `/{ko,en,ja}/lab/` are the localized sections.
+- `/en/privacy/` is the English-only privacy notice.
+- Blog posts use `/{locale}/blog/YYYY/MM/slug/` and require all three language bodies in one Markdown file.
 
-## Blog authoring
+## Publishing
 
-Add a Markdown file at `src/content/blog/YYYY/MM/slug.md`. Required frontmatter fields are `title`, `title_en`, `date`, and `description`. The date must match the year and month folders; the lowercase English filename becomes the URL slug. See `scripts/blog/README.md` for the supported Markdown and metadata format.
+Pushes to `main` run `.github/workflows/deploy.yml`, build the site, and deploy it with the configured Cloudflare CLI. The workflow uses the `production` GitHub environment and its `CLOUDFLARE_API_TOKEN` secret. Do not commit credentials. See [`src/content/blog/README.md`](src/content/blog/README.md) for the post format.

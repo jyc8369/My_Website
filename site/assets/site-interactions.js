@@ -9,21 +9,38 @@
   if (document.body.dataset.page === "not-found") {
     let selectedLanguage = null;
     try { selectedLanguage = localStorage.getItem("jyc8369-language"); } catch {}
-    if (selectedLanguage !== "ko" && selectedLanguage !== "en") selectedLanguage = navigator.language?.toLowerCase().startsWith("ko") ? "ko" : "en";
+    if (!["ko", "en", "ja"].includes(selectedLanguage)) {
+      const browserLanguage = navigator.language?.toLowerCase() || "";
+      selectedLanguage = browserLanguage.startsWith("ko") ? "ko" : browserLanguage.startsWith("ja") ? "ja" : "en";
+    }
 html.lang = selectedLanguage;
     document.title = selectedLanguage === "ko" ? "페이지를 찾을 수 없습니다 — jyc8369.dev" : "Page not found — jyc8369.dev";
     const description = document.querySelector('meta[name="description"]');
     if (description) description.content = selectedLanguage === "ko" ? "요청하신 페이지를 찾을 수 없습니다." : "The page you requested could not be found.";
     document.querySelector(".wordmark")?.setAttribute("href", `/${selectedLanguage}/`);
+    const home = document.querySelector("[data-ui='nav-home']");
+    if (home) { home.href = `/${selectedLanguage}/`; home.textContent = ({ ko: "홈", en: "Home", ja: "ホーム" })[selectedLanguage]; }
+    const back = document.querySelector("[data-ui='not-found-back']");
+    if (back) {
+      back.textContent = ({ ko: "이전 페이지", en: "Go back", ja: "前のページへ" })[selectedLanguage];
+      back.addEventListener("click", () => {
+        if (history.length > 1) history.back();
+        else location.assign(`/${selectedLanguage}/`);
+      });
+    }
     for (const key of ["home", "blog", "lab", "about"]) {
-      document.querySelector(`[data-ui="nav-${key}"]`)?.setAttribute("href", `/${selectedLanguage}/${key === "home" ? "" : `${key}/`}`);
+      const routeKey = key === "home" ? "" : key === "about" ? "about" : key;
+      document.querySelector(`[data-ui="nav-${key}"]`)?.setAttribute("href", `/${selectedLanguage}/${routeKey ? `${routeKey}/` : ""}`);
     }
     document.querySelectorAll("[data-locale-copy]").forEach((copy) => { copy.hidden = copy.dataset.localeCopy !== selectedLanguage; });
     document.querySelectorAll("[data-language='en']").forEach((option) => { option.href = "/en/"; });
     document.querySelectorAll("[data-language='ko']").forEach((option) => { option.href = "/ko/"; });
+    document.querySelectorAll("[data-language='ja']").forEach((option) => { option.href = "/ja/"; });
     const translations = selectedLanguage === "ko"
       ? { home: "홈", blog: "블로그", lab: "실험실", about: "소개", skip: "본문으로 건너뛰기", menu: "주요 메뉴 열기", language: "언어 선택", code: "KO", email: "이메일", contact: "연락처", title: "페이지를 찾을 수 없습니다 — jyc8369.dev", description: "요청하신 페이지를 찾을 수 없습니다." }
-      : { home: "Home", blog: "Blog", lab: "Lab", about: "About", skip: "Skip to content", menu: "Open main navigation", language: "Choose language", code: "EN", email: "Email", contact: "Contact", title: "Page not found — jyc8369.dev", description: "The page you requested could not be found." };
+      : selectedLanguage === "ja"
+        ? { home: "ホーム", blog: "ブログ", lab: "ラボ", about: "自己紹介", skip: "本文へスキップ", menu: "メニューを開く", language: "言語", code: "JA", email: "メール", contact: "連絡先", title: "ページが見つかりません — jyc8369.dev", description: "お探しのページは見つかりませんでした。" }
+        : { home: "Home", blog: "Blog", lab: "Lab", about: "About", skip: "Skip to content", menu: "Open main navigation", language: "Choose language", code: "EN", email: "Email", contact: "Contact", title: "Page not found — jyc8369.dev", description: "The page you requested could not be found." };
     for (const [key, label] of Object.entries({ home: translations.home, blog: translations.blog, lab: translations.lab, about: translations.about })) {
       const link = document.querySelector(`[data-ui='nav-${key}']`);
       if (link) link.textContent = label;
@@ -38,6 +55,7 @@ html.lang = selectedLanguage;
     document.querySelector("[data-ui='footer-email-label']")?.replaceChildren(document.createTextNode(translations.email));
   }
   const isKorean = html.lang.toLowerCase().startsWith("ko");
+  const isJapanese = html.lang.toLowerCase().startsWith("ja");
 
   const closeLanguageMenu = (restoreFocus = false) => {
     if (!languageToggle || !languageMenu) return;
@@ -85,10 +103,10 @@ html.lang = selectedLanguage;
     html.dataset.theme = selected;
     if (themeToggle) {
       const next = selected === "dark" ? "light" : "dark";
-      themeToggle.textContent = isKorean ? (selected === "dark" ? "다크" : "라이트") : (selected === "dark" ? "Dark" : "Light");
+      themeToggle.textContent = isKorean ? (selected === "dark" ? "다크" : "라이트") : isJapanese ? (selected === "dark" ? "ダーク" : "ライト") : (selected === "dark" ? "Dark" : "Light");
       themeToggle.setAttribute("aria-label", isKorean
         ? (next === "light" ? "라이트 테마로 전환" : "다크 테마로 전환")
-        : `Switch to ${next} theme`);
+        : isJapanese ? (next === "light" ? "ライトテーマに切り替え" : "ダークテーマに切り替え") : `Switch to ${next} theme`);
       themeToggle.setAttribute("aria-pressed", String(selected === "light"));
     }
     const themeColor = document.querySelector('meta[name="theme-color"]');
@@ -110,7 +128,7 @@ html.lang = selectedLanguage;
     if (!menuToggle || !primaryNavigation) return;
     menuToggle.setAttribute("aria-expanded", "false");
     primaryNavigation.classList.remove("is-open");
-    menuToggle.setAttribute("aria-label", isKorean ? "주요 메뉴 열기" : "Open main navigation");
+    menuToggle.setAttribute("aria-label", isKorean ? "주요 메뉴 열기" : isJapanese ? "メニューを開く" : "Open main navigation");
     document.body.classList.remove("menu-open");
     if (restoreFocus) menuToggle.focus();
   };
@@ -119,7 +137,7 @@ html.lang = selectedLanguage;
     if (!menuToggle || !primaryNavigation) return;
     closeLanguageMenu();
     menuToggle.setAttribute("aria-expanded", "true");
-    menuToggle.setAttribute("aria-label", isKorean ? "주요 메뉴 닫기" : "Close main navigation");
+    menuToggle.setAttribute("aria-label", isKorean ? "주요 메뉴 닫기" : isJapanese ? "メニューを閉じる" : "Close main navigation");
     primaryNavigation.classList.add("is-open");
     document.body.classList.add("menu-open");
     primaryNavigation.querySelector("a")?.focus();
@@ -161,10 +179,6 @@ html.lang = selectedLanguage;
   });
 
   if (!header || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const currentYear = new Date().getFullYear();
-  document.querySelectorAll(".footer-copyright").forEach((copyright) => {
-    copyright.textContent = copyright.textContent.replace(/©\s*\d{4}/, `© ${currentYear}`);
-  });
   let previousY = window.scrollY;
   let lastDirectionChange = previousY;
   let scheduled = false;
