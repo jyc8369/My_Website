@@ -53,7 +53,7 @@ description_ja: "韓国とカナダに置いたサーバー、サービス公開
 
 캐나다의 겨울은 춥고, 따뜻한 계절을 빼면 난방이 필요한 기간이 깁니다. 제가 지내는 곳도 난방 없이 생활할 수 있는 시기가 1년에 대략 3~4개월 정도입니다.
 
-컴퓨터가 전기를 쓰면 그 에너지 대부분은 결국 열로 방출됩니다. 현재 서버들이 시간당 약 700와트 정도를 사용하고 있어서, 단순하게 보면 방 안에 비슷한 규모의 열을 내는 난방기가 계속 돌아가는 것과 같습니다. 실제 난방 효과는 환경과 열이 빠져나가는 정도에 따라 다르지만, 체감상 꽤 따뜻합니다.
+컴퓨터가 전기를 쓰면 그 에너지 대부분은 결국 열로 방출됩니다. 콘센트에 연결한 전력 측정기로 확인한 서버들의 합산 소비전력은 약 700W였고, 단순하게 보면 방 안에 비슷한 규모의 열을 내는 난방기가 계속 돌아가는 것과 같습니다. 실제 난방 효과는 환경과 열이 빠져나가는 정도에 따라 다르지만, 체감상 꽤 따뜻합니다.
 
 저는 기본 연산 작업을 돌리면서 이 열을 활용합니다. 자동화해 둔 작업은 서버 자원이 부족해지면 워크 스레드를 줄이고 서비스에 더 많은 자원을 배정합니다. 서버가 한가할 때는 기본 연산에 자원을 최대한 사용합니다. 예전에 웹 서버를 운영할 때는 접속해 보면 작업 스레드가 줄어든 것을 확인하기도 했습니다. 지금은 상시 운영 중인 서비스가 거의 없어 대부분의 자원을 연산에 쓰고 있습니다.
 
@@ -66,6 +66,8 @@ description_ja: "韓国とカナダに置いたサーバー、サービス公開
 인터넷 회선 이중화도 계획 중입니다. 현재는 광케이블 회선을 사용하고 있지만, 한 달에 한 번 정도 장애를 겪을 때가 있고 운이 나쁘면 몇 주 동안 연결이 불안정할 때도 있습니다. 나중에는 Starlink 같은 위성 인터넷을 보조 회선으로 추가할지, 그에 맞는 라우터를 살지 고민해 보려고 합니다. 비용이 더 들겠지만 연결이 끊겼을 때 대안이 생기는 장점이 있습니다.
 
 그리고 언젠가는 중고 1U 서버를 하나 더 들일지도 모르겠습니다. 이미 방은 충분히 시끄럽고 따뜻하지만, 제 인프라를 어떻게 키워 갈지는 계속 고민하고 있습니다. 다음에는 메모리나 스토리지 구성에 변화가 생기면 다시 기록해 보겠습니다.
+
+관련 글: [웹사이트를 셀프 호스팅하다가 옮긴 이유](/ko/blog/2026/10/why-i-moved-my-website-hosting/) · [예측하기 어려운 비용이 싫은 이유](/ko/blog/2026/10/why-unpredictable-costs-bother-me/).
 
 <!-- lang:en -->
 ## Servers and a Warm Room in Canada
@@ -112,7 +114,7 @@ I currently cannot access the storage server in Korea, so I do not know its cond
 
 Canadian winters are cold, and heating is needed for much of the year outside the warmer season. Where I live, there are roughly three or four months when I can get by without heating.
 
-Most of the electricity a computer uses eventually becomes heat. My servers currently draw about 700 watts, so in simple terms they are like a heater of a similar capacity running in the room. The actual heating effect depends on the environment and how much heat escapes, but I can feel the difference.
+Most of the electricity a computer uses eventually becomes heat. A plug-in power meter connected at the wall outlet showed a combined draw of about 700W for my servers, so in simple terms they are like a heater of a similar capacity running in the room. The actual heating effect depends on the environment and how much heat escapes, but I can feel the difference.
 
 I use that heat while running basic compute workloads. An automated task reduces the worker threads and gives more resources to services when the servers are under pressure. When the servers are idle, it uses as many resources as possible for the compute work. When I used to run a web server, I would sometimes log in and see that the number of worker threads had gone down. Right now, there are few services running continuously, so most of the resources are being used for compute.
 
@@ -125,6 +127,8 @@ First, I want to find more memory. I have set aside the budget, but I do not kno
 I am also considering internet redundancy. I currently use a fiber connection, but outages happen from time to time—sometimes about once a month, and occasionally the connection can be unstable for weeks. Later, I may add satellite internet such as Starlink as a backup and get a router that can use both connections. It will cost more, but it would give me an alternative when the main connection goes down.
 
 Maybe I will eventually bring home another used 1U server. The room is already loud and warm enough, but I keep thinking about how to grow my infrastructure. I will write again when I have an update on the memory or storage setup.
+
+Related reading: [Why I Moved My Website Away from Self-Hosting](/en/blog/2026/10/why-i-moved-my-website-hosting/) · [Why I Avoid Unpredictable Costs](/en/blog/2026/10/why-unpredictable-costs-bother-me/).
 
 <!-- lang:ja -->
 ## カナダのサーバーと暖かい部屋
@@ -171,7 +175,7 @@ Maybe I will eventually bring home another used 1U server. The room is already l
 
 カナダの冬は寒く、暖かい季節を除くと長い期間、暖房が必要です。私の住む地域では、暖房なしで過ごせるのは年間でおよそ3〜4か月です。
 
-コンピューターが使う電力の大部分は、最終的に熱になります。現在、サーバーは合計で約700ワットを使っているので、単純に考えると部屋の中で同じくらいの出力の暖房器具を動かしているようなものです。実際の暖房効果は環境や熱の逃げ方によって異なりますが、体感できるほど暖かくなります。
+コンピューターが使う電力の大部分は、最終的に熱になります。コンセントに接続した電力計で測ったところ、サーバーの合計消費電力は約700Wでした。単純に考えると部屋の中で同じくらいの出力の暖房器具を動かしているようなものです。実際の暖房効果は環境や熱の逃げ方によって異なりますが、体感できるほど暖かくなります。
 
 私は基本的な計算処理を動かしながら、その熱を活用しています。サーバーの負荷が高くなると、自動化した処理がワーカースレッドを減らし、サービスにより多くのリソースを割り当てます。サーバーがアイドル状態なら、計算処理にできるだけ多くのリソースを使います。以前ウェブサーバーを運用していたときは、ログインしてワーカースレッドが減っているのを確認することがありました。今は常時稼働しているサービスがほとんどないため、大半のリソースを計算処理に使っています。
 
@@ -184,3 +188,6 @@ Maybe I will eventually bring home another used 1U server. The room is already l
 インターネット回線の冗長化も考えています。現在は光回線を使っていますが、ときどき障害があり、月に一度ほど起きることもあります。運が悪いと、数週間にわたって接続が不安定になることもあります。将来的にはStarlinkのような衛星インターネットを予備回線として追加し、両方を使えるルーターを購入するかもしれません。費用は増えますが、主回線が切れたときの代替手段になります。
 
 いつか中古の1Uサーバーをもう1台増やすかもしれません。部屋はすでに十分うるさく、暖かいですが、自分のインフラをどう拡張していくかは考え続けています。メモリやストレージ構成に進展があれば、また記録します。
+
+関連記事：[ウェブサイトの自宅運用をやめた理由](/ja/blog/2026/10/why-i-moved-my-website-hosting/)、[予測しにくい費用を避けたい理由](/ja/blog/2026/10/why-unpredictable-costs-bother-me/)。
+
