@@ -37,7 +37,7 @@ description_ja: "セルフホスティングやクラウド、AIのサブスク�
 
 그렇다고 클라우드 서비스를 전혀 쓰지 않는 건 아닙니다. 필요할 때는 VPS를 사용합니다. 지금은 리버스 프록시나 로드 밸런서 용도로 무료 플랜을 활용하고 있습니다. Oracle Cloud의 Always Free와 AWS 프리 티어 같은 공유 컴퓨팅 자원도 사용합니다. 현재는 무료 범위 안에서 사용하고 있어 직접 청구되는 비용은 없지만, 자원이나 성능에 제한이 있을 수 있습니다. 다른 사용자의 부하에 따라 성능이 달라질 수도 있고요.
 
-제 용도에서는 리버스 프록시나 로드 밸런서에 1 vCPU와 메모리 1GB 정도면 충분할 것으로 보고 있습니다. 이상적인 조건이라면 뒤에 웹 서버를 둔 구성에서 동시 접속자 약 200명, 잘 맞으면 300명 정도까지 가능하지 않을까 추정합니다. 다만 이건 실제 부하 테스트를 거친 수치가 아니라 제 예상입니다. 요청의 종류나 서버 설정, 네트워크 상태에 따라 결과는 크게 달라질 수 있습니다. 구체적인 운영 흐름은 나중에 따로 정리해 보겠습니다.
+제 용도에서는 리버스 프록시나 로드 밸런서에 1 vCPU와 메모리 1GB 구성을 우선 고려하고 있습니다. 하지만 이 사양이 충분한지, 동시 연결이나 요청을 어느 정도 처리할 수 있는지는 요청의 종류와 서버 설정, 네트워크 상태에 따라 달라집니다. 아직 실제 부하 테스트를 진행하지 않았으므로 처리 가능한 접속자 수를 구체적인 숫자로 제시하지 않겠습니다. 구체적인 운영 흐름은 나중에 따로 정리해 보겠습니다.
 
 ## AI도 종량제보다 정액제가 편하다
 
@@ -48,6 +48,8 @@ API 키를 발급받아 사용량에 따라 결제하는 방식은 선호하지 
 예전에는 AI 비용으로 한 달에 약 30만 원을 썼습니다. 지금은 많이 줄여서 월 3만 원 정도를 내고 있습니다. 앞으로 사용량이 다시 늘 수도 있겠지만, 적어도 현재는 매달 비용을 예측하기가 훨씬 쉬워졌습니다.
 
 저는 이런 사람인 것 같습니다. 직접 만들고 소유하는 걸 좋아하지만, 예상하지 못한 청구서가 날아오는 것은 싫어합니다. 그래서 필요한 곳에는 클라우드를 쓰면서도, 비용이 어떻게 늘어날지 가늠할 수 있는 방식을 계속 찾고 있습니다.
+
+관련 글: [메일 서버를 만들고 한 시간 만에 접은 이유](/ko/blog/2026/10/why-i-abandoned-my-mail-server/) · [캐나다의 서버와 따뜻한 방](/ko/blog/2026/10/my-infrastructure-in-canada/).
 
 <!-- lang:en -->
 ## Why I Avoid Unpredictable Costs
@@ -78,7 +80,7 @@ I also like having several computers and servers around me, seeing systems I bui
 
 That does not mean I never use cloud services. I use a VPS when I need one. Right now, I use free plans for things like a reverse proxy or load balancer. I also use shared computing resources such as Oracle Cloud Always Free and the AWS Free Tier. I currently stay within the free allowances, so I do not have a direct bill for them, but the available resources and performance can be limited. Performance may also vary with the load from other users.
 
-For my use case, I think 1 vCPU and 1 GB of memory should be enough for a reverse proxy or load balancer. Under ideal conditions, with a web server behind it, I estimate that the setup might handle around 200 concurrent users, perhaps 300 if everything lines up. That is only my estimate, not a number from an actual load test. Results can vary significantly depending on the requests, server configuration, and network conditions. I will write up the actual workflow another time.
+For my use case, I am considering a configuration with 1 vCPU and 1 GB of memory for a reverse proxy or load balancer. Whether that is sufficient, and how many concurrent connections or requests it can handle, depends on the workload, server settings, and network conditions. I have not performed a load test, so I will not give a specific number of users it can support. I will write up the actual workflow another time.
 
 ## I prefer subscriptions to usage-based AI billing
 
@@ -89,6 +91,8 @@ I do not prefer paying for AI usage through an API key. If a model repeats unnec
 I used to spend about $200 a month on AI. I have cut that down considerably and now spend around $20 per month. My usage could increase again, but at least for now, it is much easier to predict what I will pay each month.
 
 I suppose I am someone who likes building and owning things but dislikes surprise bills. So I use cloud services where I need them while continuing to look for ways to keep costs predictable.
+
+Related reading: [Why I Abandoned My Mail Server After an Hour](/en/blog/2026/10/why-i-abandoned-my-mail-server/) · [Servers and a Warm Room in Canada](/en/blog/2026/10/my-infrastructure-in-canada/).
 
 <!-- lang:ja -->
 ## 予測しにくい費用を避けたい理由
@@ -119,7 +123,7 @@ I suppose I am someone who likes building and owning things but dislikes surpris
 
 だからといって、クラウドサービスをまったく使わないわけではありません。必要なときはVPSを使います。今はリバースプロキシやロードバランサーに無料プランを利用しています。Oracle Cloud Always FreeやAWS無料利用枠のような共有コンピューティングリソースも使っています。現在は無料枠内で利用しているため直接の請求はありませんが、使えるリソースや性能には制限があります。他の利用者の負荷によって性能が変わることもあります。
 
-私の用途では、リバースプロキシやロードバランサーなら1 vCPUと1 GBのメモリで十分だと考えています。理想的な条件で、後ろにウェブサーバーを置いた構成なら、同時接続ユーザーは約200人、うまくいけば300人ほど対応できるのではないかと見積もっています。ただし、これは実際の負荷テストに基づく数値ではなく、私の予想です。リクエストの種類やサーバー設定、ネットワーク状況によって結果は大きく変わります。具体的な運用手順は、また別の記事にまとめるつもりです。
+私の用途では、リバースプロキシやロードバランサーに1 vCPUと1 GBのメモリを使う構成をまず検討しています。ただし、この仕様で十分かどうか、同時接続やリクエストをどの程度処理できるかは、負荷の種類、サーバー設定、ネットワーク状況によって変わります。実際の負荷テストはまだ行っていないため、対応可能な利用者数を具体的な数字では示しません。運用の詳しい流れは、また別の記事にまとめるつもりです。
 
 ## AIも従量課金より定額制が気楽
 
@@ -130,3 +134,6 @@ APIキーを使って利用量に応じて支払う方法は、あまり好み�
 以前はAIに月約3万円を使っていました。今はかなり減り、月約3,000円ほどです。今後また利用が増えるかもしれませんが、少なくとも現時点では毎月の費用をずっと予測しやすくなりました。
 
 私は、何かを作って所有するのは好きだけれど、予想外の請求書は苦手な人なのだと思います。必要なところではクラウドを使いながら、費用の増え方を見通せる方法を探し続けています。
+
+関連記事：[メールサーバーを作って1時間でやめた理由](/ja/blog/2026/10/why-i-abandoned-my-mail-server/)、[カナダのサーバーと暖かい部屋](/ja/blog/2026/10/my-infrastructure-in-canada/)。
+
