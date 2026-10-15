@@ -18,7 +18,7 @@ npm run build
 
 The build copies `site/` into `dist/`, validates and renders any blog Markdown under `src/content/blog/YYYY/MM/slug.md`, and writes static language-specific blog pages. A missing content folder or zero valid posts leaves Blog in its Coming Soon state. Invalid posts are logged and excluded without preventing other posts from building.
 
-`dist/` is the static output directory for Cloudflare Workers Static Assets. GitHub Actions builds and deploys pushes to `main`. Before the first deployment, add a `CLOUDFLARE_API_TOKEN` repository secret scoped to this Cloudflare account with Workers Scripts edit permission. The token remains in GitHub Secrets and is never stored in the repository.
+`dist/` is the static output directory for Cloudflare Workers Static Assets. GitHub Actions builds and deploys pushes to `main` through the `production` environment. Add `CLOUDFLARE_API_TOKEN` as an environment secret, scoped to this Cloudflare account with Workers Scripts edit permission. The token remains in GitHub Secrets and is never stored in the repository.
 
 ## Routes
 
