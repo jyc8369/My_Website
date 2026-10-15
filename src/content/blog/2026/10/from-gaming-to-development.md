@@ -3,7 +3,7 @@ title: "게임에서 시작해 개발까지, 나는 어떤 사람인가?"
 title_en: "From Gaming to Development: Who Am I?"
 title_ja: "ゲームから開発へ：私はどんな人？"
 published_at: "2026-10-15T06:26:48Z"
-description: "ゲームをきっかけにプログラミングやハードウェア、インフラに関心を広げてきた経験と、これから学びたいことを振り返ります。"
+description: "게임을 계기로 프로그래밍, 하드웨어, 인프라에 관심을 넓혀 온 경험과 앞으로 배우고 싶은 것을 돌아봅니다."
 description_en: "How games led me to programming, hardware, and infrastructure, and what I want to learn next."
 description_ja: "ゲームをきっかけにプログラミングやハードウェア、インフラへ興味を広げてきた経験と、これから学びたいことを振り返ります。"
 ---
