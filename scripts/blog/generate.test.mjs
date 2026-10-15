@@ -9,7 +9,7 @@ const post = (sections = {}) => `---
 title: "한국어 제목"
 title_en: "English title"
 title_ja: "日本語タイトル"
-date: "2026-10-14"
+published_at: "2026-10-14T21:30:00-07:00"
 description: "한국어 설명"
 description_en: "English description"
 description_ja: "日本語の説明"
@@ -49,6 +49,37 @@ test("publishes all three bodies and language routes for a valid post", async (t
     assert.match(html, /rel="alternate" hreflang="ja"/);
   }
   assert.match(await readFile(path.join(outputDir, "ja", "blog", "2026", "10", "sample-post", "index.html"), "utf8"), /日本語の本文です/);
+  const article = await readFile(path.join(outputDir, "en", "blog", "2026", "10", "sample-post", "index.html"), "utf8");
+  assert.match(article, /<time datetime="2026-10-14T21:30:00-07:00">2026-10-14<\/time>/);
+});
+
+test("sorts posts by publication timestamp, then slug for exact ties", async (t) => {
+  const { contentDir, outputDir } = await fixture(t);
+  const writePost = (slug, publishedAt) => writeFile(
+    path.join(contentDir, "2026", "10", `${slug}.md`),
+    post().replace('published_at: "2026-10-14T21:30:00-07:00"', `published_at: "${publishedAt}"`),
+  );
+  await writePost("same-day-early", "2026-10-14T09:00:00-07:00");
+  await writePost("same-day-late", "2026-10-14T18:00:00-07:00");
+  await writePost("same-day-tie-z", "2026-10-14T18:00:00-07:00");
+  await writePost("older-day", "2026-10-13T23:00:00-07:00");
+
+  const result = await generateBlog({ contentDir, outputDir });
+  assert.equal(result.generated, 4);
+  const list = await readFile(path.join(outputDir, "en", "blog", "index.html"), "utf8");
+  const position = (slug) => list.indexOf(`data-ui="post-${slug}"`);
+  assert.ok(position("same-day-late") < position("same-day-tie-z"));
+  assert.ok(position("same-day-tie-z") < position("same-day-early"));
+  assert.ok(position("same-day-early") < position("older-day"));
+});
+
+test("requires an explicit timezone and a folder matching the published calendar date", async (t) => {
+  const { contentDir, outputDir } = await fixture(t);
+  await writeFile(path.join(contentDir, "2026", "10", "missing-zone.md"), post().replace('published_at: "2026-10-14T21:30:00-07:00"', 'published_at: "2026-10-14T21:30:00"'));
+  await writeFile(path.join(contentDir, "2026", "10", "wrong-folder-date.md"), post().replace('published_at: "2026-10-14T21:30:00-07:00"', 'published_at: "2026-11-14T21:30:00-07:00"'));
+  const result = await generateBlog({ contentDir, outputDir });
+  assert.equal(result.generated, 0);
+  assert.equal(result.skipped, 2);
 });
 
 test("rejects one incomplete post without stopping other valid posts", async (t) => {

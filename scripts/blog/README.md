@@ -9,7 +9,7 @@ Each post is one Markdown file at `src/content/blog/YYYY/MM/english-slug.md`. A 
 title: "한국어 제목"
 title_en: "English title"
 title_ja: "日本語タイトル"
-date: "2026-10-14"
+published_at: "2026-10-14T21:30:00-07:00"
 description: "한국어 소개"
 description_en: "Short English introduction"
 description_ja: "日本語の短い紹介"
@@ -35,7 +35,7 @@ Supported Markdown includes headings (`#` through `###`), paragraphs, lists, blo
 ## Generated behavior
 
 - Routes: `/ko/blog/YYYY/MM/slug/`, `/en/blog/YYYY/MM/slug/`, and `/ja/blog/YYYY/MM/slug/`.
-- Lists are date-sorted, 20 posts per page, and use localized titles.
+- Lists sort by `published_at` newest first, 20 posts per page, and use localized titles. The displayed date and route year/month come from the timestamp's calendar date in its stated timezone. Identical timestamps use the English filename slug as a stable tie-breaker.
 - With zero valid posts, Blog stays Coming Soon and is marked `noindex`; Lab is always Coming Soon and `noindex`.
 - A post with a missing or invalid translation is excluded in all languages; other valid posts continue building.
 - `npm test` checks three-language output, per-file rejection, and marker handling in code blocks.

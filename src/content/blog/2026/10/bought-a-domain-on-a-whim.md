@@ -2,7 +2,7 @@
 title: "아무 생각 없이 산 도메인"
 title_en: "The Domain I Bought on a Whim"
 title_ja: "何も決めずに買ったドメイン"
-date: "2026-10-15"
+published_at: "2026-10-15T02:53:30Z"
 description: "무엇을 만들지 정하지 않은 채 도메인을 샀습니다. 이제 그곳에서 배우고 기록을 시작합니다."
 description_en: "I bought a domain before deciding what to make. Now I am learning and starting to keep a record there."
 description_ja: "何を作るか決めないままドメインを買いました。そこで学び、記録を始めます。"

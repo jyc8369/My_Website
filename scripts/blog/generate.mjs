@@ -2,9 +2,9 @@ import { readdir, readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const LOCALES = ["ko", "en", "ja"];
-const REQUIRED_FIELDS = ["title", "title_en", "title_ja", "date", "description", "description_en", "description_ja"];
+const REQUIRED_FIELDS = ["title", "title_en", "title_ja", "published_at", "description", "description_en", "description_ja"];
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const PUBLISHED_AT_PATTERN = /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,3})?(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))$/;
 
 /**
  * Generate Korean, English, and Japanese article pages from one multilingual Markdown file.
@@ -50,7 +50,7 @@ export async function generateBlog({
       articles.push(group[0]);
     }
   }
-  articles.sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
+  articles.sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.slug.localeCompare(b.slug));
 
   for (let index = 0; index < articles.length; index += 1) {
     const article = articles[index];
@@ -125,7 +125,7 @@ function renderBlogIndex({ articles, locale, pageNumber, pageCount, route, siteN
   const rows = pageArticles.map((article) => {
     const postRoute = article.routes[locale];
     const label = article.translations[locale].title;
-    return `<li><a class="blog-list-row" href="${postRoute}" data-ui="post-${escapeAttribute(article.slug)}"><span>${escapeHtml(label)}</span><time datetime="${article.date}">${article.date}</time></a></li>`;
+    return `<li><a class="blog-list-row" href="${postRoute}" data-ui="post-${escapeAttribute(article.slug)}"><span>${escapeHtml(label)}</span><time datetime="${article.published_at}">${article.date}</time></a></li>`;
   }).join("\n");
   const pageLinks = Array.from({ length: pageCount }, (_value, index) => {
     const number = index + 1;
@@ -189,11 +189,12 @@ function parseArticle(source, filePath, contentDir) {
       throw new Error(`frontmatter field '${field}' is required and must be a non-empty string`);
     }
   }
-  if (!DATE_PATTERN.test(frontmatter.date) || !isRealDate(frontmatter.date)) {
-    throw new Error("frontmatter date must be a real date in YYYY-MM-DD format");
+  if (!PUBLISHED_AT_PATTERN.test(frontmatter.published_at) || !Number.isFinite(Date.parse(frontmatter.published_at)) || !isRealDate(frontmatter.published_at.slice(0, 10))) {
+    throw new Error("frontmatter published_at must be a valid ISO 8601 date-time with seconds and an explicit timezone");
   }
-  if (frontmatter.date.slice(0, 4) !== relative[0] || frontmatter.date.slice(5, 7) !== relative[1]) {
-    throw new Error(`folder date ${relative[0]}/${relative[1]} does not match frontmatter date ${frontmatter.date}`);
+  const date = frontmatter.published_at.slice(0, 10);
+  if (date.slice(0, 4) !== relative[0] || date.slice(5, 7) !== relative[1]) {
+    throw new Error(`folder date ${relative[0]}/${relative[1]} does not match published_at date ${date}`);
   }
 
   const translations = parseLanguageSections(match[2]);
@@ -201,7 +202,7 @@ function parseArticle(source, filePath, contentDir) {
     if (!translations[locale]?.trim()) throw new Error(`missing or empty ${locale.toUpperCase()} body section`);
   }
   return {
-    filePath, slug, ...frontmatter,
+    filePath, slug, ...frontmatter, date,
     translations: {
       ko: { title: frontmatter.title, description: frontmatter.description, markdown: translations.ko.trim() },
       en: { title: frontmatter.title_en, description: frontmatter.description_en, markdown: translations.en.trim() },
@@ -406,7 +407,7 @@ function renderArticlePage({ article, locale, translation, siteName, newer, olde
   }[locale];
   const navToc = toc.replace('aria-label="목차"', `aria-label="${labels.toc}"`).replace(">목차</h2>", `>${labels.toc}</h2>`);
   const directions = renderNeighborLinks(newer, older, locale);
-  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#090909"><meta name="description" content="${description}"><meta property="og:title" content="${titleEn} — jyc8369.dev"><meta property="og:description" content="${descriptionEn}"><meta property="og:image" content="https://jyc8369.dev/assets/og.svg"><meta property="og:type" content="article"><link rel="canonical" href="https://jyc8369.dev${route}">${LOCALES.map((code) => `<link rel="alternate" hreflang="${code}" href="https://jyc8369.dev${article.routes[code]}">`).join("")}<title>jyc8369.dev — ${titleEn}</title><script src="/assets/theme-init.js"></script><link rel="stylesheet" href="/assets/site.css"></head><body>${renderSharedHeader({ locale, route, siteName })}<main id="main-content" tabindex="-1" class="page-container content-page article-page" data-ui="main-content"><a class="back-link" href="/${locale}/blog/">${labels.back}</a><article class="article-layout"><div><header class="article-header"><time datetime="${article.date}">${article.date}</time><h1>${title}</h1><p class="article-deck">${escapeHtml(translation.description)}</p></header><div class="article-body">${body}</div></div>${navToc}</article><footer class="article-endnote">${directions}<a href="/${locale}/blog/">${labels.list}</a></footer></main>${renderSharedFooter(locale)}<script src="/assets/site-interactions.js" defer></script></body></html>`;
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#090909"><meta name="description" content="${description}"><meta property="og:title" content="${titleEn} — jyc8369.dev"><meta property="og:description" content="${descriptionEn}"><meta property="og:image" content="https://jyc8369.dev/assets/og.svg"><meta property="og:type" content="article"><link rel="canonical" href="https://jyc8369.dev${route}">${LOCALES.map((code) => `<link rel="alternate" hreflang="${code}" href="https://jyc8369.dev${article.routes[code]}">`).join("")}<title>jyc8369.dev — ${titleEn}</title><script src="/assets/theme-init.js"></script><link rel="stylesheet" href="/assets/site.css"></head><body>${renderSharedHeader({ locale, route, siteName })}<main id="main-content" tabindex="-1" class="page-container content-page article-page" data-ui="main-content"><a class="back-link" href="/${locale}/blog/">${labels.back}</a><article class="article-layout"><div><header class="article-header"><time datetime="${article.published_at}">${article.date}</time><h1>${title}</h1><p class="article-deck">${escapeHtml(translation.description)}</p></header><div class="article-body">${body}</div></div>${navToc}</article><footer class="article-endnote">${directions}<a href="/${locale}/blog/">${labels.list}</a></footer></main>${renderSharedFooter(locale)}<script src="/assets/site-interactions.js" defer></script></body></html>`;
 }
 
 function renderNeighborLinks(newer, older, locale) {

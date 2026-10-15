@@ -2,7 +2,7 @@
 title: "`2534022` 오류를 이틀 동안 추적한 이야기"
 title_en: "Two Days Chasing the `2534022` Error"
 title_ja: "`2534022`エラーを2日間追いかけた話"
-date: "2026-10-15"
+published_at: "2026-10-15T03:08:26Z"
 description: "Instagram DM 브리징 플러그인을 만들며 만난 오류와 웹훅 설정 뒤에 동작을 확인한 과정을 기록합니다."
 description_en: "A record of an error I encountered while building an Instagram DM bridge, and what happened after configuring a webhook."
 description_ja: "Instagram DMブリッジの開発中に遭遇したエラーと、Webhook設定後に動作を確認できた経緯を記録します。"
