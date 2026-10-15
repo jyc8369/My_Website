@@ -1,54 +1,34 @@
 # jyc8369.dev
 
-A static personal site for development stories, notes, and experiments. Source files are plain HTML and CSS in `site/`; no frontend framework or third-party runtime package is required.
+A bilingual, static personal website built with plain HTML, CSS, and JavaScript. The blog is authored in Markdown and converted to static pages during the build. No client framework, database, CMS, or server runtime is required to serve the finished site.
 
-## Local preview
+## Local development
 
 ```sh
 npm run dev
 ```
 
-Then open `http://localhost:3000`. The preview server uses Node.js built-in modules only.
+This builds the site into `dist/` and serves it at `http://127.0.0.1:3000`. To rebuild after editing Markdown while the server is running, run `npm run build` again. `npm start` serves the existing build without rebuilding.
 
-## Build
+## Build output
 
 ```sh
 npm run build
-npm start
 ```
 
-`npm run build` copies the deployable static files into `dist/`. `npm start` serves that folder locally.
+The build copies `site/` into `dist/`, validates and renders any blog Markdown under `src/content/blog/YYYY/MM/slug.md`, and writes static language-specific blog pages. A missing content folder or zero valid posts leaves Blog in its Coming Soon state. Invalid posts are logged and excluded without preventing other posts from building.
 
-The `site/` folder is the source of truth; `dist/` is generated.
+`dist/` is the static output directory intended for a future Cloudflare Pages setup. No deployment or public release is configured as part of the current development work. The existing Worker-specific Cloudflare config is retained and must be reconciled before any Pages deployment.
 
-## Cloudflare Workers Static Assets
+## Routes
 
-The deployment target is `jyc8369-dev-static` on Cloudflare Workers Static Assets.
-`cloudflare.config.ts` defines the account and Worker settings; `wrangler.config.ts`
-selects `dist/` as the asset directory for the cf CLI's build tool.
+- `/` — Selects a saved language preference or the browser language and opens `/en/` or `/ko/`.
+- `/en/`, `/ko/` — Home, interests, and links to the other sections.
+- `/en/blog/`, `/ko/blog/` — Coming Soon until a valid post exists; then a date-sorted list with 20 posts per page.
+- `/en/blog/YYYY/MM/slug/`, `/ko/blog/YYYY/MM/slug/` — English translation notice and Korean Markdown article.
+- `/en/lab/`, `/ko/lab/` — Coming Soon.
+- `/en/about/`, `/ko/about/` — About and contact details.
 
-```sh
-npm ci
-npx cf auth login
-npm run deploy:check
-npm run deploy
-```
+## Blog authoring
 
-Both deployment commands rebuild the site first. `deploy:check` validates the
-deployment without uploading it. Authentication stays outside the repository.
-The Worker serves the HTML, CSS, and JavaScript assets directly, including the
-custom 404 page and security headers in `site/_headers`.
-
-The custom domain is `https://jyc8369.dev`. The default public URL
-`https://jyc8369-dev-static.jyc8369.workers.dev` also remains available.
-Automatic GitHub deployments are not configured.
-
-## Pages
-
-- `/` — Detects a saved language preference or browser language, then redirects to `/en/` or `/ko/`
-- `/en/`, `/ko/` — Home, interests, and links to the other sections
-- `/en/blog/`, `/ko/blog/` — Blog coming soon
-- `/en/lab/`, `/ko/lab/` — Lab coming soon
-- `/en/about/`, `/ko/about/` — About and contact details
-
-The blog and lab do not show placeholder entries. There is no CMS, database, authentication, admin area, or live API.
+Add a Markdown file at `src/content/blog/YYYY/MM/slug.md`. Required frontmatter fields are `title`, `title_en`, `date`, and `description`. The date must match the year and month folders; the lowercase English filename becomes the URL slug. See `scripts/blog/README.md` for the supported Markdown and metadata format.

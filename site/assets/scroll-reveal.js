@@ -1,45 +1,30 @@
 (() => {
-  const targets = document.querySelectorAll(
-    ".landing-copy > .eyebrow, .landing-copy > h1, .landing-copy > p, .curiosity-heading, .interest-editorial article, .home-story .section-heading, .home-story .featured-story, .directory-intro, .directory-links > a, .content-page > .featured-story, .content-page > .page-intro, .coming-soon, .blog-category, .entry-item, .project-card, .about-copy > *, .about-aside > *, .article-header, .article-body > *"
-  );
+  const targets = document.querySelectorAll([
+    ".landing-copy > *",
+    ".interest-editorial > article",
+    ".directory-intro",
+    ".directory-links > a",
+    ".page-intro",
+    ".coming-soon",
+    ".about-copy > section",
+    ".article-header",
+    ".article-body > *",
+  ].join(","));
 
-  if (!targets.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!targets.length || !("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  targets.forEach((target) => target.classList.add("scroll-reveal"));
+  targets.forEach((target, index) => {
+    target.classList.add("scroll-reveal");
+    target.style.setProperty("--reveal-delay", `${(index % 5) * 55}ms`);
+  });
   document.documentElement.classList.add("scroll-reveal-ready");
 
-  const scrubTarget = document.querySelector(".home-page .landing-copy");
-  let scrubFrame = 0;
-
-  const clampProgress = (value) => Math.min(Math.max(value, 0), 1);
-  const updateAnimations = () => {
-    const viewportHeight = Math.max(window.innerHeight, 1);
-    const revealStart = viewportHeight * 0.9;
-    const revealEnd = viewportHeight * 0.58;
-    const revealDistance = revealStart - revealEnd;
-
-    targets.forEach((target) => {
-      const top = target.getBoundingClientRect().top;
-      const progress = clampProgress((revealStart - top) / revealDistance);
-      target.style.setProperty("--reveal-progress", progress.toFixed(3));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) entry.target.classList.add("is-visible");
+      else entry.target.classList.remove("is-visible");
     });
+  }, { threshold: 0.14, rootMargin: "0px 0px -6% 0px" });
 
-    if (scrubTarget) {
-      const scrubRange = Math.max(viewportHeight * 0.72, 1);
-      const scrubProgress = clampProgress(window.scrollY / scrubRange);
-      scrubTarget.style.setProperty("--scroll-progress", scrubProgress.toFixed(3));
-    }
-    scrubFrame = 0;
-  };
-
-  const scheduleAnimations = () => {
-    if (scrubFrame) return;
-    scrubFrame = window.requestAnimationFrame(updateAnimations);
-  };
-
-  updateAnimations();
-  window.addEventListener("scroll", scheduleAnimations, { passive: true });
-  window.addEventListener("resize", scheduleAnimations, { passive: true });
+  targets.forEach((target) => observer.observe(target));
 })();
-
-
