@@ -45,6 +45,8 @@ description_ja: "メールサーバーを構築して受信まで確認したも
 
 도메인으로 메일 서버를 직접 만들어 본 경험은 짧았지만, 무엇을 직접 운영하고 무엇을 맡길지 생각해 볼 수 있었습니다. 예측하기 어려운 비용에 대한 제 생각은 다른 글에서 더 이야기해 보겠습니다.
 
+관련 글: [아무 생각 없이 산 도메인](/ko/blog/2026/10/bought-a-domain-on-a-whim/) · [예측하기 어려운 비용이 싫은 이유](/ko/blog/2026/10/why-unpredictable-costs-bother-me/).
+
 <!-- lang:en -->
 ## Why I Abandoned My Mail Server After an Hour
 
@@ -82,6 +84,8 @@ My own servers have not actually had a power outage or internet failure. But whe
 
 My experiment with hosting email on my domain was brief, but it helped me think about what I want to operate myself and what I would rather leave to a provider. I will write more about my feelings on unpredictable costs in another post.
 
+Related reading: [The Domain I Bought on a Whim](/en/blog/2026/10/bought-a-domain-on-a-whim/) · [Why I Avoid Unpredictable Costs](/en/blog/2026/10/why-unpredictable-costs-bother-me/).
+
 <!-- lang:ja -->
 ## メールサーバーを作って1時間でやめた理由
 
@@ -118,3 +122,6 @@ My experiment with hosting email on my domain was brief, but it helped me think 
 自分のサーバーで停電やインターネット障害が実際に起きたことはありません。それでも、重要なサービスを運用するなら、問題が起きていないうちから障害時のことを考えておくべきだと思いました。すべてを自分で運用する楽しさより、メールを安定して受け取れることを優先しました。
 
 ドメインのメールサーバーを自分で作った経験は短いものでしたが、何を自分で運用し、何をサービス提供者に任せるかを考えるきっかけになりました。予測しにくい費用については、また別の記事で書こうと思います。
+
+関連記事：[何も決めずに買ったドメイン](/ja/blog/2026/10/bought-a-domain-on-a-whim/)、[予測しにくい費用を避けたい理由](/ja/blog/2026/10/why-unpredictable-costs-bother-me/)。
+
