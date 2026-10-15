@@ -49,6 +49,8 @@ AI에게 제 상황을 설명하고 선택지를 물어봤더니 Cloudflare의 �
 
 기술 스택이나 오류 해결 과정을 직접 참고하고 싶은 분은 공개된 GitHub 저장소의 Markdown 원고와 코드를 살펴보셔도 좋습니다. 저처럼 Markdown으로 글을 쓰고 정적 페이지로 만드는 방법에 관심이 있다면, 저장소가 작은 참고 자료가 되기를 바랍니다.
 
+관련 글: [아무 생각 없이 산 도메인](/ko/blog/2026/10/bought-a-domain-on-a-whim/) · [캐나다의 서버와 따뜻한 방](/ko/blog/2026/10/my-infrastructure-in-canada/).
+
 <!-- lang:en -->
 ## Why I Moved My Website Away from Self-Hosting
 
@@ -90,6 +92,8 @@ The build process reads the Markdown source and automatically creates Korean, En
 
 If you want to look at the technology choices or how I solved a problem, feel free to explore the Markdown drafts and code in the public GitHub repository. I hope it can be a useful reference if you are interested in writing in Markdown and turning static pages into a website.
 
+Related reading: [The Domain I Bought on a Whim](/en/blog/2026/10/bought-a-domain-on-a-whim/) · [Servers and a Warm Room in Canada](/en/blog/2026/10/my-infrastructure-in-canada/).
+
 <!-- lang:ja -->
 ## ウェブサイトの自宅運用をやめた理由
 
@@ -130,3 +134,6 @@ Cloudflareというサービスは知っていましたが、ドメインやホ�
 ビルド処理でMarkdownの原稿を読み込み、韓国語・英語・日本語のページを自動生成するようにしました。記事を書くときは内容に集中し、公開するときはファイルをリポジトリに追加すればデプロイできます。
 
 技術スタックや問題の解決方法を参考にしたい方は、公開しているGitHubリポジトリのMarkdown原稿やコードを見てみてください。Markdownで記事を書き、静的ページからウェブサイトを作る方法に興味がある方にとって、小さな参考資料になればうれしいです。
+
+関連記事：[何も決めずに買ったドメイン](/ja/blog/2026/10/bought-a-domain-on-a-whim/)、[カナダのサーバーと暖かい部屋](/ja/blog/2026/10/my-infrastructure-in-canada/)。
+
