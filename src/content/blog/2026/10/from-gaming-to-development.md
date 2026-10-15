@@ -62,7 +62,7 @@ Python을 배우는 과정도 쉽지는 않았습니다. 개발 환경을 구성
 
 하드웨어 제작에도 관심이 있었지만, 부품을 사야 하고 실패하면 물리적인 비용이 든다는 부담이 있었습니다. 소프트웨어는 상대적으로 적은 비용으로 반복해서 시도할 수 있었습니다. 결국 프로그래밍은 제게 가장 접근하기 쉬운 창작 수단이 됐습니다.
 
-## 지금까지 무엇을 만들었을까?
+## 만드는 것과 가치를 만드는 것은 다르다
 
 이 질문에는 아직 자신 있게 내세울 답이 많지 않습니다. 여러 프로젝트를 시작하고 저장소도 운영해 왔지만, 많은 사람에게 가치를 제공하거나 뚜렷한 성과를 냈다고 말할 수 있는 프로젝트가 있는지는 스스로도 돌아보게 됩니다.
 
@@ -180,7 +180,7 @@ I also liked that programming let me start creating things at relatively low cos
 
 I was interested in hardware too, but it meant buying components, and mistakes could have a physical cost. Software let me try things repeatedly with relatively little expense. In the end, programming became the most accessible creative outlet for me.
 
-## What have I made so far?
+## Building something and creating value are different
 
 I do not have many accomplishments I can confidently point to yet. I have started different projects and maintained repositories, but I still ask myself whether any of them have provided value to many people or achieved a clear result.
 
@@ -298,7 +298,7 @@ Pythonの学習も簡単ではありませんでした。開発環境の準備�
 
 ハードウェアを作ることにも興味がありましたが、部品を買う必要があり、失敗すると実際に費用がかかるという不安がありました。ソフトウェアなら比較的少ない費用で何度も試せます。結果として、プログラミングは私にとって最も始めやすい創作手段になりました。
 
-## これまで何を作ってきたか
+## 作ることと価値を生み出すことは違う
 
 この質問には、まだ自信を持って挙げられる答えがあまりありません。いくつかのプロジェクトを始め、リポジトリも運用してきましたが、多くの人に価値を届けたり、明確な成果を上げたりしたと言えるものがあるのか、自分でも考えます。
 
