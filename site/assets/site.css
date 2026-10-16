@@ -127,6 +127,8 @@ p { color: var(--body-text); }
 .article-header h1 { font-size: clamp(40px, 4.5vw, 60px); margin: 24px 0; }
 .article-deck { font-size: 19px; max-width: 62ch; margin: 0; }
 .article-body { max-width: var(--reading); margin-inline: auto; padding-top: 40px; color: var(--body-text); font-size: 18px; line-height: 1.85; }
+.article-body a { color: var(--foreground); text-decoration: underline; text-decoration-color: var(--muted); text-decoration-thickness: .075em; text-underline-offset: .2em; transition: color var(--motion), text-decoration-color var(--motion), text-decoration-thickness var(--motion); }
+.article-body a:hover { color: var(--foreground); text-decoration-color: var(--foreground); text-decoration-thickness: .11em; }
 .article-body p { margin-bottom: 24px; }
 .article-body .article-lede { font-size: 21px; color: var(--accent); line-height: 1.75; margin-bottom: 40px; }
 .article-body h2 { font-size: 30px; margin: 48px 0 20px; }
