@@ -81,6 +81,8 @@ Rust를 좋아한다고 해서 단점이 없다고 생각하는 것은 아닙니
 
 제가 Rust를 좋아하는 이유는 단지 빠른 언어여서가 아닙니다. 제가 중요하게 생각하는 개발 가치를 코드에 반영하기 좋은 언어이기 때문입니다.
 
+관련 글: [Rust로 키보드와 마우스 전환 프로그램을 만든 이야기](/ko/blog/2026/10/rust-keyboard-mouse-switcher/) · [내가 프로그램을 설계할 때 중요하게 생각하는 6가지 원칙](/ko/blog/2026/10/six-principles-of-software-design/).
+
 <!-- lang:en -->
 ## Why Rust Is My Favorite Programming Language
 
@@ -154,6 +156,8 @@ Still, Rust is my favorite. I care not only about the convenience of the person 
 
 Rust is not my favorite simply because it is fast. It is a language that helps me put the development values I care about into practice.
 
+Related reading: [Building a Keyboard and Mouse Switcher in Rust](/en/blog/2026/10/rust-keyboard-mouse-switcher/) · [Six Principles That Guide How I Design Software](/en/blog/2026/10/six-principles-of-software-design/).
+
 <!-- lang:ja -->
 ## 私がRustを一番好きな理由
 
@@ -226,3 +230,6 @@ Rustが好きだからといって、短所がないと思っているわけで�
 それでも、一番好きな言語はRustです。プログラムを作る人の利便性だけでなく、それを使う人の計算資源も大切だと考えているからです。できることなら、メモリの使用量を抑え、不要なCPU処理を減らし、安定して動くプログラムを作りたいです。
 
 私がRustを好きなのは、単に速い言語だからではありません。自分が大切にしている開発の価値観を、コードに反映しやすい言語だからです。
+
+関連記事：[Rustでキーボードとマウスの切り替えプログラムを作った話](/ja/blog/2026/10/rust-keyboard-mouse-switcher/)、[私がソフトウェアを設計するときに大切にしている6つの原則](/ja/blog/2026/10/six-principles-of-software-design/)。
+

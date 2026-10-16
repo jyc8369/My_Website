@@ -23,6 +23,8 @@ description_ja: "何を作るか決めないままドメインを買いました
 
 앞으로 더 풀어낼 이야기가 많을 것 같습니다. 이 블로그가 제 기록의 시작이자, 제 역사의 첫 페이지가 될지도 모르겠습니다.
 
+관련 글: [메일 서버를 만들고 한 시간 만에 접은 이유](/ko/blog/2026/10/why-i-abandoned-my-mail-server/) · [웹사이트를 셀프 호스팅하다가 옮긴 이유](/ko/blog/2026/10/why-i-moved-my-website-hosting/).
+
 <!-- lang:en -->
 ## The Domain I Bought on a Whim
 
@@ -38,6 +40,8 @@ I have a lot to learn about DNS records. Since I now have a service of my own, I
 
 There is still a lot more I would like to write about. Maybe this blog is where my record begins—and the first page of my own history.
 
+Related reading: [Why I Abandoned My Mail Server After an Hour](/en/blog/2026/10/why-i-abandoned-my-mail-server/) · [Why I Moved My Website Away from Self-Hosting](/en/blog/2026/10/why-i-moved-my-website-hosting/).
+
 <!-- lang:ja -->
 ## 何も決めずに買ったドメイン
 
@@ -52,3 +56,6 @@ There is still a lot more I would like to write about. Maybe this blog is where 
 まずはDNSレコードについて、もっと勉強する必要があります。自分のサービスを持ったからには、保守やセキュリティについても学ばなければなりません。情報セキュリティには関心がありましたが、これまではYouTubeや短い動画で見かける断片的な知識が中心でした。これからは自分のサービスを運用しながら、もう少し本格的に学んでいきたいです。
 
 これから書いていきたい話は、まだたくさんあります。このブログが自分の記録の始まりであり、自分の歴史の最初のページになるのかもしれません。
+
+関連記事：[メールサーバーを作って1時間でやめた理由](/ja/blog/2026/10/why-i-abandoned-my-mail-server/)、[ウェブサイトの自宅運用をやめた理由](/ja/blog/2026/10/why-i-moved-my-website-hosting/)。
+

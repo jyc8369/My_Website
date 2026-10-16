@@ -59,6 +59,8 @@ Meta 앱을 실제 서비스에서 사용하려면 앱 검수가 필요할 수 �
 
 이틀 동안 원인을 찾으며 꽤 지쳤지만, 이제는 다음 작업을 이어갈 수 있게 됐습니다. 이 브리징 플러그인을 만들며 겪는 시행착오도 하나씩 기록해 보려고 합니다.
 
+관련 글: [내가 프로그램을 설계할 때 중요하게 생각하는 6가지 원칙](/ko/blog/2026/10/six-principles-of-software-design/) · [내가 AI를 쓰고 만드는 방식](/ko/blog/2026/10/how-i-use-and-build-ai-tools/).
+
 <!-- lang:en -->
 ## Two Days Chasing the `2534022` Error
 
@@ -110,6 +112,8 @@ I cannot offer a guaranteed fix to anyone who encounters a similar error. In my 
 
 The search left me pretty worn out, but now I can continue with the next part of the project. I hope to keep writing down the lessons and setbacks I encounter while building this bridging plugin.
 
+Related reading: [Six Principles That Guide How I Design Software](/en/blog/2026/10/six-principles-of-software-design/) · [How I Use and Build AI Tools](/en/blog/2026/10/how-i-use-and-build-ai-tools/).
+
 <!-- lang:ja -->
 ## `2534022`エラーを2日間追いかけた話
 
@@ -160,3 +164,6 @@ Metaアプリを実際のサービスで使うには、アプリレビューが�
 同じようなエラーに遭遇した方に、確実な解決策を提示することはできません。私の場合はWebhookを設定したあとに動きましたが、その理由や、ほかの環境でも同じ方法が有効かどうかは検証できていません。それでも、エラー文面だけでは手がかりが得られないときは、API呼び出しに加えて、メッセージイベントの受信方法やWebhookの設定も確認してみる価値がありそうです。
 
 原因を探す間はかなり疲れましたが、これで次の作業に進めそうです。このブリッジプラグインを作る中で経験した試行錯誤も、少しずつ記録していきたいと思います。
+
+関連記事：[私がソフトウェアを設計するときに大切にしている6つの原則](/ja/blog/2026/10/six-principles-of-software-design/)、[私のAIツールの使い方と作り方](/ja/blog/2026/10/how-i-use-and-build-ai-tools/)。
+

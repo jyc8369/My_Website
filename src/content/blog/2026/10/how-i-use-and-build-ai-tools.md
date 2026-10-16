@@ -39,6 +39,8 @@ Cursor는 아직 제게 꼭 필요한 도구라는 생각이 들지 않습니다
 
 저는 현재 별도의 하네스를 적극적으로 쓰고 있지는 않습니다. 제가 이해하는 하네스는 에이전트가 사용할 도구와 권한, 검증 절차를 정해 실행을 제어하는 구성입니다. 지금은 공개 서비스나 다루는 민감 정보가 많지 않고, 개인 데이터도 대부분 암호화된 저장소에 있습니다. 그래서 현재 작업에는 기본 설정만으로 충분하다고 보고 있습니다.
 
+다만 저장된 데이터가 암호화되어 있다는 사실이 실행 중인 에이전트의 모든 작업을 보호해 주는 것은 아닙니다. 에이전트가 접근할 수 있는 파일이나 실행 권한이 넓다면, 잘못된 판단으로 소스 코드를 덮어쓰거나 파일을 삭제할 수도 있습니다. 접근 가능한 파일에 포함된 API 키나 인증 정보를 읽어 외부 요청에 실어 보내거나, 외부 문서와 저장소에 들어 있는 악의적인 지시를 실제 작업 명령으로 잘못 받아들이는 경우도 생각할 수 있습니다. 이는 제 환경에서 실제로 발생했다고 주장하는 사례가 아니라, 승인 절차를 줄였을 때 경계해야 할 위험의 예시입니다. 별도 승인이 없다면 실행 전에 이런 행동을 사람이 확인하고 멈출 기회도 줄어듭니다.
+
 하지만 실제 공개 서비스를 운영하거나 민감한 데이터를 다루게 되면 생각이 달라질 겁니다. 그때는 정보가 외부로 나가거나 에이전트가 데이터를 잘못 변경하는 일을 막을 수 있도록 권한과 검토 체계를 더 갖춰야 한다고 생각합니다.
 
 MCP는 주로 개발 작업에 사용합니다. 긴 작업을 맡겨 두고 다른 세션이나 일에 집중할 때, 도구가 매번 승인을 기다리면 흐름이 끊기는 경우가 있습니다. 그래서 제가 만드는 개인용 MCP에는 현재 승인 단계를 두지 않았습니다. Codex도 제 개인 환경에서는 제한을 낮춘 방식으로 사용하고 있습니다. 이런 선택은 제 환경과 목적에 맞춘 것이고, 모두에게 적합한 운영 방식이라고 말하려는 것은 아닙니다.
@@ -46,6 +48,8 @@ MCP는 주로 개발 작업에 사용합니다. 긴 작업을 맡겨 두고 다�
 제가 만드는 에이전트도 장기적으로는 혼자 작업을 이어갈 수 있도록 설계하고 있습니다. 아직 완성되지 않았고 안전성과 안정성을 계속 점검해야 하는 단계입니다. 공개 서비스에 투입하거나 다른 사람에게 배포할 수 있는 상태는 아닙니다.
 
 AI 도구와 에이전트는 제게 단순한 보조 기능을 넘어, 일하고 무언가를 만드는 방식의 일부가 됐습니다. 지금은 ChatGPT와 로컬 모델, Codex, 직접 개발 중인 에이전트를 각기 다른 용도로 사용하고 있습니다. 앞으로 에이전트가 더 안정되면 실제로 어떻게 쓰는지, 무엇이 잘되고 무엇이 어려운지도 따로 기록해 보겠습니다.
+
+관련 글: [AI를 적극적으로 쓰되, 사용법도 배워야 한다](/ko/blog/2026/10/ai-use-is-a-skill/) · [내가 프로그램을 설계할 때 중요하게 생각하는 6가지 원칙](/ko/blog/2026/10/six-principles-of-software-design/).
 
 <!-- lang:en -->
 ## How I Use and Build AI Tools
@@ -78,6 +82,8 @@ One reason I continue to use ChatGPT and Codex is that I have received usage-lim
 
 I do not currently use a separate harness extensively. The way I understand a harness, it defines the tools and permissions an agent can use, along with checks that control how it runs. Right now, I do not have many sensitive details in a public service, and most of my personal data is in encrypted storage. For my current work, I feel the default setup is sufficient.
 
+However, encrypting stored data does not automatically protect every action a running agent can take. If it has broad access to files or command execution, a mistaken decision could overwrite source code or delete files. It might read an API key or credential from a file it can access and include it in an external request, or mistake malicious instructions embedded in external documents or repositories for legitimate task directions. These are examples of risks to consider, not incidents I am claiming happened in my environment. Removing approval steps also reduces the opportunities for a person to review and stop such actions before they run.
+
 That may change if I operate a real public service or handle sensitive data. Then I would want stronger permission and review controls to prevent information from leaving the system or an agent from making damaging changes to data.
 
 I mainly use MCP for development. When I leave a long task running and focus on another session or activity, having a tool pause for approval every time can interrupt the flow. That is why my personal MCP tools currently do not have approval steps. I also use Codex in my personal environment with fewer restrictions. These choices fit my environment and goals; I am not saying this is the right way for everyone to operate.
@@ -85,6 +91,8 @@ I mainly use MCP for development. When I leave a long task running and focus on 
 I am designing my agent to eventually continue working on its own for longer periods too. It is not finished, and I still need to check its safety and stability. It is not ready for a public service or for distribution to other people.
 
 AI tools and agents have become more than simple assistants for me; they are part of how I work and make things. Right now, I use ChatGPT, local models, Codex, and the agent I am building for different purposes. When the agent becomes more stable, I hope to write separately about how I use it, what works, and what remains difficult.
+
+Related reading: [Use AI Actively, and Learn How to Use It Well](/en/blog/2026/10/ai-use-is-a-skill/) · [Six Principles That Guide How I Design Software](/en/blog/2026/10/six-principles-of-software-design/).
 
 <!-- lang:ja -->
 ## 私のAIツールの使い方と作り方
@@ -117,6 +125,8 @@ ChatGPTとCodexを使い続けている理由のひとつは、利用上限の�
 
 私は今のところ、独立したハーネスを積極的には使っていません。私の理解では、ハーネスとはエージェントが使えるツールや権限、実行を制御するチェック手順を定める仕組みです。現時点では公開サービスで扱う機密情報は多くなく、個人データの大半も暗号化されたストレージにあります。そのため、今の作業では標準の設定で十分だと考えています。
 
+ただし、保存データが暗号化されていても、実行中のエージェントが行うすべての操作まで保護されるわけではありません。ファイルやコマンド実行への権限が広ければ、誤った判断によってソースコードを上書きしたり、ファイルを削除したりする可能性があります。アクセス可能なファイルにあるAPIキーや認証情報を読み取り、外部へのリクエストに含めてしまうことや、外部文書・リポジトリに含まれる悪意ある指示を正当な作業指示と誤認することも考えられます。これらは私の環境で実際に起きたという話ではなく、承認手順を減らす際に考慮すべきリスクの例です。事前承認を省くと、実行前に人間が確認して止める機会も少なくなります。
+
 ただし、実際に公開サービスを運用したり、機密データを扱ったりすることになれば考えは変わるでしょう。情報の外部流出や、エージェントによるデータの誤変更を防ぐために、より強い権限管理とレビューの仕組みを整える必要があると思います。
 
 MCPは主に開発作業で使っています。長いタスクを任せたまま、別のセッションや作業に集中しているとき、ツールが毎回承認を待つと流れが止まることがあります。そのため、自分用に作っているMCPには現在、承認段階を設けていません。Codexも個人環境では制限を少なくした形で使っています。これは自分の環境や目的に合わせた選択であり、誰にとっても適切な運用方法だと言いたいわけではありません。
@@ -124,3 +134,6 @@ MCPは主に開発作業で使っています。長いタスクを任せたま�
 自分のエージェントも、将来的にはひとりで長時間作業を続けられるよう設計しています。まだ完成しておらず、安全性と安定性を引き続き確認する必要があります。公開サービスに使ったり、ほかの人に配布したりできる状態ではありません。
 
 AIツールやエージェントは、私にとって単なる補助機能ではなく、働き方やものづくりの一部になりました。今はChatGPT、ローカルモデル、Codex、自分で開発しているエージェントを、それぞれ違う用途で使っています。エージェントがもっと安定したら、実際の使い方やうまくいくこと、難しいことも別の記事に書きたいです。
+
+関連記事：[AIを積極的に使い、使い方も学ぶ](/ja/blog/2026/10/ai-use-is-a-skill/)、[私がソフトウェアを設計するときに大切にしている6つの原則](/ja/blog/2026/10/six-principles-of-software-design/)。
+

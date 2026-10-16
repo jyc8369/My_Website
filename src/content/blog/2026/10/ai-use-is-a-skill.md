@@ -49,6 +49,8 @@ AI가 더 많은 연산 자원과 충분한 검토 단계를 거친다면 지금
 
 **한 줄 요약: AI를 쓴다는 이유만으로 나쁘다고 단정하지 말고, 어떻게 쓰고 검토하는지도 함께 봐 주세요.**
 
+관련 글: [내가 AI를 쓰고 만드는 방식](/ko/blog/2026/10/how-i-use-and-build-ai-tools/) · [내가 프로그램을 설계할 때 중요하게 생각하는 6가지 원칙](/ko/blog/2026/10/six-principles-of-software-design/).
+
 <!-- lang:en -->
 ## Use AI Actively, and Learn How to Use It Well
 
@@ -90,6 +92,8 @@ My point is simple: using AI is not automatically bad. That does not mean we sho
 
 **In one line: Please do not assume using AI is bad; look at how it is used and reviewed.**
 
+Related reading: [How I Use and Build AI Tools](/en/blog/2026/10/how-i-use-and-build-ai-tools/) · [Six Principles That Guide How I Design Software](/en/blog/2026/10/six-principles-of-software-design/).
+
 <!-- lang:ja -->
 ## AIを積極的に使い、使い方も学ぶ
 
@@ -130,3 +134,6 @@ My point is simple: using AI is not automatically bad. That does not mean we sho
 私が伝えたいことはシンプルです。AIを使うことが、必ずしも悪いわけではありません。AIが作ったものを無条件に信じようという意味でもありません。AIをうまく活用するには、問題を理解し、依頼を具体的に書き、結果をレビューする方法も学ぶ必要があります。
 
 **一言でまとめると、AIを使うという理由だけで悪いと決めつけず、どう使い、どう確認しているかも見てほしいです。**
+
+関連記事：[私のAIツールの使い方と作り方](/ja/blog/2026/10/how-i-use-and-build-ai-tools/)、[私がソフトウェアを設計するときに大切にしている6つの原則](/ja/blog/2026/10/six-principles-of-software-design/)。
+

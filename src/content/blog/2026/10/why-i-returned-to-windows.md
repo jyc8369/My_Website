@@ -105,6 +105,8 @@ Linux 커널에 ACS override 같은 패치를 적용해 장치 그룹을 나누�
 
 지금 Windows를 사용하는 것은 Windows가 가장 마음에 드는 운영체제여서가 아닙니다. 현재 하드웨어와 실제 사용 환경을 고려했을 때 가장 현실적인 선택이기 때문입니다. 언젠가는 Linux를 다시 메인 데스크톱 환경으로 사용할 수 있기를 바랍니다.
 
+관련 글: [Rust로 키보드와 마우스 전환 프로그램을 만든 이야기](/ko/blog/2026/10/rust-keyboard-mouse-switcher/) · [내가 Rust를 가장 좋아하는 이유](/ko/blog/2026/10/why-i-like-rust/).
+
 <!-- lang:en -->
 ## Why I Left Linux and Went Back to Windows
 
@@ -202,6 +204,8 @@ Of course, Windows has advantages: broad software compatibility, strong game sup
 
 I use Windows now not because it is my favorite operating system, but because it is the most practical choice for my current hardware and day-to-day needs. I hope I can make Linux my primary desktop environment again someday.
 
+Related reading: [Building a Keyboard and Mouse Switcher in Rust](/en/blog/2026/10/rust-keyboard-mouse-switcher/) · [Why Rust Is My Favorite Programming Language](/en/blog/2026/10/why-i-like-rust/).
+
 <!-- lang:ja -->
 ## Linuxを離れてWindowsに戻った理由
 
@@ -298,3 +302,6 @@ Linuxが好きなのは、システムを直接制御し、開発環境を自分
 もちろん、Windowsには幅広いソフトウェアとの互換性、ゲーム対応、多くの商用ソフトを使えるといった利点があります。そうした理由から、Windowsを完全に手放せずにいます。
 
 今Windowsを使っているのは、Windowsが一番好きなOSだからではありません。現在のハードウェアと日々の使い方を考えたとき、最も現実的な選択だからです。いつかまたLinuxをメインのデスクトップ環境にできればと思っています。
+
+関連記事：[Rustでキーボードとマウスの切り替えプログラムを作った話](/ja/blog/2026/10/rust-keyboard-mouse-switcher/)、[私がRustを一番好きな理由](/ja/blog/2026/10/why-i-like-rust/)。
+

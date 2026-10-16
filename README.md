@@ -23,3 +23,9 @@ The local server listens on `http://127.0.0.1:3000`. Build output is written to 
 ## Publishing
 
 Pushes to `main` run `.github/workflows/deploy.yml`, build the site, and deploy it with the configured Cloudflare CLI. The workflow uses the `production` GitHub environment and its `CLOUDFLARE_API_TOKEN` secret. Do not commit credentials. See [`src/content/blog/README.md`](src/content/blog/README.md) for the post format.
+
+## License and personal content
+
+The original website source code, including application code, HTML/CSS/JavaScript structure, build scripts, and deployment tooling, is licensed under the [MIT License](LICENSE).
+
+**Not covered by the MIT License:** personal blog posts in `src/content/blog/`, their rendered or translated copies in `site/`, personal biographies and editorial writing anywhere in the site, and original branding/illustrations (including `site/assets/og.svg`). These personal materials are Copyright (c) 2026 jyc8369. All rights reserved unless a separate license is explicitly provided. MIT permission for the software does not authorize copying or republishing these materials. Third-party trademarks and other third-party materials remain subject to their owners' rights.
