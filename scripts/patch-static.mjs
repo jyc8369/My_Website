@@ -14,12 +14,14 @@ async function htmlFiles(directory) {
   return files;
 }
 
-for (const file of await htmlFiles("dist")) {
-  const relative = path.relative("dist", file).replaceAll("\\", "/");
-  if (!/^(ko|en|ja)\//.test(relative)) continue;
+export async function patchStaticPages({ outputDir = "dist" } = {}) {
+  for (const file of await htmlFiles(outputDir)) {
+    const relative = path.relative(outputDir, file).replaceAll("\\", "/");
+    if (!/^(ko|en|ja)\//.test(relative)) continue;
 
-  const source = await readFile(file, "utf8");
-  const withNavigation = updatePageNavigation(source, relative);
-  const withMetadata = addPageMetadata(withNavigation, relative);
-  await writeFile(file, secureExternalLinks(withMetadata), "utf8");
+    const source = await readFile(file, "utf8");
+    const withNavigation = updatePageNavigation(source, relative);
+    const withMetadata = addPageMetadata(withNavigation, relative);
+    await writeFile(file, secureExternalLinks(withMetadata), "utf8");
+  }
 }
