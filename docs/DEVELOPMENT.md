@@ -4,11 +4,11 @@ This guide documents the verified development and deployment workflow for the st
 
 ## Source layout
 
-- `site/` contains the hand-maintained static HTML, CSS, JavaScript, and assets. Korean and English pages live under `site/ko/` and `site/en/`.
-- `scripts/localize.mjs` generates Japanese pages during the build.
-- `src/content/blog/YYYY/MM/` contains multilingual Markdown posts.
+- `site/` contains the hand-maintained static HTML, CSS, JavaScript, and assets that seed the published site. Korean and English pages live under `site/ko/` and `site/en/`.
+- `src/content/blog/YYYY/MM/` contains authored multilingual Markdown; the build turns each valid post into localized HTML pages.
+- `scripts/localization/generate.mjs` explicitly generates Japanese pages, the 404 page, and the English privacy page during the build.
 - `scripts/blog/generate.mjs` turns valid posts into pages for Korean, English, and Japanese.
-- `scripts/build.mjs` copies the site into `dist/`, generates localized pages and blog posts, and applies static-page adjustments.
+- `scripts/build.mjs` copies `site/` into `dist/`, then calls the localization and blog generators and applies metadata, navigation, and external-link transforms.
 - `server.mjs` serves a selected directory locally; the default directory is `site/`.
 - `wrangler.config.ts` points Cloudflare deployment at `dist/` as its static assets directory.
 
