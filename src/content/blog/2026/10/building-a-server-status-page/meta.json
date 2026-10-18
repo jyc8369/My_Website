@@ -1,0 +1,14 @@
+{
+  "slug": "building-a-server-status-page",
+  "titles": {
+    "ko": "Cloudflare Tunnel 하나로 여러 서버를 확인하는 상태 페이지를 만들었습니다",
+    "en": "Building a Server Status Page with a Single Cloudflare Tunnel",
+    "ja": "1つのCloudflare Tunnelで複数サーバーを監視するステータスページを作りました"
+  },
+  "published_at": "2026-10-18T12:35:00-06:00",
+  "descriptions": {
+    "ko": "status.jyc8369.dev를 개발하고 배포하며 Rust 상태 API, Tailscale, 단일 Cloudflare Tunnel, Cloudflare Pages를 연결한 구성을 정리했습니다.",
+    "en": "How I built status.jyc8369.dev using a Rust status API, Tailscale, one Cloudflare Tunnel, and Cloudflare Pages.",
+    "ja": "Rust製ステータスAPI、Tailscale、単一のCloudflare Tunnel、Cloudflare Pagesでstatus.jyc8369.devを構築した記録です。"
+  }
+}
