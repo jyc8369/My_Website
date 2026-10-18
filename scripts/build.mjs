@@ -6,7 +6,8 @@ import { readFile, writeFile } from "node:fs/promises";
 
 await rm("dist", { recursive: true, force: true });
 await mkdir("dist", { recursive: true });
-await cp("site", "dist", { recursive: true });
+await cp("src/pages", "dist", { recursive: true });
+await cp("public", "dist", { recursive: true });
 await generateLocalizedPages({ outputDir: "dist" });
 const blog = await generateBlog({ contentDir: "src/content/blog", outputDir: "dist" });
 await patchStaticPages({ outputDir: "dist" });

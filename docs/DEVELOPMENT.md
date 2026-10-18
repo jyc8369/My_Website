@@ -4,12 +4,13 @@ This guide documents the verified development and deployment workflow for the st
 
 ## Source layout
 
-- `site/` contains the hand-maintained static HTML and assets that seed the published site. Korean and English pages live under `site/ko/` and `site/en/`; shared styles, scripts, and images are grouped in `site/assets/css/`, `site/assets/js/`, and `site/assets/images/`.
+- `src/pages/` contains static HTML page sources, arranged by their output paths. Korean and English pages are authored there; the Japanese pages, 404 page, and English privacy page are generated during the build.
+- `public/` contains static assets copied to the output unchanged, including `assets/css/`, `assets/js/`, `assets/images/`, and the Cloudflare `_headers` file.
 - `src/content/blog/YYYY/MM/english-slug/` contains one `meta.json` file with shared metadata and `ko.html`, `en.html`, and `ja.html` article bodies. The build wraps each valid body in the shared localized page template.
 - `scripts/localization/generate.mjs` explicitly generates Japanese pages, the 404 page, and the English privacy page during the build.
 - `scripts/blog/generate.mjs` turns valid posts into pages for Korean, English, and Japanese.
-- `scripts/build.mjs` copies `site/` into `dist/`, then calls the localization and blog generators and applies metadata, navigation, and external-link transforms.
-- `server.mjs` serves a selected directory locally; the default directory is `site/`.
+- `scripts/build.mjs` copies `src/pages/` and `public/` into `dist/`, then calls the localization and blog generators and applies metadata, navigation, and external-link transforms.
+- `server.mjs` serves a selected directory locally; the default directory is `dist/`.
 - `wrangler.config.ts` points Cloudflare deployment at `dist/` as its static assets directory.
 
 ## Development environment
