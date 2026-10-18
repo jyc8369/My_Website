@@ -1,11 +1,12 @@
 import { cp, mkdir, rm } from "node:fs/promises";
 import { generateBlog } from "./blog/generate.mjs";
+import { generateLocalizedPages } from "./localization/generate.mjs";
 import { readFile, writeFile } from "node:fs/promises";
 
 await rm("dist", { recursive: true, force: true });
 await mkdir("dist", { recursive: true });
 await cp("site", "dist", { recursive: true });
-await import("./localize.mjs");
+await generateLocalizedPages({ outputDir: "dist" });
 const blog = await generateBlog({ contentDir: "src/content/blog", outputDir: "dist" });
 await import("./patch-static.mjs");
 if (!blog.generated) {

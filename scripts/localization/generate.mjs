@@ -1,4 +1,5 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 const shell = (locale, title, description, main, robots = "") => `<!doctype html>
 <html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#090909"><meta name="description" content="${description}">${robots}<title>jyc8369.dev — ${title}</title><script src="/assets/theme-init.js"></script><link rel="stylesheet" href="/assets/site.css"></head><body>
@@ -22,9 +23,10 @@ const pages = {
   "lab/index.html": shell("ja", "Lab", "実験や自分で作ったものをまとめます。", main(`${intro("01 / LAB", "ラボ", "実験や自分で作ったものをまとめます。")}<section class="lab-list" aria-label="実験プロジェクト" data-ui="lab-projects"><article class="project-card" data-ui="project-regular-icosahedron"><div class="project-card-top"><span class="status-badge">インタラクティブ</span><span class="project-stack">Canvas 2D</span></div><div class="project-copy"><h2><a href="/ja/lab/regular-icosahedron/" data-ui="project-regular-icosahedron-link">正二十面体ビューア <span aria-hidden="true">↗</span></a></h2><p>ブラウザー上で正二十面体を回転・拡大し、その幾何構造を観察する実験です。</p></div></article></section>`)),
 };
 
+export async function generateLocalizedPages({ outputDir = "dist" } = {}) {
 for (const [relative, sourceHtml] of Object.entries(pages)) {
   let html = sourceHtml;
-  const target = `dist/ja/${relative}`;
+  const target = path.join(outputDir, "ja", relative);
   const route = `/ja/${relative === "index.html" ? "" : relative.replace(/index\.html$/, "")}`;
   const translatedLinks = [
     `<a role="menuitem" lang="ko" hreflang="ko" href="${route.replace(/^\/ja/, "/ko")}" data-language="ko">한국어</a>`,
@@ -33,13 +35,15 @@ for (const [relative, sourceHtml] of Object.entries(pages)) {
   ].join("");
   html = html.replace(/<div id="language-menu"[^>]*>[\s\S]*?<\/div>/, (menu) => menu.replace(/>[\s\S]*<\/div>$/, `>${translatedLinks}</div>`));
   html = html.replace(/<nav id="primary-navigation"[^>]*>[\s\S]*?<\/nav>/, (nav) => nav.replace(`href="${route}"`, `href="${route}" aria-current="page"`));
-  await mkdir(target.slice(0, target.lastIndexOf("/")), { recursive: true });
+  await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, html, "utf8");
 }
 
 const notFound = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090909"><meta name="robots" content="noindex"><title>jyc8369.dev — 404</title><script src="/assets/theme-init.js"></script><link rel="stylesheet" href="/assets/site.css"></head><body data-page="not-found"><main class="not-found"><p class="eyebrow">404</p><h1><span data-locale-copy="ko" hidden>페이지를 찾을 수 없습니다.</span><span data-locale-copy="en">Page not found.</span><span data-locale-copy="ja" hidden>ページが見つかりません。</span></h1><div><a href="/en/" data-ui="nav-home">Home</a><button type="button" data-ui="not-found-back">Go back</button></div></main><script src="/assets/site-interactions.js" defer></script></body></html>`;
-await writeFile("dist/404.html", notFound, "utf8");
+await writeFile(path.join(outputDir, "404.html"), notFound, "utf8");
 
 const privacy = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090909"><meta name="description" content="Privacy information for jyc8369.dev."><title>jyc8369.dev — Privacy</title><script src="/assets/theme-init.js"></script><link rel="stylesheet" href="/assets/site.css"></head><body><header id="site-header" class="site-header"><a class="skip-link" href="#main-content">Skip to content</a><div class="header-inner page-container"><a class="wordmark" href="/en/">jyc8369.dev</a><nav id="primary-navigation" class="site-nav" aria-label="Main navigation"><a href="/en/">Home</a><a href="/en/blog/">Blog</a><a href="/en/lab/">Lab</a><a href="/en/about/">About</a></nav><div class="header-actions"><div class="language-switcher"><button class="language-toggle" type="button" aria-label="Choose language" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">EN ⌄</button><div id="language-menu" class="language-menu" hidden role="menu" aria-label="Choose language"><a role="menuitem" lang="ko" href="/ko/">한국어</a><a role="menuitem" lang="en" href="/en/" aria-current="page">English</a><a role="menuitem" lang="ja" href="/ja/">日本語</a></div></div><button class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">Dark</button><button class="menu-toggle" type="button" aria-label="Open main navigation" aria-controls="primary-navigation" aria-expanded="false"><span></span><span></span></button></div></div></header><main id="main-content" tabindex="-1" class="page-container content-page">${intro("PRIVACY", "Privacy", "How this website handles information.")}<p><time datetime="2026-10-14">Last updated: 2026-10-14</time></p><article class="about-copy"><section><h2>Website infrastructure</h2><p>This website is delivered through Cloudflare Workers Static Assets. When you request a page, Cloudflare processes the request to provide the site. Cloudflare may process technical request data as part of operating and securing its network. The precise data, retention, and access depend on the Cloudflare products and account settings enabled for this site.</p></section><section><h2>Analytics</h2><p>This website does not add a visitor counter or a separate analytics dashboard. The operator may review traffic information available in the Cloudflare dashboard. The specific analytics and logging settings have not been independently documented here; this notice does not claim a particular retention period or configuration.</p></section><section><h2>Cookies and local storage</h2><p>The site stores your chosen language and theme in your browser's local storage so it can remember those preferences. The site does not use this preference storage to identify you.</p></section><section><h2>External links and contact</h2><p>Links to GitHub and your email application are provided. Those services are governed by their own privacy practices. If you contact the site operator by email, the information in your message is used to respond.</p></section><section><h2>Changes and contact</h2><p>This notice may be updated when the website or its configured services change. Questions can be sent to <a href="mailto:owner@jyc8369.dev">owner@jyc8369.dev</a>.</p></section></article></main><footer id="site-footer" class="site-footer"><div class="page-container footer-inner"><span class="footer-copyright">© 2026 jyc8369</span><nav class="footer-links" aria-label="Contact"><a href="/en/privacy/">Privacy</a><a href="https://github.com/jyc8369">GitHub</a><a href="mailto:owner@jyc8369.dev">Email</a></nav></div></footer><script src="/assets/site-interactions.js" defer></script></body></html>`;
-await mkdir("dist/en/privacy", { recursive: true });
-await writeFile("dist/en/privacy/index.html", privacy, "utf8");
+const privacyPath = path.join(outputDir, "en", "privacy", "index.html");
+await mkdir(path.dirname(privacyPath), { recursive: true });
+await writeFile(privacyPath, privacy, "utf8");
+}
