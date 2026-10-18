@@ -17,6 +17,12 @@ description_ja: "Markdownの原稿を確認し、Node.jsで三言語の静的ペ
 
 현재 제 블로그는 Markdown 파일로 글을 작성하고, Node.js 스크립트를 이용해 HTML로 변환한 뒤, GitHub Actions를 통해 Cloudflare에 자동 배포하는 구조입니다.
 
+### 한눈에 보기
+
+**Markdown 원고 → Node.js 생성기 → `dist/` 정적 페이지 → GitHub Actions → Cloudflare Workers Static Assets**
+
+글은 Markdown으로 작성하고, Node.js 생성기가 메타데이터와 세 언어의 본문을 읽어 정적 HTML 페이지를 만듭니다. `main` 브랜치에 변경 사항을 푸시하면 GitHub Actions가 게시 규칙을 검사하고 사이트를 빌드한 뒤 Cloudflare에 배포합니다. 방문자는 서버에서 페이지를 실시간 생성하는 대신 배포된 정적 파일을 받습니다.
+
 별도의 콘텐츠 관리 시스템(CMS)을 사용하지 않고, 데이터베이스도 두지 않았습니다.
 
 그렇다고 대단히 특별한 기술을 사용한 것은 아닙니다. 이미 널리 사용되는 기술들을 제 목적에 맞게 조합한 것에 가깝습니다.
@@ -387,6 +393,12 @@ But once I started running it, I found myself thinking about how to write posts,
 
 Today, I write articles in Markdown, convert them to HTML with Node.js scripts, and automatically deploy the site to Cloudflare using GitHub Actions.
 
+### The flow at a glance
+
+**Markdown draft → Node.js generator → static pages in `dist/` → GitHub Actions → Cloudflare Workers Static Assets**
+
+I write each post in Markdown, and a Node.js generator reads its metadata and three language versions to create static HTML pages. When I push a change to `main`, GitHub Actions checks the publishing rules, builds the site, and deploys it to Cloudflare. Visitors receive the deployed static files instead of having pages generated on demand.
+
 There is no separate content management system (CMS) or database.
 
 These are not especially unusual technologies. I have simply combined well-known tools in a way that fits my needs.
@@ -704,6 +716,12 @@ After all, the blog itself is another project through which I build, operate, an
 しかし実際に運営し始めると、原稿の書き方、HTMLページの生成方法、サーバーへのデプロイ方法など、考えることが増えました。
 
 現在はMarkdownファイルで記事を書き、Node.jsのスクリプトでHTMLに変換し、GitHub Actionsを使ってCloudflareへ自動デプロイしています。
+
+### 全体の流れ
+
+**Markdown原稿 → Node.jsジェネレーター → `dist/`の静的ページ → GitHub Actions → Cloudflare Workers Static Assets**
+
+記事をMarkdownで書くと、Node.jsのジェネレーターがメタデータと三言語の本文を読み込み、静的なHTMLページを生成します。`main`ブランチに変更をプッシュすると、GitHub Actionsが公開ルールを確認してサイトをビルドし、Cloudflareへデプロイします。訪問者には、リクエストごとに生成したページではなく、デプロイ済みの静的ファイルが配信されます。
 
 専用のコンテンツ管理システム（CMS）やデータベースは使用していません。
 
