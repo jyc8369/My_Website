@@ -300,6 +300,50 @@ p { color: var(--body-text); }
 .about-copy h2:not(:first-child) { margin-top: 48px; }
 .about-copy p .text-link { display: inline; min-height: 0; font-size: inherit; }
 
+.polytope-page > .back-link { margin-bottom: 28px; }
+.polytope-demo { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: clamp(32px, 5vw, 72px); align-items: start; }
+.icosahedron-visual { min-width: 0; }
+.icosahedron-stage { position: relative; min-width: 0; aspect-ratio: 1.42; margin: 0; overflow: hidden; background: var(--surface-raised); border: 1px solid var(--rule); }
+.icosahedron-stage canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
+.icosahedron-stage canvas.is-dragging { cursor: grabbing; }
+.icosahedron-stage canvas:focus-visible { outline: 2px solid var(--foreground); outline-offset: -5px; }
+.icosahedron-stage-label { margin: 10px 0 0; color: var(--muted); font: 11px/1.6 var(--mono); letter-spacing: .08em; }
+.icosahedron-stage-label span { padding-inline: 5px; color: var(--border); }
+.icosahedron-controls { display: flex; flex-direction: column; align-items: stretch; gap: 18px; padding-top: 8px; }
+.icosahedron-controls > .eyebrow { margin-bottom: 4px; }
+.polytope-toggle, .polytope-reset { min-height: 46px; padding: 8px 0; border: 0; border-bottom: 1px solid var(--border); background: transparent; color: var(--foreground); text-align: left; font: inherit; cursor: pointer; }
+.polytope-toggle::before { content: ""; display: inline-block; width: 8px; height: 8px; margin: 0 12px 1px 0; border: 1px solid var(--muted); border-radius: 50%; }
+.polytope-toggle[aria-pressed="true"]::before { background: var(--foreground); border-color: var(--foreground); }
+.polytope-toggle:disabled { color: var(--muted); cursor: not-allowed; }
+.polytope-range { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; color: var(--body-text); }
+.polytope-range output { color: var(--muted); font: 13px/1.6 var(--mono); }
+.icosahedron-controls input[type="range"] { width: 100%; margin: -8px 0 0; accent-color: var(--foreground); cursor: pointer; }
+.polytope-check { display: flex; align-items: center; gap: 10px; min-height: 44px; color: var(--body-text); cursor: pointer; }
+.polytope-check input { width: 17px; height: 17px; accent-color: var(--foreground); }
+.polytope-reset { border-bottom: 0; color: var(--muted); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 5px; }
+.polytope-reset:hover { color: var(--foreground); text-decoration-color: var(--foreground); }
+.polytope-help { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.75; }
+.polytope-notes { display: grid; grid-template-columns: 260px minmax(0, 680px); gap: clamp(32px, 5vw, 72px); margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.polytope-notes .eyebrow { padding-top: 4px; }
+.polytope-notes p { margin: 0; font-size: 16px; }
+@media (max-width: 760px) {
+  .polytope-demo { grid-template-columns: 1fr; gap: 28px; }
+  .icosahedron-stage { aspect-ratio: 1.05; }
+  .icosahedron-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; }
+  .icosahedron-controls > .eyebrow, .polytope-help { grid-column: 1 / -1; }
+  .polytope-toggle, .polytope-reset { grid-column: span 1; }
+  .polytope-range { grid-column: 1 / -1; }
+  .icosahedron-controls input[type="range"] { grid-column: 1 / -1; margin: -8px 0 0; }
+  .polytope-check { grid-column: 1; }
+  .polytope-notes { grid-template-columns: 1fr; gap: 8px; margin-top: 40px; }
+}
+@media (max-width: 480px) {
+  .icosahedron-stage { aspect-ratio: .92; }
+  .icosahedron-stage-label { left: 12px; bottom: 10px; font-size: 10px; }
+  .icosahedron-controls { gap: 8px 14px; }
+  .polytope-help { font-size: 13px; }
+}
+
 /* Reveal progress follows each element's position through the viewport. */
 .scroll-reveal-ready .scroll-reveal {
   opacity: var(--reveal-progress, 0);

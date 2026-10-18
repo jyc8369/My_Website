@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="ブラウザー上で回転させながら観察できる、正二十面体のインタラクティブな実験です。">
+  <title>正二十面体 — jyc8369.dev</title>
+  <script src="/assets/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header id="site-header" class="site-header" data-ui="site-header"><a class="skip-link" href="#main-content">本文へスキップ</a><div class="header-inner page-container">
+  <a class="wordmark" href="/ja/" aria-label="jyc8369.dev">jyc8369.dev</a>
+  <nav id="primary-navigation" class="site-nav" aria-label="メインメニュー" data-ui="primary-navigation"><a href="/ja/" data-ui="nav-home">ホーム</a><a href="/ja/blog/" data-ui="nav-blog">ブログ</a><a href="/ja/lab/" data-ui="nav-lab" aria-current="page">ラボ</a><a href="/ja/about/" data-ui="nav-about">自己紹介</a></nav>
+  <div class="header-actions" data-ui="header-actions"><div class="language-switcher" data-ui="language-switcher"><button class="language-toggle" type="button" aria-label="言語" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu" data-ui="language-toggle"><svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg><span>JA</span><span aria-hidden="true">⌄</span></button><div id="language-menu" class="language-menu" hidden role="menu" aria-label="言語" data-ui="language-menu"><a role="menuitem" lang="ja" hreflang="ja" href="/ja/lab/regular-icosahedron/" data-language="ja" data-ui="language-ja" aria-current="page">日本語</a><a role="menuitem" lang="ko" hreflang="ko" href="/ko/lab/regular-icosahedron/" data-language="ko" data-ui="language-ko">한국어</a><a role="menuitem" lang="en" hreflang="en" href="/en/lab/regular-icosahedron/" data-language="en" data-ui="language-en">English</a></div></div><button class="theme-toggle" type="button" aria-label="テーマ切替" aria-pressed="false" data-ui="theme-toggle">ダーク</button><button class="menu-toggle" type="button" aria-label="メニューを開く" aria-controls="primary-navigation" aria-expanded="false" data-ui="menu-toggle"><span aria-hidden="true"></span><span aria-hidden="true"></span></button></div>
+</div></header>
+<main id="main-content" tabindex="-1" class="page-container content-page polytope-page" data-ui="main-content">
+  <a class="back-link" href="/ja/lab/" data-ui="lab-back">← ラボに戻る</a>
+  <header id="polytope-intro" class="page-intro" data-ui="polytope-intro"><span class="eyebrow">LAB / 幾何学実験</span><h1 id="polytope-heading" data-ui="polytope-heading">正二十面体</h1><p>20枚の正三角形からなる立体を、ブラウザー上で回転させながら観察できます。</p></header>
+  <section class="polytope-demo" aria-labelledby="polytope-heading" data-ui="icosahedron-demo">
+    <div class="icosahedron-visual"><figure class="icosahedron-stage" data-ui="icosahedron-stage"><canvas id="icosahedron-canvas" data-ui="icosahedron-canvas" tabindex="0" role="img" aria-label="回転できる正二十面体の3D表示" aria-describedby="icosahedron-help">正二十面体の3D表示です。ドラッグして回転できます。</canvas></figure><p class="icosahedron-stage-label">頂点 12 <span aria-hidden="true">·</span> 辺 30 <span aria-hidden="true">·</span> 面 20</p></div>
+    <aside class="icosahedron-controls" aria-label="正二十面体の操作" data-ui="icosahedron-controls"><span class="eyebrow">表示の操作</span>
+      <button type="button" class="polytope-toggle" aria-pressed="false" data-ui="icosahedron-auto-rotate">自動回転</button>
+      <label class="polytope-range" for="icosahedron-zoom"><span>拡大率</span><output for="icosahedron-zoom" data-ui="icosahedron-zoom-value">100%</output></label>
+      <input id="icosahedron-zoom" type="range" min="70" max="150" step="5" value="100" data-ui="icosahedron-zoom">
+      <label class="polytope-check"><input type="checkbox" checked data-ui="icosahedron-edges"><span>辺を表示</span></label>
+      <button type="button" class="polytope-reset" data-ui="icosahedron-reset">表示をリセット</button>
+      <p id="icosahedron-help" class="polytope-help">ドラッグで回転し、ホイールまたは拡大率でサイズを調整できます。表示領域にフォーカスして矢印キーを押すと、キーボードでも回転できます。</p>
+    </aside>
+  </section>
+  <section class="polytope-notes" aria-label="正二十面体について" data-ui="icosahedron-notes"><span class="eyebrow">図形について</span><p>正二十面体は、同じ正三角形の面を20枚持つプラトン立体です。この表示では黄金比に基づく座標で頂点を定義し、Canvas 2Dで遠近投影しています。</p></section>
+</main>
+<footer id="site-footer" class="site-footer" data-ui="site-footer"><div class="page-container footer-inner"><span class="footer-copyright">© 2026 jyc8369</span><nav class="footer-links" aria-label="連絡先" data-ui="footer-links"><a href="https://github.com/jyc8369" data-ui="footer-github">GitHub</a><a href="mailto:owner@jyc8369.dev" data-ui="footer-email">メール</a></nav></div></footer>
+<script src="/assets/regular-icosahedron.js" defer></script><script src="/assets/site-interactions.js" defer></script>
+</body>
+</html>

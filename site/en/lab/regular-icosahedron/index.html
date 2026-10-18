@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="An interactive regular icosahedron you can rotate and explore in the browser.">
+  <title>Regular Icosahedron — jyc8369.dev</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  <script src="/assets/theme-init.js"></script>
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header id="site-header" class="site-header" data-ui="site-header"><a class="skip-link" href="#main-content">Skip to content</a><div class="header-inner page-container">
+  <a class="wordmark" href="/en/" aria-label="jyc8369.dev">jyc8369.dev</a>
+  <nav id="primary-navigation" class="site-nav" aria-label="Main navigation" data-ui="primary-navigation"><a href="/en/" data-ui="nav-home">Home</a><a href="/en/blog/" data-ui="nav-blog">Blog</a><a href="/en/lab/" data-ui="nav-lab" aria-current="page">Lab</a><a href="/en/about/" data-ui="nav-about">About</a></nav>
+  <div class="header-actions" data-ui="header-actions"><div class="language-switcher" data-ui="language-switcher"><button class="language-toggle" type="button" aria-label="Choose language" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu" data-ui="language-toggle"><svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg><span>EN</span><span aria-hidden="true">⌄</span></button><div id="language-menu" class="language-menu" hidden role="menu" aria-label="Choose language" data-ui="language-menu"><a role="menuitem" lang="en" hreflang="en" href="/en/lab/regular-icosahedron/" data-language="en" data-ui="language-en" aria-current="page">English</a><a role="menuitem" lang="ko" hreflang="ko" href="/ko/lab/regular-icosahedron/" data-language="ko" data-ui="language-ko">한국어</a><a role="menuitem" lang="ja" hreflang="ja" href="/ja/lab/regular-icosahedron/" data-language="ja" data-ui="language-ja">日本語</a></div></div><button class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false" data-ui="theme-toggle">Dark</button><button class="menu-toggle" type="button" aria-label="Open main navigation" aria-controls="primary-navigation" aria-expanded="false" data-ui="menu-toggle"><span aria-hidden="true"></span><span aria-hidden="true"></span></button></div>
+</div></header>
+<main id="main-content" tabindex="-1" class="page-container content-page polytope-page" data-ui="main-content">
+  <a class="back-link" href="/en/lab/" data-ui="lab-back">← Back to Lab</a>
+  <header id="polytope-intro" class="page-intro" data-ui="polytope-intro"><span class="eyebrow">LAB / GEOMETRY</span><h1 id="polytope-heading" data-ui="polytope-heading">Regular Icosahedron</h1><p>Rotate and explore a solid made from 20 equilateral triangles, rendered right here in your browser.</p></header>
+  <section class="polytope-demo" aria-labelledby="polytope-heading" data-ui="icosahedron-demo">
+    <div class="icosahedron-visual"><figure class="icosahedron-stage" data-ui="icosahedron-stage"><canvas id="icosahedron-canvas" data-ui="icosahedron-canvas" tabindex="0" role="img" aria-label="Interactive 3D view of a rotating regular icosahedron" aria-describedby="icosahedron-help">A 3D regular icosahedron. Drag to rotate.</canvas></figure><p class="icosahedron-stage-label">12 VERTICES <span aria-hidden="true">·</span> 30 EDGES <span aria-hidden="true">·</span> 20 FACES</p></div>
+    <aside class="icosahedron-controls" aria-label="Icosahedron controls" data-ui="icosahedron-controls"><span class="eyebrow">CONTROLS</span>
+      <button type="button" class="polytope-toggle" aria-pressed="false" data-ui="icosahedron-auto-rotate">Auto-rotate</button>
+      <label class="polytope-range" for="icosahedron-zoom"><span>Zoom</span><output for="icosahedron-zoom" data-ui="icosahedron-zoom-value">100%</output></label>
+      <input id="icosahedron-zoom" type="range" min="70" max="150" step="5" value="100" data-ui="icosahedron-zoom">
+      <label class="polytope-check"><input type="checkbox" checked data-ui="icosahedron-edges"><span>Show edges</span></label>
+      <button type="button" class="polytope-reset" data-ui="icosahedron-reset">Reset view</button>
+      <p id="icosahedron-help" class="polytope-help">Drag to rotate; use the wheel or zoom control to resize. Focus the viewer and use the arrow keys to rotate with a keyboard.</p>
+    </aside>
+  </section>
+  <section class="polytope-notes" aria-label="About the regular icosahedron" data-ui="icosahedron-notes"><span class="eyebrow">ABOUT THIS SHAPE</span><p>A regular icosahedron is a Platonic solid with 20 identical equilateral-triangle faces. This view defines its vertices with golden-ratio coordinates and draws them with perspective projection on Canvas 2D.</p></section>
+</main>
+<footer id="site-footer" class="site-footer" data-ui="site-footer"><div class="page-container footer-inner"><span class="footer-copyright">© 2026 jyc8369</span><nav class="footer-links" aria-label="Contact" data-ui="footer-links"><a href="https://github.com/jyc8369" data-ui="footer-github">GitHub</a><a href="mailto:owner@jyc8369.dev" data-ui="footer-email">Email</a></nav></div></footer>
+<script src="/assets/regular-icosahedron.js" defer></script><script src="/assets/site-interactions.js" defer></script>
+</body>
+</html>
