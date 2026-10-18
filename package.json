@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm run build && node server.mjs ./dist/",
     "build": "node scripts/build.mjs",
-    "test": "node --test scripts/blog/*.test.mjs",
+    "test": "node --test scripts/blog/*.test.mjs scripts/transforms/*.test.mjs",
     "start": "node server.mjs ./dist/"
   },
   "devDependencies": {
