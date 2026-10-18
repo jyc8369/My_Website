@@ -40,5 +40,3 @@ Use semantic body markup such as `<h2 id="...">`, `<p>`, `<ul>`, `<blockquote>`,
 - Previous/next navigation follows the same timestamp ordering and route structure.
 - A missing or invalid translation excludes that post in all languages; other valid posts continue building.
 - `npm test` checks localized output, metadata validation, timestamp ordering, TOC extraction, and preservation of HTML links/code.
-
-The one-time `migrate-markdown-to-html.mjs` script converted the former Markdown sources mechanically with the existing Markdown renderer. It is not part of the normal build.
