@@ -180,16 +180,16 @@ async function readArticle(filePath, contentDir) {
   if (!SLUG_PATTERN.test(slug)) {
     throw new Error("folder name must be a lowercase English slug such as my-first-post");
   }
-  const frontmatter = JSON.parse(await readFile(path.join(filePath, "meta.json"), "utf8"));
-  if (frontmatter.slug !== slug) throw new Error(`metadata slug '${frontmatter.slug}' does not match folder '${slug}'`);
+  const metadata = JSON.parse(await readFile(path.join(filePath, "meta.json"), "utf8"));
+  if (metadata.slug !== slug) throw new Error(`metadata slug '${metadata.slug}' does not match folder '${slug}'`);
   for (const locale of LOCALES) {
-    if (typeof frontmatter.titles?.[locale] !== "string" || !frontmatter.titles[locale].trim()) throw new Error(`metadata titles.${locale} is required`);
-    if (typeof frontmatter.descriptions?.[locale] !== "string" || !frontmatter.descriptions[locale].trim()) throw new Error(`metadata descriptions.${locale} is required`);
+    if (typeof metadata.titles?.[locale] !== "string" || !metadata.titles[locale].trim()) throw new Error(`metadata titles.${locale} is required`);
+    if (typeof metadata.descriptions?.[locale] !== "string" || !metadata.descriptions[locale].trim()) throw new Error(`metadata descriptions.${locale} is required`);
   }
-  if (!PUBLISHED_AT_PATTERN.test(frontmatter.published_at) || !Number.isFinite(Date.parse(frontmatter.published_at)) || !isRealDate(frontmatter.published_at.slice(0, 10))) {
-    throw new Error("frontmatter published_at must be a valid ISO 8601 date-time with seconds and an explicit timezone");
+  if (typeof metadata.published_at !== "string" || !PUBLISHED_AT_PATTERN.test(metadata.published_at) || !Number.isFinite(Date.parse(metadata.published_at)) || !isRealDate(metadata.published_at.slice(0, 10))) {
+    throw new Error("metadata published_at must be a valid ISO 8601 date-time with seconds and an explicit timezone");
   }
-  const date = frontmatter.published_at.slice(0, 10);
+  const date = metadata.published_at.slice(0, 10);
   if (date.slice(0, 4) !== relative[0] || date.slice(5, 7) !== relative[1]) {
     throw new Error(`folder date ${relative[0]}/${relative[1]} does not match published_at date ${date}`);
   }
@@ -200,12 +200,12 @@ async function readArticle(filePath, contentDir) {
     if (/<\/?(?:html|body|head|script)\b/i.test(translations[locale])) throw new Error(`${locale}.html must contain only article body markup`);
   }
   return {
-    filePath, slug, published_at: frontmatter.published_at, date,
-    title_en: frontmatter.titles.en, description_en: frontmatter.descriptions.en,
+    filePath, slug, published_at: metadata.published_at, date,
+    title_en: metadata.titles.en, description_en: metadata.descriptions.en,
     translations: {
-      ko: { title: frontmatter.titles.ko, description: frontmatter.descriptions.ko, html: translations.ko.trim() },
-      en: { title: frontmatter.titles.en, description: frontmatter.descriptions.en, html: translations.en.trim() },
-      ja: { title: frontmatter.titles.ja, description: frontmatter.descriptions.ja, html: translations.ja.trim() },
+      ko: { title: metadata.titles.ko, description: metadata.descriptions.ko, html: translations.ko.trim() },
+      en: { title: metadata.titles.en, description: metadata.descriptions.en, html: translations.en.trim() },
+      ja: { title: metadata.titles.ja, description: metadata.descriptions.ja, html: translations.ja.trim() },
     },
   };
 }

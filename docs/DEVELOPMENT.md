@@ -5,7 +5,7 @@ This guide documents the verified development and deployment workflow for the st
 ## Source layout
 
 - `site/` contains the hand-maintained static HTML and assets that seed the published site. Korean and English pages live under `site/ko/` and `site/en/`; shared styles, scripts, and images are grouped in `site/assets/css/`, `site/assets/js/`, and `site/assets/images/`.
-- `src/content/blog/YYYY/MM/` contains authored multilingual Markdown; the build turns each valid post into localized HTML pages.
+- `src/content/blog/YYYY/MM/english-slug/` contains one `meta.json` file with shared metadata and `ko.html`, `en.html`, and `ja.html` article bodies. The build wraps each valid body in the shared localized page template.
 - `scripts/localization/generate.mjs` explicitly generates Japanese pages, the 404 page, and the English privacy page during the build.
 - `scripts/blog/generate.mjs` turns valid posts into pages for Korean, English, and Japanese.
 - `scripts/build.mjs` copies `site/` into `dist/`, then calls the localization and blog generators and applies metadata, navigation, and external-link transforms.
@@ -52,7 +52,7 @@ Build the static site into `dist/`:
 npm run build
 ```
 
-For blog metadata, Markdown syntax, translation requirements, generated behavior, and the existing content instructions, see [`src/content/blog/README.md`](../src/content/blog/README.md) and [`scripts/blog/README.md`](../scripts/blog/README.md).
+The blog generator validates the slug, localized titles and descriptions, ISO 8601 publication timestamp, matching year/month folder, and presence of all three non-empty HTML bodies. It derives the table of contents from identified `h1`–`h3` headings and preserves the existing localized routes and previous/next navigation. For the JSON schema, HTML authoring guidance, and generated behavior, see [`src/content/blog/README.md`](../src/content/blog/README.md) and [`scripts/blog/README.md`](../scripts/blog/README.md).
 
 ## Deployment
 
