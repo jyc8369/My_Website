@@ -1,0 +1,14 @@
+{
+  "slug": "why-i-like-rust",
+  "titles": {
+    "ko": "내가 Rust를 가장 좋아하는 이유",
+    "en": "Why Rust Is My Favorite Programming Language",
+    "ja": "私がRustを一番好きな理由"
+  },
+  "published_at": "2026-10-15T05:34:21Z",
+  "descriptions": {
+    "ko": "메모리 관리와 시스템 자원, 배포 방식에 대한 제 생각을 통해 Rust를 가장 좋아하는 이유를 이야기합니다.",
+    "en": "Why Rust is my favorite, through my views on memory management, system resources, and software distribution.",
+    "ja": "メモリ管理、システム資源、ソフトウェアの配布方法について考えながら、Rustが一番好きな理由を紹介します。"
+  }
+}

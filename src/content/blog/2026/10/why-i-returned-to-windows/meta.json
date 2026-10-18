@@ -1,0 +1,14 @@
+{
+  "slug": "why-i-returned-to-windows",
+  "titles": {
+    "ko": "Linux를 떠나 Windows를 다시 사용하게 된 이유",
+    "en": "Why I Left Linux and Went Back to Windows",
+    "ja": "Linuxを離れてWindowsに戻った理由"
+  },
+  "published_at": "2026-10-15T05:52:30Z",
+  "descriptions": {
+    "ko": "GPU 패스스루로 Linux와 Windows를 함께 사용하다가 하드웨어 가상화 문제를 만나 Windows로 돌아온 과정을 이야기합니다.",
+    "en": "How I used Linux and Windows together with GPU passthrough, then returned to Windows after running into a hardware virtualization issue.",
+    "ja": "GPUパススルーでLinuxとWindowsを併用していた私が、ハードウェア仮想化の問題に直面し、Windowsに戻った経緯を紹介します。"
+  }
+}

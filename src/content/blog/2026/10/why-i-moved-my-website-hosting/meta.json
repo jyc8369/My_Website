@@ -1,0 +1,14 @@
+{
+  "slug": "why-i-moved-my-website-hosting",
+  "titles": {
+    "ko": "웹사이트를 셀프 호스팅하다가 옮긴 이유",
+    "en": "Why I Moved My Website Away from Self-Hosting",
+    "ja": "ウェブサイトの自宅運用をやめた理由"
+  },
+  "published_at": "2026-10-15T04:57:50Z",
+  "descriptions": {
+    "ko": "집에서 웹사이트를 직접 운영하다가 네트워크 경로와 보안, 유지보수를 고민한 끝에 Cloudflare Workers Static Assets로 옮긴 이야기입니다.",
+    "en": "After running my website at home, I moved it to Cloudflare Workers Static Assets because of routing, security, and maintenance concerns.",
+    "ja": "自宅でウェブサイトを運用したあと、経路やセキュリティ、保守について考え、Cloudflare Workers Static Assetsへ移した話です。"
+  }
+}

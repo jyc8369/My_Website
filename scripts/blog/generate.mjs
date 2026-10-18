@@ -2,12 +2,11 @@ import { readdir, readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const LOCALES = ["ko", "en", "ja"];
-const REQUIRED_FIELDS = ["title", "title_en", "title_ja", "published_at", "description", "description_en", "description_ja"];
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const PUBLISHED_AT_PATTERN = /^\d{4}-\d{2}-\d{2}T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,3})?(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))$/;
 
 /**
- * Generate Korean, English, and Japanese article pages from one multilingual Markdown file.
+ * Generate Korean, English, and Japanese article pages from shared JSON metadata and localized HTML bodies.
  *
  * @param {{contentDir?: string, outputDir?: string, siteName?: string}} options
  * @returns {Promise<{generated: number, skipped: number, articles: Array<{slug: string, date: string, koPath: string, enPath: string}>}>}
@@ -17,14 +16,13 @@ export async function generateBlog({
   outputDir = "dist",
   siteName = "jyc8369.dev",
 } = {}) {
-  const files = await collectMarkdownFiles(contentDir);
+  const files = await collectArticleDirectories(contentDir);
   const valid = [];
   const skippedFiles = new Set();
 
   for (const filePath of files) {
     try {
-      const source = await readFile(filePath, "utf8");
-      const article = parseArticle(source, filePath, contentDir);
+      const article = await readArticle(filePath, contentDir);
       valid.push(article);
     } catch (error) {
       skippedFiles.add(filePath);
@@ -59,7 +57,7 @@ export async function generateBlog({
     const datePath = `${article.date.slice(0, 4)}/${article.date.slice(5, 7)}`;
     article.routes = Object.fromEntries(LOCALES.map((locale) => [locale, `/${locale}/blog/${datePath}/${article.slug}/`]));
     for (const locale of LOCALES) {
-      article.translations[locale].headings = collectHeadings(article.translations[locale].markdown);
+      article.translations[locale].headings = collectHtmlHeadings(article.translations[locale].html);
     }
     for (const locale of LOCALES) {
       const outputPath = path.join(outputDir, locale, "blog", datePath, article.slug, "index.html");
@@ -96,7 +94,7 @@ export async function generateBlog({
   };
 }
 
-async function collectMarkdownFiles(root) {
+async function collectArticleDirectories(root) {
   const found = [];
   async function visit(directory) {
     let entries;
@@ -109,8 +107,11 @@ async function collectMarkdownFiles(root) {
     entries.sort((a, b) => a.name.localeCompare(b.name));
     for (const entry of entries) {
       const fullPath = path.join(directory, entry.name);
-      if (entry.isDirectory()) await visit(fullPath);
-      else if (entry.isFile() && entry.name.toLowerCase().endsWith(".md") && entry.name.toLowerCase() !== "readme.md") found.push(fullPath);
+      if (entry.isDirectory()) {
+        const children = await readdir(fullPath, { withFileTypes: true });
+        if (children.some((child) => child.isFile() && child.name === "meta.json")) found.push(fullPath);
+        else await visit(fullPath);
+      }
     }
   }
   await visit(root);
@@ -170,24 +171,20 @@ function applySharedShell(html, { locale, route, alternateRoute, siteName }) {
   return html;
 }
 
-function parseArticle(source, filePath, contentDir) {
+async function readArticle(filePath, contentDir) {
   const relative = path.relative(contentDir, filePath).split(path.sep);
   if (relative.length !== 3 || !/^\d{4}$/.test(relative[0]) || !/^\d{2}$/.test(relative[1])) {
-    throw new Error("expected path YYYY/MM/slug.md");
+    throw new Error("expected path YYYY/MM/slug/");
   }
-  const filename = relative[2];
-  const slug = filename.slice(0, -3);
-  if (!SLUG_PATTERN.test(slug) || filename !== `${slug}.md`) {
-    throw new Error("filename must be a lowercase English slug such as my-first-post.md");
+  const slug = relative[2];
+  if (!SLUG_PATTERN.test(slug)) {
+    throw new Error("folder name must be a lowercase English slug such as my-first-post");
   }
-
-  const match = source.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)([\s\S]*)$/);
-  if (!match) throw new Error("missing YAML frontmatter delimited by ---");
-  const frontmatter = parseSimpleYaml(match[1]);
-  for (const field of REQUIRED_FIELDS) {
-    if (typeof frontmatter[field] !== "string" || !frontmatter[field].trim()) {
-      throw new Error(`frontmatter field '${field}' is required and must be a non-empty string`);
-    }
+  const frontmatter = JSON.parse(await readFile(path.join(filePath, "meta.json"), "utf8"));
+  if (frontmatter.slug !== slug) throw new Error(`metadata slug '${frontmatter.slug}' does not match folder '${slug}'`);
+  for (const locale of LOCALES) {
+    if (typeof frontmatter.titles?.[locale] !== "string" || !frontmatter.titles[locale].trim()) throw new Error(`metadata titles.${locale} is required`);
+    if (typeof frontmatter.descriptions?.[locale] !== "string" || !frontmatter.descriptions[locale].trim()) throw new Error(`metadata descriptions.${locale} is required`);
   }
   if (!PUBLISHED_AT_PATTERN.test(frontmatter.published_at) || !Number.isFinite(Date.parse(frontmatter.published_at)) || !isRealDate(frontmatter.published_at.slice(0, 10))) {
     throw new Error("frontmatter published_at must be a valid ISO 8601 date-time with seconds and an explicit timezone");
@@ -197,16 +194,18 @@ function parseArticle(source, filePath, contentDir) {
     throw new Error(`folder date ${relative[0]}/${relative[1]} does not match published_at date ${date}`);
   }
 
-  const translations = parseLanguageSections(match[2]);
+  const translations = Object.fromEntries(await Promise.all(LOCALES.map(async (locale) => [locale, await readFile(path.join(filePath, `${locale}.html`), "utf8")])));
   for (const locale of LOCALES) {
     if (!translations[locale]?.trim()) throw new Error(`missing or empty ${locale.toUpperCase()} body section`);
+    if (/<\/?(?:html|body|head|script)\b/i.test(translations[locale])) throw new Error(`${locale}.html must contain only article body markup`);
   }
   return {
-    filePath, slug, ...frontmatter, date,
+    filePath, slug, published_at: frontmatter.published_at, date,
+    title_en: frontmatter.titles.en, description_en: frontmatter.descriptions.en,
     translations: {
-      ko: { title: frontmatter.title, description: frontmatter.description, markdown: translations.ko.trim() },
-      en: { title: frontmatter.title_en, description: frontmatter.description_en, markdown: translations.en.trim() },
-      ja: { title: frontmatter.title_ja, description: frontmatter.description_ja, markdown: translations.ja.trim() },
+      ko: { title: frontmatter.titles.ko, description: frontmatter.descriptions.ko, html: translations.ko.trim() },
+      en: { title: frontmatter.titles.en, description: frontmatter.descriptions.en, html: translations.en.trim() },
+      ja: { title: frontmatter.titles.ja, description: frontmatter.descriptions.ja, html: translations.ja.trim() },
     },
   };
 }
@@ -281,6 +280,31 @@ function parseYamlScalar(value, line) {
   return value;
 }
 
+export function parseLegacyArticle(source, filePath, contentDir = "src/content/blog") {
+  const relative = path.relative(contentDir, filePath).split(path.sep);
+  if (relative.length !== 3 || !/^\d{4}$/.test(relative[0]) || !/^\d{2}$/.test(relative[1])) throw new Error("expected path YYYY/MM/slug.md");
+  const slug = relative[2].replace(/\.md$/i, "");
+  if (!SLUG_PATTERN.test(slug) || relative[2] !== `${slug}.md`) throw new Error("invalid legacy Markdown filename");
+  const match = source.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)([\s\S]*)$/);
+  if (!match) throw new Error("missing YAML frontmatter");
+  const metadata = parseSimpleYaml(match[1]);
+  for (const field of ["title", "title_en", "title_ja", "published_at", "description", "description_en", "description_ja"]) {
+    if (typeof metadata[field] !== "string" || !metadata[field].trim()) throw new Error(`missing frontmatter field ${field}`);
+  }
+  const bodies = parseLanguageSections(match[2]);
+  for (const locale of LOCALES) if (!bodies[locale]?.trim()) throw new Error(`missing ${locale} body`);
+  return {
+    slug,
+    metadata: {
+      slug,
+      titles: { ko: metadata.title, en: metadata.title_en, ja: metadata.title_ja },
+      published_at: metadata.published_at,
+      descriptions: { ko: metadata.description, en: metadata.description_en, ja: metadata.description_ja },
+    },
+    bodies: Object.fromEntries(LOCALES.map((locale) => [locale, renderMarkdown(bodies[locale].trim())])),
+  };
+}
+
 function isRealDate(value) {
   const date = new Date(`${value}T00:00:00.000Z`);
   return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
@@ -291,15 +315,12 @@ function collectHeadings(markdown) {
   const usedIds = new Set();
   let inFence = false;
   for (const line of markdown.split(/\r?\n/)) {
-    if (/^\s*```/.test(line)) {
-      inFence = !inFence;
-      continue;
-    }
+    if (/^\s*```/.test(line)) { inFence = !inFence; continue; }
     if (inFence) continue;
     const match = line.match(/^(#{1,3})\s+(.+?)\s*#*\s*$/);
     if (!match) continue;
     const text = match[2].trim();
-    const base = slugifyHeading(text) || `section-${headings.length + 1}`;
+    const base = text.toLowerCase().normalize("NFKC").replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "") || `section-${headings.length + 1}`;
     let id = base;
     let suffix = 2;
     while (usedIds.has(id)) id = `${base}-${suffix++}`;
@@ -309,11 +330,7 @@ function collectHeadings(markdown) {
   return headings;
 }
 
-function slugifyHeading(text) {
-  return text.toLowerCase().normalize("NFKC").replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "");
-}
-
-function renderMarkdown(markdown) {
+export function renderMarkdown(markdown) {
   const lines = markdown.split(/\r?\n/);
   const headings = collectHeadings(markdown);
   let headingIndex = 0;
@@ -364,6 +381,24 @@ function renderMarkdown(markdown) {
   return output;
 }
 
+function collectHtmlHeadings(html) {
+  return Array.from(html.matchAll(/<h([1-3])\b[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h\1>/gi), (match) => ({
+    level: Number(match[1]),
+    id: match[2],
+    text: decodeHtmlText(match[3].replace(/<[^>]*>/g, "")).trim(),
+  }));
+}
+
+function decodeHtmlText(value) {
+  return value.replace(/&(#x[\da-f]+|#\d+|amp|lt|gt|quot|#39);/gi, (_entity, code) => {
+    if (code[0] === "#") {
+      const numeric = code[1].toLowerCase() === "x" ? Number.parseInt(code.slice(2), 16) : Number.parseInt(code.slice(1), 10);
+      return Number.isFinite(numeric) ? String.fromCodePoint(numeric) : "";
+    }
+    return ({ amp: "&", lt: "<", gt: ">", quot: '"', "#39": "'" })[code.toLowerCase()] ?? "";
+  });
+}
+
 function renderInline(text) {
   let html = escapeHtml(text);
   html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
@@ -398,7 +433,7 @@ function renderArticlePage({ article, locale, translation, siteName, newer, olde
   const route = article.routes[locale];
   const titleEn = escapeHtml(article.title_en);
   const descriptionEn = escapeAttribute(article.description_en);
-  const body = renderMarkdown(translation.markdown);
+  const body = translation.html;
   const toc = renderToc(translation.headings);
   const labels = {
     ko: { back: "← 블로그", toc: "목차", list: "블로그 목록", previous: "이전 글", next: "다음 글" },

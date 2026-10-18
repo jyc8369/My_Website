@@ -1,0 +1,123 @@
+<h2 id="building-a-keyboard-and-mouse-switcher-in-rust">Building a Keyboard and Mouse Switcher in Rust</h2>
+<p>Back when Linux was my primary operating system, I built a small Rust program to switch my keyboard and mouse between operating systems.</p>
+<p>It was not an ambitious project. I had no plans to distribute it or turn it into a feature-rich application. I simply wanted to solve an annoyance in the way I used my own computer.</p>
+<p>Looking back, even this small tool involved quite a bit of trial and error: interacting directly with input devices, dealing with USB switching, and, unfortunately, ending up without any surviving source code.</p>
+<p>In this post, I want to explain why I built it, how it worked, and what the experience taught me.</p>
+<h2 id="1-running-two-operating-systems-at-the-same-time">1. Running two operating systems at the same time</h2>
+<p>First, a brief explanation of my setup at the time.</p>
+<p>I used Linux as my main operating system and ran Windows in a virtual machine. Unlike conventional dual booting, this allowed both systems to run simultaneously.</p>
+<p>Using GPU passthrough, I assigned a separate graphics card to the Windows VM and set things up so I could use Linux and Windows on their respective monitors.</p>
+<p>I have already covered how I built that environment and why I can no longer use it in <a href="/en/blog/2026/10/why-i-returned-to-windows/">“Why I Left Linux and Went Back to Windows”</a>. Here, I will focus on a particular problem that came with it: input devices.</p>
+<p>Being able to run both operating systems at once was great. But once I started using the setup regularly, one inconvenience became surprisingly noticeable.</p>
+<p>The keyboard and mouse.</p>
+<h2 id="2-how-should-i-switch-the-keyboard-and-mouse">2. How should I switch the keyboard and mouse?</h2>
+<p>Running Linux and Windows simultaneously does not automatically solve the question of which operating system receives input.</p>
+<p>One common approach is to connect a separate keyboard and mouse to each system. Another is to use a KVM switch to share input devices.</p>
+<p>I wanted to try something different.</p>
+<p>My main concerns were desk space and convenience.</p>
+<p>Having two keyboards does not necessarily take up an unreasonable amount of room. The real problem is where you have to place them.</p>
+<p>Normally, you keep a keyboard within comfortable reach. With two on the same desk, one tends to sit in front of you while the other is farther away.</p>
+<p>If both are regular typing keyboards, switching operating systems means moving a keyboard or reaching for the other one every time.</p>
+<p>That bothered me.</p>
+<p>I frequently moved from Linux to Windows and back again. Being able to change operating systems instantly did not feel very useful if I also had to rearrange my keyboard each time.</p>
+<p>So I came up with a way to use two keyboards and one mouse while <strong>giving the two keyboards completely different roles</strong>.</p>
+<p>The keyboard directly in front of me would remain my main typing keyboard. The second keyboard, placed farther up the desk, would act as a control device for switching operating systems.</p>
+<p>I also wanted to share one mouse rather than keep a separate mouse for each environment.</p>
+<h2 id="3-turning-a-keyboard-into-a-control-device">3. Turning a keyboard into a control device</h2>
+<p>There was one important problem with this idea.</p>
+<p>Once I passed my main keyboard and mouse through to the Windows VM, Linux could no longer receive input from those devices.</p>
+<p>To return from Windows to Linux, I needed a way to hand them back to the Linux host.</p>
+<p>But if the devices capable of issuing the switching command were already connected to Windows, how could I trigger the command on Linux?</p>
+<p>My solution was to leave a second keyboard permanently connected to Linux.</p>
+<p>I did not use that keyboard for ordinary typing. It was essentially a physical control panel.</p>
+<p>I wrote a Rust program to watch its input.</p>
+<p>The design was fairly simple.</p>
+<p>Once Linux recognized the keyboard as an HID (Human Interface Device), the Rust program read raw input events from that device.</p>
+<p>Normally, keyboard input is processed by the operating system before being delivered to applications. In my case, I did not want a designated keypress to behave as text input or a normal shortcut. I wanted it to trigger a system-control action.</p>
+<p>So the program monitored events from the specific keyboard and performed a predefined action when a particular key was pressed.</p>
+<p>The key I chose was <code>Esc</code>.</p>
+<p>Pressing <code>Esc</code> on the control keyboard caused the Rust program to receive the event and start the switching procedure. I also arranged for that keystroke not to reach the operating system as ordinary input.</p>
+<p>This meant that even when the main keyboard and mouse were attached to Windows, I could still trigger their return using the control keyboard connected to Linux.</p>
+<p>I did have a second keyboard on the desk, but I no longer needed to move the keyboard I actually typed on.</p>
+<p>That was exactly the experience I wanted.</p>
+<h2 id="4-why-i-delegated-switching-to-a-shell-script">4. Why I delegated switching to a shell script</h2>
+<p>The Rust program&#39;s primary responsibility was detecting input.</p>
+<p>When it recognized a designated keypress, it launched the corresponding Linux shell script.</p>
+<p>Why did I not implement the entire USB switching procedure in Rust as well?</p>
+<p>Mostly because of the problems I encountered during development.</p>
+<p>Switching input devices was less straightforward than I initially expected.</p>
+<p>Sometimes the system failed to find the intended device ID or USB identifier. At other times, a device passed to the other operating system would not be recognized immediately.</p>
+<p>Most of my difficulties occurred while detaching and reconnecting devices, not while reading keyboard input.</p>
+<p>Receiving a raw event and determining which key had been pressed was relatively uncomplicated.</p>
+<p>The actual switching procedure, on the other hand, needed adjustments depending on the system configuration and the state of the devices.</p>
+<p>That led me to separate the responsibilities.</p>
+<p><strong>Rust detected the input; a shell script performed the actual device switching.</strong></p>
+<p>If something went wrong in the switching sequence, I could change the script without modifying and recompiling the Rust program.</p>
+<p>I could simply edit the shell script and try again.</p>
+<p>For example, if I needed to change how a device was identified or adjust a step in the switching process, I only had to update the script.</p>
+<p>The program did not need many features at the time. My priority was making one specific switching action work reliably, not adding a wide range of functionality.</p>
+<p>I still think that separation made sense for the problem I had.</p>
+<p>Keeping the frequently changing part outside the compiled program made it easier to maintain.</p>
+<h2 id="5-why-did-i-choose-rust">5. Why did I choose Rust?</h2>
+<p>For software that interacts directly with operating-system input devices, C or C++ would also have been reasonable choices.</p>
+<p>Both languages have long been used for systems programming and software that works close to operating systems and hardware.</p>
+<p>I chose Rust instead.</p>
+<p>The simplest reason is that I was particularly interested in Rust at the time, and it was my favorite programming language.</p>
+<p>But personal preference was not the only reason.</p>
+<p>This was somewhat different from a typical utility that runs a task and exits. It needed to stay active for as long as I was using the computer.</p>
+<p>Launching the program only when I wanted to switch keyboards would not have delivered the experience I was after.</p>
+<p>It needed to keep running in the background, waiting for keyboard input.</p>
+<p>For a long-running process like that, I also wanted to consider stability over time.</p>
+<p>Rust&#39;s ownership and borrowing rules help catch many memory-safety problems during compilation. I also appreciated that it does not rely on a conventional tracing garbage collector.</p>
+<p>Of course, writing a program in Rust does not guarantee that it will always work reliably. Logic errors are still possible, as are problems involving the operating system or external devices.</p>
+<p>Even so, Rust was a good fit for the kind of systems programming I wanted to do.</p>
+<p>I discussed my broader reasons for liking the language in <a href="/en/blog/2026/10/why-i-like-rust/">“Why Rust Is My Favorite Programming Language”</a>.</p>
+<h2 id="6-the-source-code-disappeared">6. The source code disappeared</h2>
+<p>This would be a good place to show the actual source code or an implementation example. Unfortunately, I cannot.</p>
+<p><strong>I lost the source code.</strong></p>
+<p>It is a little embarrassing to admit.</p>
+<p>At the time, I had no intention of publishing or distributing this program.</p>
+<p>It was a tool made solely for my own convenience, so I never uploaded it to a remote repository such as GitHub.</p>
+<p>The program worked, and I continued using it.</p>
+<p>The trouble came later, when I replaced my computer and cleaned up my old environment.</p>
+<p>I assumed I must have backed up the source code somewhere.</p>
+<p>I regularly managed other projects and files, so I vaguely believed this one would have been included in a backup too.</p>
+<p>But after formatting the system, I discovered that the source code was nowhere to be found.</p>
+<p>Assuming something has been backed up and actually having a backup are two very different things.</p>
+<p>In the end, I lost the entire source code.</p>
+<p>I still remember the general design and how the program behaved, but not the precise implementation.</p>
+<p>That is why I am not going to invent example code and present it as something I originally wrote.</p>
+<p>Describing the design and behavior as accurately as I remember them is the most honest record I can provide now.</p>
+<h2 id="7-would-i-still-need-the-same-program-today">7. Would I still need the same program today?</h2>
+<p>I no longer use the same computing environment.</p>
+<p>After upgrading my computer, I found it difficult to recreate the GPU passthrough setup I had used before.</p>
+<p>In particular, problems with IOMMU grouping made it difficult to isolate devices in the way I wanted. I eventually returned to using Windows as my primary desktop operating system.</p>
+<p>I explained that story in my earlier Linux and Windows post, so I will not go into the details again here.</p>
+<p>What if I had been able to rebuild the same virtualization environment on my new computer?</p>
+<p>I would probably have needed that input-device switching program again.</p>
+<p>But without the source code, I would have had to develop it from scratch.</p>
+<p>Having built it once, I might have completed it faster the second time. I remember the overall architecture and the issues I encountered.</p>
+<p>Still, it would have been frustrating to solve a problem I had already solved.</p>
+<p>If I had kept the program, I could have tried adapting the existing code to the new environment instead.</p>
+<h2 id="8-even-personal-programs-need-backups">8. Even personal programs need backups</h2>
+<p>The part I regret most about this project is how poorly I managed its source code.</p>
+<p>At the time, I did not expect anyone else to see it, let alone use it.</p>
+<p>So I saw little reason to create a repository or release it.</p>
+<p>Looking back, though, publishing software and backing up its source code are completely different matters.</p>
+<p>A program can be valuable to its author even if it is never made public.</p>
+<p>Code written to solve a problem can also become useful reference material years later.</p>
+<p>Back then, all that mattered was getting the feature to work. Now I would like to look back at the implementation and understand exactly what I did.</p>
+<p>This project left me with two important experiences.</p>
+<p>First, I learned that I could shape my computing environment by working directly with operating-system input devices.</p>
+<p>Second, I learned that even a small, entirely personal program deserves a proper source-code backup.</p>
+<h2 id="closing-thoughts">Closing thoughts</h2>
+<p>The Rust program I have described was not a sophisticated piece of software.</p>
+<p>I built it because switching my keyboard and mouse between Linux and Windows was inconvenient, and I wanted to make my own setup easier to use.</p>
+<p>Along the way, I gained experience with operating-system input events, USB device switching, and combining Rust with Linux shell scripts.</p>
+<p>It was also a project that reminded me why I enjoy Linux.</p>
+<p>On Linux, I can inspect many aspects of how the system works and, when necessary, change my workflow with scripts or custom programs.</p>
+<p>Not every operation is easy or unrestricted, of course. But having the freedom to shape a system around my needs is one of the main reasons I prefer Linux.</p>
+<p>Above all, this project captures what I enjoy about programming.</p>
+<p>I did not build it to impress anyone. <strong>I built it because I wanted to make the computer I use a little more convenient for myself.</strong></p>
+<p>The code is gone, but I can still record the problem I faced and how I approached solving it.</p>
+<p>From now on, I intend to keep the source code for even these small personal projects.</p>

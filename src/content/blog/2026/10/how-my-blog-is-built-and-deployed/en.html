@@ -1,0 +1,156 @@
+<h2 id="how-is-my-blog-built-and-deployed">How Is My Blog Built and Deployed?</h2>
+<p>When I first built this blog, I simply wanted a place on the internet to publish my writing.</p>
+<p>But once I started running it, I found myself thinking about how to write posts, generate HTML pages, and deploy the website.</p>
+<p>Today, I write articles in Markdown, convert them to HTML with Node.js scripts, and automatically deploy the site to Cloudflare using GitHub Actions.</p>
+<h3 id="the-flow-at-a-glance">The flow at a glance</h3>
+<p><strong>Markdown draft → Node.js generator → static pages in <code>dist/</code> → GitHub Actions → Cloudflare Workers Static Assets</strong></p>
+<p>I write each post in Markdown, and a Node.js generator reads its metadata and three language versions to create static HTML pages. When I push a change to <code>main</code>, GitHub Actions checks the publishing rules, builds the site, and deploys it to Cloudflare. Visitors receive the deployed static files instead of having pages generated on demand.</p>
+<p>There is no separate content management system (CMS) or database.</p>
+<p>These are not especially unusual technologies. I have simply combined well-known tools in a way that fits my needs.</p>
+<p>In this post, I want to explain how the blog works and why I designed it this way.</p>
+<p>I covered my reasons for moving away from self-hosting in <a href="/en/blog/2026/10/why-i-moved-my-website-hosting/">“Why I Moved My Website Away from Self-Hosting”</a>. Here, I will focus on the blog&#39;s current implementation.</p>
+<h2 id="1-why-did-i-choose-markdown">1. Why did I choose Markdown?</h2>
+<p>Markdown is the format I use to write blog posts.</p>
+<p>It is a lightweight markup format that uses simple symbols in plain text to represent headings, paragraphs, lists, links, and more.</p>
+<p>It expresses document structure much like HTML, but its simpler syntax makes the original file easier to read.</p>
+<p>For example, I can prefix a line with <code>#</code> to create a heading or wrap a phrase in <code>**</code> to make it bold. In HTML, I would have to write the corresponding tags.</p>
+<p>That does not mean HTML is a bad format. It is the standard language used to represent web pages, and my Markdown ultimately becomes HTML before a browser displays it.</p>
+<p>So why not write HTML directly?</p>
+<p>The reason is simple.</p>
+<p><strong>Markdown is easier for me to read and review.</strong></p>
+<h3 id="ai-can-prepare-a-draft-but-i-am-still-the-one-who-reads-it">AI can prepare a draft, but I am still the one who reads it</h3>
+<p>I use AI extensively when preparing blog articles.</p>
+<p>I do not always type out every sentence myself.</p>
+<p>Sometimes I speak whatever comes to mind and use speech transcription to turn it into text. That transcript may contain interruptions, repetitions, and ideas presented out of order.</p>
+<p>I give the transcript to AI and ask it to organize the material into a readable article. When needed, I ask it to refer to earlier posts or check technical explanations that need clarification.</p>
+<p>But I do not publish the AI&#39;s output without reviewing it.</p>
+<p>I read the draft myself, check whether it has changed what I meant, look for factual errors, and consider whether the final wording conveys my original point.</p>
+<p>To do that, I need a format that is easy to read.</p>
+<p>Perhaps AI finds HTML just as easy, or even easier, to generate than Markdown. That is not the criterion I care about. I care more about how easily I can inspect the result.</p>
+<p>HTML source contains many tags and attributes. Even when I only want to read the words, the document structure is mixed into the text.</p>
+<p>Markdown lets me read headings and paragraphs almost like ordinary prose. It is consequently easier to spot awkward wording or change a particular paragraph.</p>
+<p>I did not choose Markdown because it is inherently superior to HTML.</p>
+<p>I chose it because <strong>even when AI helps produce the draft, a human should be able to understand and check the final content.</strong></p>
+<h2 id="2-managing-three-languages-in-one-markdown-file">2. Managing three languages in one Markdown file</h2>
+<p>My blog currently supports Korean, English, and Japanese.</p>
+<p>I do not store each translation in a separate file. Instead, all three versions of an article are kept together in one Markdown file.</p>
+<p>At the top is a metadata block called frontmatter. It records the title and description in each language, along with the publication date.</p>
+<p>Below the metadata are three article bodies separated by these markers:</p>
+<ul><li><code>&lt;!-- lang:ko --&gt;</code> — Korean</li><li><code>&lt;!-- lang:en --&gt;</code> — English</li><li><code>&lt;!-- lang:ja --&gt;</code> — Japanese</li></ul>
+<p>The generator recognizes the markers and extracts the content for each language.</p>
+<p>A single file can therefore produce three pages.</p>
+<p>For example, given <code>example-post.md</code>, the generator creates separate HTML output under language paths such as <code>/ko/blog/</code>, <code>/en/blog/</code>, and <code>/ja/blog/</code>.</p>
+<p>The full article URLs also contain the publication year, month, and filename-based slug.</p>
+<h3 id="why-not-separate-the-translations-into-individual-files">Why not separate the translations into individual files?</h3>
+<p>Again, there is no grand technical reason.</p>
+<p>I like keeping related content together.</p>
+<p>If I maintained three separate files, changing one post would mean finding and opening multiple files.</p>
+<p>Separate files do have advantages. They can make independent translation workflows or collaboration between translators easier.</p>
+<p>But I currently run this blog by myself.</p>
+<p>Having all three versions visible in one file is simpler for me.</p>
+<p>I usually write the original in Korean, then translate it to English and Japanese with AI assistance.</p>
+<p>That does not guarantee the translations are perfect. Meaning can shift, and whenever I change the original I also need to check the translations.</p>
+<p>At the scale of my current blog, though, this arrangement is manageable.</p>
+<h2 id="3-my-markdown-to-html-blog-generator">3. My Markdown-to-HTML blog generator</h2>
+<p>Writing Markdown alone does not automatically create a finished page in the visitor&#39;s browser.</p>
+<p>The content must be converted to HTML.</p>
+<p>I automated that work using Node.js.</p>
+<p>My repository includes a script named <code>scripts/blog/generate.mjs</code>. It scans the designated content directory, reads Markdown files, extracts their information, and generates HTML pages.</p>
+<p>The process is roughly as follows:</p>
+<ol><li>Find Markdown files in the blog directory.</li><li>Validate titles, descriptions, publication dates, and other metadata.</li><li>Separate the Korean, English, and Japanese sections.</li><li>Convert Markdown syntax into HTML.</li><li>Generate article pages and indexes for each language.</li></ol>
+<p>Everything happens during the site build.</p>
+<p>The blog does not read Markdown or create HTML anew every time someone opens a page. Visitors receive static HTML files generated ahead of time.</p>
+<h3 id="i-deliberately-avoided-unnecessary-complexity">I deliberately avoided unnecessary complexity</h3>
+<p>The generator supports the Markdown features I need: headings, paragraphs, lists, blockquotes, fenced code, inline formatting, and links.</p>
+<p>It also builds a table of contents from headings.</p>
+<p>Posts are sorted by publication date, and each language has its own blog index. The index is set up to show 20 posts per page as the blog grows.</p>
+<p>I have not attempted to implement every feature a general-purpose Markdown processor might offer.</p>
+<p>I saw no reason to add capabilities that my writing process does not need.</p>
+<p>This is related to the philosophy described in <a href="/en/blog/2026/10/six-principles-of-software-design/">“Six Principles That Guide How I Design Software”</a>.</p>
+<p>Of course, fewer features are not always better. If I eventually need an unsupported feature, I may have to extend the generator.</p>
+<p>For now, however, I like having a system I can understand and maintain myself.</p>
+<h3 id="one-invalid-post-should-not-break-the-entire-blog">One invalid post should not break the entire blog</h3>
+<p>The generator validates the structure of each article.</p>
+<p>If required metadata is missing or the language sections are incomplete, that file is not treated as a valid post.</p>
+<p>For example, a post with an empty translation is excluded from publication.</p>
+<p>But the problem does not prevent other valid posts from being generated.</p>
+<p>The invalid file is skipped and processing continues.</p>
+<p>I need these checks because I cannot guarantee that every file will always be formatted perfectly, especially when AI helps with drafting and translations.</p>
+<p>The automation therefore covers basic validation as well as conversion to HTML.</p>
+<h2 id="4-why-i-do-not-use-react-and-what-markdown-does-for-me">4. Why I do not use React, and what Markdown does for me</h2>
+<p>My current website is not a React project.</p>
+<p>It is a static website made with HTML, CSS, and JavaScript.</p>
+<p>A framework such as React provides reusable components. For instance, a blog heading, body, and table of contents could be rendered repeatedly with different data.</p>
+<p>My website does not have that framework-based component system.</p>
+<p>That does not mean it has no code reuse. My generator already builds a common page structure and applies it to multiple posts.</p>
+<p>Still, writing a separate HTML page manually for each article would be tedious.</p>
+<p>I would have to repeat document structure, table of contents, and layout along with the new title and body every time.</p>
+<p>That is not how I want to manage a blog.</p>
+<p>Instead, I separated the content from its presentation.</p>
+<p>The article itself lives in Markdown, and the generator creates the HTML.</p>
+<p>When writing a new article, I can focus on the words rather than the structure of the resulting web page.</p>
+<p>For me, Markdown is not only a writing format. It is <strong>an intermediate format that separates content from implementation</strong>.</p>
+<h2 id="5-automatic-deployment-using-github-actions">5. Automatic deployment using GitHub Actions</h2>
+<p>The website&#39;s source code is managed in a GitHub repository.</p>
+<p>For deployment automation, I use GitHub Actions.</p>
+<p>GitHub Actions can execute predefined tasks when certain repository events occur. My workflow starts whenever a change is pushed to the <code>main</code> branch.</p>
+<p>It sets up Node.js 24 and then:</p>
+<ol><li>Checks out the source code.</li><li>Installs dependencies with <code>npm ci</code>.</li><li>Runs <code>npm test</code> to check blog publishing rules.</li><li>Checks that Cloudflare deployment credentials are configured.</li><li>Builds the static site with <code>npm run build</code>.</li><li>Deploys it with <code>npx cf deploy</code>.</li></ol>
+<p>The main build script is <code>scripts/build.mjs</code>.</p>
+<p>It prepares existing static pages, CSS, JavaScript, and other assets in the output directory named <code>dist</code>.</p>
+<p>It then generates localized pages, runs the Markdown blog generator, and applies additional processing to the resulting HTML.</p>
+<p>Finally, <code>dist</code> contains the static files visitors will receive.</p>
+<p>When I add a post, the Korean, English, and Japanese pages are generated during the same build.</p>
+<p>I do not have to log into a server, manually copy files, or restart a process whenever I publish.</p>
+<p>Adding the Markdown file to GitHub and pushing it is enough to trigger the workflow.</p>
+<p>Automation does not mean failures are impossible. A test or build error can prevent deployment, so checking the GitHub Actions results still matters.</p>
+<h2 id="6-hosting-with-cloudflare-workers-static-assets">6. Hosting with Cloudflare Workers Static Assets</h2>
+<p>The last part is hosting.</p>
+<p>Cloudflare manages my domain&#39;s DNS, and I serve the static site using Cloudflare Workers Static Assets.</p>
+<p>The name is a little long, but the idea is simple: Cloudflare delivers the built HTML, CSS, JavaScript, and other static files.</p>
+<p>GitHub Actions deploys the contents of <code>dist</code> to Cloudflare, where visitors can request them through my website.</p>
+<p>One distinction is important.</p>
+<p>I use Node.js to build the site, but there is no Node.js server running on my personal computer for each incoming visitor.</p>
+<p>Node.js runs mainly during the build process. After deployment, Cloudflare serves the generated pages.</p>
+<p>This means the blog does not depend on my home server staying online to serve its static content.</p>
+<p>When I self-hosted the site, I had to worry about network routes and maintaining the server. Now I do not need to monitor my own web server simply to keep the blog available.</p>
+<p>Cloudflare or its deployment configuration could still have problems, of course.</p>
+<p>Even so, this approach works well for my needs.</p>
+<h2 id="7-what-actually-happens-when-i-publish-a-post">7. What actually happens when I publish a post?</h2>
+<p>Putting everything together, my current workflow goes like this.</p>
+<p>First I choose a topic.</p>
+<p>I then write my thoughts or speak them aloud and prepare a transcript.</p>
+<p>I give that material to AI to turn it into a structured draft.</p>
+<p>I read the draft and check it myself.</p>
+<p>If something does not reflect what I intended, I revise it. If explanations are missing, I add details.</p>
+<p>When I am satisfied, I translate the article into English and Japanese.</p>
+<p>I put the three bodies and their metadata in one Markdown file.</p>
+<p>Once I add the file to GitHub and push it to <code>main</code>, GitHub Actions runs the tests, builds the static site, and deploys to Cloudflare if everything succeeds.</p>
+<p>That is how the new post appears on the blog.</p>
+<p>From my perspective, publishing is not especially complicated anymore.</p>
+<p>I do not need to write individual HTML files or connect to a server for deployment.</p>
+<p>Most importantly, the whole process revolves around a Markdown draft that I can easily read and edit.</p>
+<h2 id="8-advantages-and-disadvantages-i-have-experienced">8. Advantages and disadvantages I have experienced</h2>
+<p>The biggest benefit so far is the separation of writing from page generation.</p>
+<p>I do not have to think about HTML tags when composing an article.</p>
+<p>I can open a Markdown file, read the content directly, and edit it comfortably.</p>
+<p>The generator turns that file into HTML using the site&#39;s existing design.</p>
+<p>I also do not need to copy the HTML structure of an earlier post when adding a new one.</p>
+<p>Even without React, my generator automates much of the repetitive HTML work.</p>
+<p>Combining Markdown with a custom generator has therefore worked well for me.</p>
+<p>Of course, I am responsible for maintaining that generator. New Markdown features may require changes to the script, and redesigning the site may require changes to its HTML output.</p>
+<p>But I do not currently see those possibilities as serious disadvantages.</p>
+<p>So far I have not experienced any significant inconvenience.</p>
+<p>The system provides the features I need, and I am satisfied with how writing and publishing work.</p>
+<p>If the blog grows or I need more functionality, I may change my mind.</p>
+<p>If that happens, I will probably write about it.</p>
+<h2 id="closing-thoughts">Closing thoughts</h2>
+<p>My blog is built by writing Markdown, generating HTML with Node.js, and deploying the site to Cloudflare Workers Static Assets through GitHub Actions.</p>
+<p>But I did not choose this setup just to use particular technologies.</p>
+<p>I wanted to reduce repetitive work and spend more time writing and reviewing my articles.</p>
+<p>Even with AI involved in drafting, I believe a human should check the final output.</p>
+<p>Markdown makes that process easier for me.</p>
+<p>For now, this setup suits how I want to run my blog.</p>
+<p>The website and workflow may change as I add features, but I am satisfied with the current arrangement.</p>
+<p>If I run into problems or discover a better approach, I want to record that too.</p>
+<p>After all, the blog itself is another project through which I build, operate, and learn.</p>

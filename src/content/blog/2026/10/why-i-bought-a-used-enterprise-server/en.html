@@ -1,0 +1,217 @@
+<h2 id="why-i-bought-a-used-enterprise-server-for-about-80-000-won-advantages-and-disadvantages">Why I Bought a Used Enterprise Server for About 80,000 Won: Advantages and Disadvantages</h2>
+<p>I currently operate several servers at home.</p>
+<p>As I mentioned in <a href="/en/blog/2026/10/my-infrastructure-in-canada/">“Servers in Canada and a Warm Room”</a>, some of them are enterprise servers originally designed for data centers rather than ordinary desktop PCs.</p>
+<p>But is there any reason for an individual to choose enterprise hardware for home use?</p>
+<p>I could build a desktop, and even a mini PC can run many kinds of services these days.</p>
+<p>Enterprise servers can be large, noisy, and power-hungry.</p>
+<p>Nevertheless, I chose a used enterprise server.</p>
+<p>The most important reason was price. The next was a manufacturer-designed hardware configuration with detailed maintenance documentation.</p>
+<p>In this post, I want to explain why I bought this server, how I dealt with its initial CPU problem, and the advantages and drawbacks I have noticed while operating it.</p>
+<h2 id="1-price-was-the-biggest-reason">1. Price was the biggest reason</h2>
+<p>Frankly, the main reason I bought a used enterprise server was value for money.</p>
+<p>I like computers, but I am not rich enough for my bank balance to resemble a server room.</p>
+<p>That makes the amount of computing capacity I can obtain for a limited budget important to me.</p>
+<p>Buying a new server or building a modern desktop is possible, but older enterprise machines can be attractive if I compare the CPU core count and memory expansion available at similar prices.</p>
+<p>Equipment used in data centers sometimes appears on the secondhand market when companies move to newer generations.</p>
+<p>Such systems may be behind modern hardware in power efficiency or single-core performance.</p>
+<p>But for some workloads, a large number of CPU cores at a low purchase price is an appealing trade-off.</p>
+<h3 id="a-server-from-a-local-secondhand-marketplace">A server from a local secondhand marketplace</h3>
+<p>I found one of my servers through a local person-to-person marketplace while living in Canada.</p>
+<p>It is a <strong>Cisco UCS C220 M5</strong>, a 1U rack server that supports two Intel Xeon processors.</p>
+<p>If I remember correctly, I paid the equivalent of about 80,000 Korean won.</p>
+<p>The exact amount and converted value may differ slightly when I check the original purchase record.</p>
+<p>Still, acquiring an enterprise server for roughly that amount seemed like a great opportunity.</p>
+<p>I was getting more than a CPU or motherboard. The chassis, power delivery, cooling system, and server motherboard were already assembled.</p>
+<p>When building a regular PC, I would normally select the case, motherboard, power supply, and cooling equipment separately.</p>
+<p>A used complete server comes with that basic hardware configuration already in place.</p>
+<p>Unfortunately, the machine did not work perfectly from the beginning. I encountered an unexpected problem soon after bringing it home.</p>
+<p>I will discuss that shortly.</p>
+<p>For now, I want to emphasize that about 80,000 won was the cost of acquiring the server itself.</p>
+<p>I later replaced a CPU, so the total cost of getting it running was higher.</p>
+<p>Even so, the low initial price was the biggest factor in my decision.</p>
+<h2 id="2-the-manufacturer-s-maintenance-documentation-mattered-as-well">2. The manufacturer&#39;s maintenance documentation mattered as well</h2>
+<p>After price, the most important consideration was documentation.</p>
+<p>One thing I like about enterprise servers is that the information needed to investigate problems is often well organized.</p>
+<p>Ordinary desktop motherboards have manuals too, of course.</p>
+<p>But the Cisco UCS C220 M5 was designed for enterprise maintenance, and Cisco provides systematic information on installation, component replacement, and troubleshooting.</p>
+<p>I can consult the official material to find the correct memory installation order, tools needed for CPU replacement, and compatible heatsink specifications.</p>
+<p>There are also management features intended to help diagnose hardware problems.</p>
+<p>I appreciate that.</p>
+<p>When something goes wrong with a computer, I often search online for other people with similar problems.</p>
+<p>If a product also has documented error information and service procedures, I have a much clearer place to begin.</p>
+<p>That does not mean documentation can solve every hardware failure.</p>
+<p>But even knowing what to inspect first is a major advantage.</p>
+<p>I experienced this shortly after buying the server.</p>
+<h2 id="3-the-server-would-not-boot-because-of-a-cpu-related-error">3. The server would not boot because of a CPU-related error</h2>
+<p>The first time I powered on the server, CPU-related errors kept appearing.</p>
+<p>It would not complete the normal boot process.</p>
+<p>I was a little worried.</p>
+<p>A cheap server is not much use if it cannot boot.</p>
+<p>Still, I did not want to immediately declare the entire system broken and give up.</p>
+<p>I decided to investigate.</p>
+<h3 id="checking-errors-with-cimc">Checking errors with CIMC</h3>
+<p>Cisco&#39;s <strong>CIMC (Cisco Integrated Management Controller)</strong> was particularly useful.</p>
+<p>CIMC provides a way to monitor and manage the server&#39;s hardware.</p>
+<p>I can inspect hardware status and system events even when the normal operating system is not booting properly.</p>
+<p>It may sound like a second BIOS, but it is more accurately a management controller operating separately from the host operating system.</p>
+<p>I checked CIMC&#39;s error information and compared it with Cisco&#39;s documentation.</p>
+<p>That let me investigate more than just the fact that a CPU error had occurred.</p>
+<p>I appreciated being able to see additional diagnostic details.</p>
+<p>On an ordinary computer, I might have relied mainly on boot messages and motherboard status indicators.</p>
+<p>Here, the management controller gave me more information to work with.</p>
+<p>CIMC cannot always identify a failed component conclusively, of course, and the same error can have different causes.</p>
+<p>But having a basis for troubleshooting made a real difference.</p>
+<h3 id="i-eventually-replaced-the-cpu">I eventually replaced the CPU</h3>
+<p>After looking through the errors and considering possible explanations, I suspected the CPU itself.</p>
+<p>I bought another CPU that had been confirmed to work and installed it in place of the original.</p>
+<p>This time, the server completed POST successfully.</p>
+<p>POST stands for Power-On Self-Test, the initial hardware checks performed when a computer starts.</p>
+<p>Previously the system had failed during startup. After the CPU replacement, it passed that stage.</p>
+<p>This makes me think the original CPU was probably faulty.</p>
+<p>I did not perform a full component-level failure analysis with specialized equipment, so I cannot say precisely which part of the CPU failed.</p>
+<p>But replacing it did resolve the boot issue.</p>
+<p>The experience taught me firsthand why maintenance documentation and hardware management tools are so useful.</p>
+<p><strong>It matters that a computer works, but it also matters that I can investigate what went wrong when it does not.</strong></p>
+<h2 id="4-advantage-hardware-designed-for-sustained-operation">4. Advantage: hardware designed for sustained operation</h2>
+<p>Beyond price and documentation, I like that this system was designed with long-running workloads in mind.</p>
+<p>In particular, its power supply arrangement and motherboard design appealed to me.</p>
+<h3 id="server-power-supplies">Server power supplies</h3>
+<p>Enterprise servers are generally designed with data-center or business environments in mind, including extended periods of operation.</p>
+<p>The power system is built around those requirements.</p>
+<p>Some servers support redundant power supplies, and under supported conditions a failed supply can sometimes be replaced without shutting down.</p>
+<p>That design approach interests me.</p>
+<p>I also liked that I was purchasing a complete system designed by Cisco, a company with long experience in enterprise networking and server hardware.</p>
+<p>A familiar brand is not a guarantee that every component is excellent, however.</p>
+<p>Used equipment may already have been operated for many years.</p>
+<p>I have no controlled evidence that every server power supply is more reliable than every desktop power supply, either.</p>
+<p>I have not compared them in a long-duration test under identical conditions.</p>
+<p>The advantage for me was obtaining a complete system designed for extended operation at a relatively low cost.</p>
+<h3 id="a-motherboard-for-two-xeon-processors">A motherboard for two Xeon processors</h3>
+<p>The motherboard is another reason I like the machine.</p>
+<p>My Cisco UCS C220 M5 has <strong>two Intel Xeon Platinum 8160 processors</strong>.</p>
+<p>Each has 24 cores and 48 threads, for a combined configuration of 48 cores and 96 threads.</p>
+<p>The official TDP of each processor is 150W.</p>
+<p>Adding those two thermal design ratings gives 300W.</p>
+<p>It is important to distinguish TDP from measured electricity consumption.</p>
+<p>TDP is a figure related to thermal design and cooling requirements. It does not mean the two CPUs constantly consume exactly 300W.</p>
+<p>Actual power use varies with workload and operating conditions.</p>
+<p>Nevertheless, sustained heavy workloads across two processors make motherboard power delivery and cooling especially important.</p>
+<p>High-power CPUs can be used in ordinary desktops as well.</p>
+<p>But I specifically wanted a system designed around two server CPUs running computational workloads for extended periods.</p>
+<p>That is why the enterprise motherboard and cooling arrangement appealed to me.</p>
+<h3 id="support-for-some-higher-tdp-processors">Support for some higher-TDP processors</h3>
+<p>Cisco&#39;s official configuration documents for the UCS C220 M5 include some Xeon configurations rated at 205W TDP.</p>
+<p>So the system was also designed to accommodate some processors with a higher rating than my current 150W CPUs.</p>
+<p>This certainly does not mean that any processor can be installed.</p>
+<p>I still have to check CPU generation, compatibility, firmware, heatsink, and cooling requirements.</p>
+<p>And I did not arrive at this conclusion by measuring the durability or electrical stability of the motherboard myself.</p>
+<p>I am evaluating what the manufacturer explicitly supports.</p>
+<p>For the workloads I want to run, the configuration is a good fit.</p>
+<h3 id="twenty-four-memory-slots">Twenty-four memory slots</h3>
+<p>Memory expansion is another advantage.</p>
+<p>The Cisco UCS C220 M5 has <strong>24 DDR4 DIMM slots</strong> in total.</p>
+<p>There are 12 associated with each processor, and each CPU supports six memory channels.</p>
+<p>A memory channel can be thought of as a path used to exchange data between the CPU and RAM.</p>
+<p>Having so many slots compared with a typical desktop is appealing to me.</p>
+<p>My RAM requirements may grow beyond what I originally expected.</p>
+<p>Of course, the presence of many slots does not mean I can insert memory modules in any order.</p>
+<p>Recommended population rules depend on the CPU and memory-channel configuration, and supported DIMM types have their own requirements.</p>
+<p>Cisco&#39;s official documentation is helpful here too.</p>
+<p>I am still considering adding more RAM, so both the available slots and the well-documented installation rules are useful.</p>
+<h2 id="5-disadvantage-noise-from-a-1u-server">5. Disadvantage: noise from a 1U server</h2>
+<p>The benefits are real, but so are the disadvantages.</p>
+<p>The first is noise.</p>
+<p>The Cisco UCS C220 M5 is a 1U rack server.</p>
+<p>One rack unit is approximately 44.45 mm high, considerably shorter than a conventional desktop case.</p>
+<p>This saves rack space but limits the size of the cooling fans.</p>
+<p>Small fans must often run at high RPM to move enough air through a 1U chassis.</p>
+<p>The resulting noise is the problem.</p>
+<p>It does not sound quite like an ordinary desktop fan running fast.</p>
+<p>Under heavy load, the server can produce a sharp, high-pitched whine.</p>
+<p>To me, it sounds less like flowing air and more like something piercing my ears.</p>
+<p>People who have never used a rack server may be surprised by the volume.</p>
+<p>I keep mine in my living space and experience that noise directly.</p>
+<p>I have found that I can live with it better than expected, but that does not make the noise disappear.</p>
+<p>For anyone who wants a quiet room, or needs to spend hours next to the server, this can be a significant drawback.</p>
+<p>I would therefore recommend considering fan noise and chassis size along with price and performance.</p>
+<h2 id="6-disadvantage-expensive-difficult-to-source-proprietary-parts">6. Disadvantage: expensive, difficult-to-source proprietary parts</h2>
+<p>The second downside is obtaining parts.</p>
+<p>Desktop PCs use many standardized components, so it is often possible to buy motherboards, power supplies, and CPU coolers from various manufacturers.</p>
+<p>Enterprise servers sometimes use components made specifically for a vendor or model.</p>
+<p>Replacement parts may be difficult to locate or surprisingly expensive.</p>
+<p>Not every part is expensive, but the price of a model-specific component can be unexpected.</p>
+<h3 id="standard-versus-high-performance-cpu-heatsinks">Standard versus high-performance CPU heatsinks</h3>
+<p>The CPU heatsinks were a particularly striking example.</p>
+<p>The Cisco UCS C220 M5 specifies different heatsinks depending on the processor&#39;s TDP.</p>
+<p>According to the maintenance documentation:</p>
+<ul><li><strong>CPU with TDP at or below 150W:</strong> standard heatsink <code>UCSC-HS-C220M5=</code></li><li><strong>CPU with TDP above 150W:</strong> high-performance heatsink <code>UCSC-HS2-C220M5=</code></li></ul>
+<p>My Xeon Platinum 8160 processors each have a 150W TDP, placing them within the range for the standard heatsink.</p>
+<p>But upgrading to a processor with a higher TDP would change that.</p>
+<p>I would have to consider the high-performance heatsink specified by Cisco.</p>
+<p>When I checked secondhand listings, I found standard heatsinks for around 30,000 Korean won each.</p>
+<p>High-performance versions were listed for around 170,000 won before shipping.</p>
+<p>Those were the prices I saw at the time, not permanent or universal market prices.</p>
+<p>Nevertheless, they felt expensive.</p>
+<p>The entire server cost me about 80,000 won, yet one specialized heatsink could cost more than the machine itself.</p>
+<p>This is why buying an older enterprise server is not necessarily cheap overall.</p>
+<p><strong>The chassis may be inexpensive, while a specialized part needed for an upgrade or repair can be costly.</strong></p>
+<p>I think prospective buyers should check parts availability and upgrade costs, not just CPU and memory specifications.</p>
+<h2 id="7-disadvantage-using-ordinary-graphics-cards-is-difficult">7. Disadvantage: using ordinary graphics cards is difficult</h2>
+<p>A third limitation concerns PCIe expansion cards, especially GPUs.</p>
+<p>As mentioned earlier, the Cisco UCS C220 M5 uses a 1U chassis.</p>
+<p>Its limited internal space makes installing an ordinary desktop graphics card difficult.</p>
+<p>It does have PCIe slots.</p>
+<p>The official specification lists two PCIe expansion slots, one of which can accommodate a full-height card.</p>
+<p>But height alone is not enough to establish compatibility.</p>
+<p>Card length, thickness, heatsink dimensions, auxiliary power, cooling, and the PCIe riser layout also matter.</p>
+<p>Many ordinary graphics cards have large fans and heatsinks that occupy substantial space.</p>
+<p>Thick GPU cards in particular may be impossible to fit into a 1U chassis.</p>
+<p>To use a GPU, I would need to check which models and installation arrangements the server actually supports.</p>
+<p>Low-profile graphics cards or smaller professional GPUs might be candidates in some cases.</p>
+<p>But fitting physically does not automatically mean a card is supported.</p>
+<p>Fortunately, this is not a major problem for me.</p>
+<p>I do not currently plan to turn this server into a GPU computing machine.</p>
+<p>I also have a separate workstation that can accommodate ordinary desktop graphics cards.</p>
+<p>I can use that computer if I need GPU capacity.</p>
+<p>Someone planning to build a GPU server from the outset, however, should examine the limitations of a 1U chassis very carefully.</p>
+<h2 id="8-operating-costs-also-matter">8. Operating costs also matter</h2>
+<p>The last consideration is operating cost.</p>
+<p>My server was very inexpensive to purchase.</p>
+<p>But the initial price is not the whole cost of running it.</p>
+<p>I may need to add CPU or memory components, and failed parts may eventually require replacement.</p>
+<p>Electricity also costs money.</p>
+<p>Older enterprise servers can be less power-efficient than modern machines.</p>
+<p>Long periods under heavy load may therefore result in substantial energy consumption.</p>
+<p>I discussed my servers&#39; measured power draw, heat, and the experience of living alongside them in <a href="/en/blog/2026/10/my-infrastructure-in-canada/">“Servers in Canada and a Warm Room”</a>.</p>
+<p>Here, I want to focus on purchasing and maintaining the equipment.</p>
+<p>I value obtaining significant computing capacity with a limited budget.</p>
+<p>But a cheap purchase price is not enough on its own to prove that the system offers good value.</p>
+<p>Electricity, replacement parts, and the time I spend maintaining it all need to be considered.</p>
+<p>Resolving the CPU issue after buying the server required more time and money than I initially expected.</p>
+<p>That is part of what purchasing used equipment can involve.</p>
+<h2 id="9-would-i-buy-another-used-enterprise-server">9. Would I buy another used enterprise server?</h2>
+<p>Based on my experience, I would consider buying another used enterprise server if the conditions were similar.</p>
+<p>That does not mean I would recommend every machine.</p>
+<p>I would need to look at the model, condition, parts availability, and whether its performance matches my intended workloads.</p>
+<p>When buying secondhand hardware, it is worth checking that it boots and confirming the condition of its CPU, memory, and storage whenever possible.</p>
+<p>Otherwise, you might end up troubleshooting a problem after the purchase, as I did.</p>
+<p>A modern desktop or mini PC will also be more suitable in many situations.</p>
+<p>If electricity costs and noise are important, or there is no reason to run a server under high load around the clock, a modern low-power system may be more rational.</p>
+<p>My own priorities are a little different.</p>
+<p>I enjoy managing hardware and find the process of investigating faults interesting.</p>
+<p>I also value having many CPU cores and room for memory expansion at a low initial cost.</p>
+<p>For those reasons, this used enterprise server has been a good fit for me.</p>
+<h2 id="closing-thoughts">Closing thoughts</h2>
+<p>This post explains why I bought a used Cisco UCS C220 M5 and what I have learned from using it.</p>
+<p>The main reason was price.</p>
+<p>For about 80,000 Korean won, I obtained a complete enterprise server chassis and much of the hardware I needed.</p>
+<p>Cisco&#39;s technical documentation and the CIMC management features were also major advantages.</p>
+<p>The server initially failed to boot because of a suspected CPU issue. I investigated the errors, replaced the processor, and got it working.</p>
+<p>It did not work perfectly from the beginning, but the experience made me appreciate having thorough service documentation.</p>
+<p>I also like the power and cooling design intended for sustained operation, the dual-CPU motherboard, and the 24 memory slots.</p>
+<p>The shortcomings are clear too: sharp fan noise from the 1U chassis, costly specialized parts, and difficulty using ordinary graphics cards.</p>
+<p>For my needs, I consider these trade-offs acceptable.</p>
+<p>I do not think used enterprise servers are right for everyone.</p>
+<p>A modern desktop or mini PC may be a better choice for someone who needs a quiet, power-efficient computer.</p>
+<p>But for someone like me who uses substantial computing resources, enjoys maintaining servers, and is willing to search for used parts, an older enterprise server can be an interesting choice.</p>
+<p>If I upgrade components or encounter new problems, I would like to document those experiences as well.</p>

@@ -1,0 +1,14 @@
+{
+  "slug": "how-my-blog-is-built-and-deployed",
+  "titles": {
+    "ko": "내 블로그는 어떻게 만들어지고 배포될까?",
+    "en": "How Is My Blog Built and Deployed?",
+    "ja": "私のブログはどのように作られ、デプロイされているのか？"
+  },
+  "published_at": "2026-10-15T02:06:12-06:00",
+  "descriptions": {
+    "ko": "Markdown 원고를 직접 검토하고 Node.js로 세 언어의 정적 페이지를 생성한 뒤 GitHub Actions와 Cloudflare Workers Static Assets로 배포하는 과정을 소개합니다.",
+    "en": "How I review Markdown drafts, generate a multilingual static blog with Node.js, and deploy it through GitHub Actions and Cloudflare Workers Static Assets.",
+    "ja": "Markdownの原稿を確認し、Node.jsで三言語の静的ページを生成してGitHub ActionsとCloudflare Workers Static Assetsで公開する流れを紹介します。"
+  }
+}

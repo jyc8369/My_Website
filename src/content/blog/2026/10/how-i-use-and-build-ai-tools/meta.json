@@ -1,0 +1,14 @@
+{
+  "slug": "how-i-use-and-build-ai-tools",
+  "titles": {
+    "ko": "내가 AI를 쓰고 만드는 방식",
+    "en": "How I Use and Build AI Tools",
+    "ja": "私のAIツールの使い方と作り方"
+  },
+  "published_at": "2026-10-15T05:19:23Z",
+  "descriptions": {
+    "ko": "ChatGPT와 로컬 모델, 개인용 에이전트와 MCP를 어떤 생각으로 사용하고 개발하는지 정리했습니다.",
+    "en": "How I think about using ChatGPT, local models, a personal agent, and MCP tools.",
+    "ja": "ChatGPTやローカルモデル、個人用エージェント、MCPをどのような考えで使い、開発しているかをまとめました。"
+  }
+}

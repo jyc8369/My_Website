@@ -1,0 +1,14 @@
+{
+  "slug": "my-infrastructure-in-canada",
+  "titles": {
+    "ko": "캐나다의 서버와 따뜻한 방",
+    "en": "Servers and a Warm Room in Canada",
+    "ja": "カナダのサーバーと暖かい部屋"
+  },
+  "published_at": "2026-10-15T04:42:01Z",
+  "descriptions": {
+    "ko": "한국과 캐나다에 둔 서버, 외부 공개와 네트워크 분리, 그리고 난방까지 돕는 캐나다 서버 이야기를 적었습니다.",
+    "en": "A look at my servers in Korea and Canada, how I expose services and isolate networks, and how the Canadian servers also help heat my room.",
+    "ja": "韓国とカナダに置いたサーバー、サービス公開とネットワーク分離、そして部屋を暖めるカナダのサーバーについて書きました。"
+  }
+}

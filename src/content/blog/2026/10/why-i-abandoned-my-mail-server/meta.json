@@ -1,0 +1,14 @@
+{
+  "slug": "why-i-abandoned-my-mail-server",
+  "titles": {
+    "ko": "메일 서버를 만들고 한 시간 만에 접은 이유",
+    "en": "Why I Abandoned My Mail Server After an Hour",
+    "ja": "メールサーバーを作って1時間でやめた理由"
+  },
+  "published_at": "2026-10-15T03:26:44Z",
+  "descriptions": {
+    "ko": "직접 메일 서버를 구축하고 수신까지 확인했지만, 가용성과 유지보수 부담을 고려해 관리형 서비스로 바꾼 이야기입니다.",
+    "en": "I built a mail server and confirmed it could receive messages, then chose a managed service because of availability and maintenance concerns.",
+    "ja": "メールサーバーを構築して受信まで確認したものの、可用性と保守の負担を考えてマネージドサービスに切り替えた話です。"
+  }
+}

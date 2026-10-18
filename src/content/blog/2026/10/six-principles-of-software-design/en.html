@@ -1,0 +1,228 @@
+<h2 id="six-principles-that-guide-how-i-design-software">Six Principles That Guide How I Design Software</h2>
+<p>Developing software involves more decisions than it might first appear.</p>
+<p>Which programming language should I use? How many features should I implement? How should I distribute the program? How many system resources should it consume?</p>
+<p>Different developers have different priorities. Some value development speed, while others emphasize the range of features or the user experience.</p>
+<p>Over time, I have developed my own set of preferences too.</p>
+<p>I do not think these principles will suit every developer. In fact, readers may disagree with several parts of this post.</p>
+<p>Some may object to my preference for simplicity over a broad feature set, or to my decision not to include certain accessibility features in standard releases.</p>
+<p>These are personal design preferences, not universal rules. I want to record the criteria I use when designing and building software rather than claim that my choices are the correct ones.</p>
+<p>At the moment, six principles matter most to me.</p>
+<h2 id="1-make-software-portable-whenever-possible">1. Make software portable whenever possible</h2>
+<p>The first thing I consider when building a program is whether it can be portable.</p>
+<p>Portable software generally refers to programs that can run without a separate installation process.</p>
+<p>On Windows, for example, many applications use installers that let you choose an installation location and register various components with the operating system.</p>
+<p>Portable applications, by contrast, can often be run immediately after downloading an executable or extracting an archive.</p>
+<p>Of course, not every portable application is completely self-contained. Some depend on components already installed on the operating system, while others store settings or caches elsewhere.</p>
+<p>Even so, I prefer avoiding installation whenever possible.</p>
+<h3 id="i-do-not-want-unnecessary-traces-left-on-the-system">I do not want unnecessary traces left on the system</h3>
+<p>My biggest reason for liking portable software is that I want to keep my system as tidy as possible.</p>
+<p>Sometimes I install a new application just to try it, use it a few times, and then remove it.</p>
+<p>Some programs leave configuration files, caches, or registry entries behind even after being uninstalled.</p>
+<p>Those files are not necessarily harmful. They may be legitimate ways to preserve settings or improve startup performance.</p>
+<p>Still, I do not particularly like having traces of software I no longer use scattered throughout the system.</p>
+<p>This matters even more to me with small, single-purpose utilities.</p>
+<p>Does a program that converts a file format or performs one simple task really need its own installer?</p>
+<p>That is why I want to distribute my programs as a single executable whenever possible.</p>
+<p>For Windows software, one EXE file is my ideal format.</p>
+<p>If a program needs additional assets, libraries, or runtime files, I also like distributing them alongside the executable in a ZIP archive.</p>
+<p>Users can extract the archive and run the program.</p>
+<p>When they no longer need it, deleting the extracted folder removes most of the program&#39;s files.</p>
+<p>I cannot guarantee that this leaves absolutely no trace. Windows may retain execution history, temporary files, or system caches.</p>
+<p>But if the program is designed not to require global configuration or operating-system registration, I believe removing it can be much simpler than removing a typical installed application.</p>
+<h3 id="what-if-installation-is-unavoidable">What if installation is unavoidable?</h3>
+<p>This does not mean I intend to force every program into a portable format.</p>
+<p>Some applications need to register operating-system services or install drivers.</p>
+<p>For those programs, an installation process may be unavoidable.</p>
+<p>I do not intend to make such software artificially portable at any cost.</p>
+<p>Instead, if installation is necessary, I want removal to be as simple as possible too.</p>
+<p>For example, when a Windows application must install a system service or driver, I would like to provide a PowerShell removal script where feasible.</p>
+<p>Rather than having users search for complicated commands on their own, I want them to be able to follow instructions and run a script that cleans up the relevant components.</p>
+<p>Administrator privileges or a restart may still be necessary, and the removal steps will depend on what was installed.</p>
+<p>Even so, I do not want to build programs that are convenient to install but cumbersome to remove.</p>
+<p>For me, portability means more than the absence of an installer.</p>
+<p><strong>My most important principle is to make it easy for users to start using a program—and just as easy to leave it behind when they no longer need it.</strong></p>
+<h2 id="2-spend-more-resources-during-development-to-reduce-the-user-s-burden">2. Spend more resources during development to reduce the user&#39;s burden</h2>
+<p>My second principle concerns computing resources during development and execution.</p>
+<p>I am willing to accept higher resource consumption when building or packaging a program.</p>
+<p>In exchange, I want the finished program to use as few resources as reasonably possible on the user&#39;s computer.</p>
+<p>A developer may build a program a limited number of times, but the finished software can run repeatedly on many users&#39; computers.</p>
+<p>If spending a little more time and computing power during development saves resources whenever users run the program, I consider that a meaningful trade-off.</p>
+<p>Of course, this is not always the best choice.</p>
+<p>If development costs become excessive, or if substantial optimization work produces almost no practical benefit for users, that may not be a reasonable investment.</p>
+<p>Nevertheless, where possible, I prefer bearing more of the cost during development.</p>
+<h3 id="this-is-also-connected-to-why-i-like-rust">This is also connected to why I like Rust</h3>
+<p>This way of thinking is one reason I like Rust.</p>
+<p>In my earlier post, <a href="/en/blog/2026/10/why-i-like-rust/">“Why Rust Is My Favorite Programming Language”</a>, I explained my views on memory management, system resources, and software distribution.</p>
+<p>Rust uses ownership and borrowing checks to catch many memory-safety problems at compile time.</p>
+<p>Compiling Rust code can take considerable time and computing resources, but finished programs can manage memory without a conventional tracing garbage collector.</p>
+<p>That is one of the language&#39;s appealing qualities for me.</p>
+<p>In some of my own projects, I have found that simple API servers and backend programs written in Rust used significantly less memory than versions I built with Python or Node.js.</p>
+<p>That is an observation from my projects, not a universal benchmark.</p>
+<p>A Rust program is not automatically faster or more memory-efficient than one written in another language. Libraries, runtimes, data structures, and implementation choices can all change the outcome.</p>
+<p>Python and JavaScript may also be better choices for developer productivity or their library ecosystems.</p>
+<p>Even so, Rust has been a good match for the kinds of programs I often build.</p>
+<p>For small utilities and background processes in particular, I value the ability to limit unnecessary resource consumption at runtime.</p>
+<p>To me, how a finished program behaves on the user&#39;s computer matters more than shaving a little time off the build process.</p>
+<h2 id="3-keep-memory-usage-as-low-as-reasonably-possible">3. Keep memory usage as low as reasonably possible</h2>
+<p>My third principle is memory efficiency.</p>
+<p>I pay close attention to how much RAM my programs use.</p>
+<p>My main desktop operating system is currently Windows.</p>
+<p>When using Windows, Task Manager can sometimes show a substantial amount of memory in use.</p>
+<p>This reflects not only running applications but also operating-system services and caches.</p>
+<p>Windows may use available RAM for file caches and standby memory. Some of that memory can be repurposed when other programs need it.</p>
+<p>So it would be inaccurate to treat all memory reported as in use as permanently unavailable.</p>
+<p>At the same time, it would also be wrong to dismiss all reported memory consumption as fake. Applications and the operating system genuinely need some memory, and not all allocations are readily reclaimable.</p>
+<p>What matters to me is that the operating system and other applications need RAM too.</p>
+<p>I would like my programs to consume as little of that shared resource as practical.</p>
+<h3 id="i-design-with-an-8-gb-ram-environment-in-mind">I design with an 8 GB RAM environment in mind</h3>
+<p>Some ordinary desktops and laptops still have 8 GB or 16 GB of RAM.</p>
+<p>Many machines have more, of course, but I do not want to assume every user has abundant hardware resources.</p>
+<p>When I develop relatively lightweight utilities, I therefore try to design them so that they can run in an 8 GB RAM environment.</p>
+<p>That does not mean I plan to create an 8 GB virtual machine and conduct long-running tests for every application.</p>
+<p>Repeatedly testing every project across many hardware configurations would impose significant time and maintenance costs on me as an individual developer.</p>
+<p>I do not intend to do that level of validation for every project.</p>
+<p>Instead, I try to limit the program&#39;s own memory requirements from the design stage.</p>
+<p>For example, with file converters, simple image-processing tools, or small system utilities, I would like to aim for a memory footprint of no more than about 1 GB under ordinary usage conditions.</p>
+<p>That leaves some room for the operating system and other applications, even on an 8 GB computer.</p>
+<p>Of course, this is not an absolute limit.</p>
+<p>Some workloads or larger input files may temporarily require more memory.</p>
+<p>Requirements also vary enormously by type of application.</p>
+<p>It would be unrealistic to restrict games or large-scale data-processing software to 1 GB.</p>
+<p>Reducing memory use at the expense of a program&#39;s actual purpose is not good design either.</p>
+<p>What I want is not simply a low memory figure, but <strong>to avoid consuming far more memory than the program&#39;s functionality reasonably requires</strong>.</p>
+<p>The 1 GB figure is a personal design target for certain kinds of utilities, not a strict rule for everything I build.</p>
+<h2 id="4-be-willing-to-remove-features-that-are-not-necessary">4. Be willing to remove features that are not necessary</h2>
+<p>My fourth principle is simplicity.</p>
+<p>When I build software, I would rather have the features that truly matter work properly than offer a long list of features.</p>
+<p>Adding a feature does not necessarily end with adding a button or menu item.</p>
+<p>It may bring more code, dependencies, test cases, documentation, and maintenance work.</p>
+<p>Something that initially looks small can gradually increase a project&#39;s complexity.</p>
+<p>So before implementing a feature, I try to ask whether it is really necessary.</p>
+<p>A feature that might be nice to have is not necessarily one that people need.</p>
+<p>If its purpose is unclear, its benefit is limited, and it mainly adds maintenance work, I would rather leave it out.</p>
+<p>I want to make programs that accomplish a clearly defined purpose simply and reliably, not programs that attempt to support everything.</p>
+<h3 id="my-personal-approach-to-accessibility-features">My personal approach to accessibility features</h3>
+<p>There is a part of this principle on which people may strongly disagree.</p>
+<p>It concerns accessibility.</p>
+<p>Accessibility helps people with different needs use software. It can include keyboard-only interaction, screen-reader support, and adjustments to visual presentation.</p>
+<p>I recognize that some users depend on these capabilities.</p>
+<p>However, for my personal projects, I currently do not plan to implement and continually maintain extensive accessibility features in the standard release.</p>
+<p>This is not because I consider accessibility unimportant.</p>
+<p>Supporting a broad range of accessibility requirements can involve different environments and assistive technologies. Every new version may also require checking that those features still work properly.</p>
+<p>As an individual developer, I find the cost of implementing and maintaining every requirement difficult to take on.</p>
+<p>I may, of course, implement basics such as keyboard interaction that improve a program&#39;s general usability.</p>
+<p>But at present, I do not plan to include detailed screen-reader integration or specialized features for particular usage environments in the standard version.</p>
+<p>I have considered an alternative approach.</p>
+<p>If someone who wants to use my software needs a particular accessibility feature, they can contact me by email.</p>
+<p>After understanding the request, I may be able to create a separate branch or fork of the source code, add the requested feature, and provide a customized build.</p>
+<p>This would let me address an actual need without adding the feature to the standard distribution.</p>
+<p>I cannot promise to accept every request or guarantee a customized version. Whether I can do it will depend on feasibility and the work involved.</p>
+<p>I also do not intend to maintain two continuously updated editions—one standard and one accessibility-focused—for every release.</p>
+<p>The idea is closer to building a separate version from the current source code when a specific request arises.</p>
+<p>I do not believe this approach is ideal for every user.</p>
+<p>Having to contact me and wait creates an additional barrier, and a customized build may not receive continuous updates.</p>
+<p>I recognize those limitations.</p>
+<p>Even so, given the scale of my projects and the amount of maintenance I can take on, responding to specific requests seems more realistic to me than promising all features in every standard release.</p>
+<h2 id="5-release-source-code-openly-when-possible">5. Release source code openly when possible</h2>
+<p>My fifth principle is open source.</p>
+<p>Whenever practical, I would like to publish the source code of programs I write.</p>
+<p>The biggest reason is that I have learned a great deal from code other developers have shared.</p>
+<p>When I ran into problems while learning programming, I read official documentation, but I also frequently looked at how others had solved similar issues.</p>
+<p>When I found a project implementing something close to what I wanted, reading its source code helped me understand its structure and approach.</p>
+<p>This is different from simply copying code.</p>
+<p>Developers can solve the same problem in different ways, using different architectures and technologies.</p>
+<p>I learned a lot by examining those differences.</p>
+<p>Sometimes I discovered techniques I would not have considered by myself. At other times, they made me reconsider problems with my own code.</p>
+<p>I would like to leave behind code that might serve as a useful reference for someone else.</p>
+<h3 id="i-prefer-the-mit-license">I prefer the MIT License</h3>
+<p>The license I would generally like to use is the MIT License.</p>
+<p>It is a relatively short, permissive software license that allows use, modification, and redistribution provided its copyright and permission notices are retained.</p>
+<p>I am generally comfortable with other developers studying the code I share or using it in their own projects.</p>
+<p>Of course, the MIT License will not necessarily be appropriate for every project. Third-party code, license compatibility, and the project&#39;s purpose can require different choices.</p>
+<p>Some repositories on my GitHub account also do not yet contain a LICENSE file.</p>
+<p>I plan to address that.</p>
+<p>The fact that source code is visible on GitHub does not automatically mean that other people have permission to modify and redistribute it.</p>
+<p>It is important to specify an appropriate license for projects intended to be reusable.</p>
+<p>I want to pay more attention to that in future releases.</p>
+<h3 id="i-do-not-intend-to-publish-every-small-project">I do not intend to publish every small project</h3>
+<p>This does not mean I want to upload every program I write to my current GitHub account.</p>
+<p>I would prefer to keep my main account focused on larger projects or projects I intend to continue developing.</p>
+<p>If I put every small experiment or personal utility in the same place, I worry that the list of repositories would become cluttered and make the projects I actively manage harder to find.</p>
+<p>There is nothing wrong with publishing small libraries and personal projects. Many of them are genuinely useful to other developers.</p>
+<p>I simply want my own main account to remain relatively organized.</p>
+<p>In the future, I might create a separate account for small projects and personal tools.</p>
+<p>That is only a possibility for now, not a definite plan.</p>
+<p>My goal is not to maximize the number of public repositories.</p>
+<p>It is <strong>to share code I believe is worth publishing in a useful form, so that other developers may benefit from it</strong>.</p>
+<h2 id="6-record-how-problems-were-solved">6. Record how problems were solved</h2>
+<p>My sixth principle is to document the process of solving problems.</p>
+<p>A relatively recent experience made this especially important to me.</p>
+<p>While developing an Instagram DM bridge plugin, I encountered an error related to the Meta API.</p>
+<p>I could not identify the cause easily, and resolving the issue took considerable time.</p>
+<p>I described the technical details in <a href="/en/blog/2026/10/tracking-instagram-dm-error/">“Two Days Chasing the <code>2534022</code> Error”</a>.</p>
+<p>Here I want to focus on what I learned from that experience.</p>
+<h3 id="i-found-reports-of-success-but-not-the-solutions">I found reports of success, but not the solutions</h3>
+<p>I searched through many resources while trying to fix the error.</p>
+<p>Other people had encountered similar problems, but I struggled to find a concrete explanation of how they had resolved them.</p>
+<p>Some posts merely said that the author had modified backend source code. Elsewhere, I found traces of responses or comments whose actual solutions were not publicly visible.</p>
+<p>I could see that someone had solved a problem, but not what they had changed or why it worked.</p>
+<p>At first, I did not know how to approach my own issue either.</p>
+<p>I examined the error messages and investigated several possibilities without immediately finding the cause.</p>
+<p>Eventually, after numerous attempts, I identified a problem involving webhook configuration and got things working.</p>
+<p>That made me wonder whether the process I went through might help someone else.</p>
+<p>Of course, another person&#39;s error might have a different root cause even if the error code is identical.</p>
+<p>That is precisely why I think it is important to record the environment, the things I checked, and the steps that actually helped.</p>
+<h3 id="i-want-to-record-failed-attempts-not-just-the-successful-fix">I want to record failed attempts, not just the successful fix</h3>
+<p>I want to document not only the result of resolving a technical issue but also the path I took to get there.</p>
+<p>That includes what I first suspected, what I tried, and why certain attempts did not work.</p>
+<p>Such information can be useful in a different way from documentation that provides only the final answer.</p>
+<p>Learning that a certain approach failed may save someone else time.</p>
+<p>I cannot record every error and every experiment, of course.</p>
+<p>Documenting every trivial issue could take more time than solving the issues themselves.</p>
+<p>So I want to focus on problems I spent a long time investigating, or those for which I could not find a clear solution despite searching.</p>
+<p>I have not yet decided whether these records should remain regular blog posts, move into a dedicated troubleshooting category, or live in a GitHub issue tracker.</p>
+<p>But I want to keep sharing what I learn from solving difficult problems.</p>
+<p>Other people&#39;s records have helped me countless times.</p>
+<p>I hope my own records can eventually help someone else too.</p>
+<h2 id="another-preference-english-comes-first-in-project-documentation">Another preference: English comes first in project documentation</h2>
+<p>Beyond the six principles above, I also have a preference about documentation.</p>
+<p>Where possible, I want to write project documentation in English first.</p>
+<p>It is not because my English is perfect.</p>
+<p>A great deal of software-development material is written in English, and using it can help more developers understand a public project.</p>
+<p>My preferred language order for documentation is English, Korean, and Japanese.</p>
+<p>Korean is the language I am most comfortable with, while Japanese is a language I am studying.</p>
+<p>That is also why this blog currently supports all three.</p>
+<p>However, I see blog posts and software documentation somewhat differently.</p>
+<p>A blog post can be written and translated as a finished piece. Software documentation often needs to change whenever features are modified or new versions are released.</p>
+<p>Keeping documentation up to date in several languages can become a considerable burden, particularly for frequently updated software.</p>
+<p>That is why I expect most project documentation to be available primarily in English and Korean.</p>
+<p>I would also like to provide Japanese documentation where possible, but I cannot promise it for every project.</p>
+<p>I intend to support languages within the maintenance capacity I have as an individual developer.</p>
+<h2 id="what-happens-when-these-principles-conflict-with-reality">What happens when these principles conflict with reality?</h2>
+<p>So far, I have explained the six principles I care about.</p>
+<p>But do I think they must be followed without exception?</p>
+<p>No.</p>
+<p>I prefer portable software, but some programs need installation.</p>
+<p>I want low memory consumption, but a program&#39;s purpose may require substantial resources.</p>
+<p>I value simplicity, but a feature that a particular user genuinely needs may be worth implementing separately.</p>
+<p>I like open source, but I cannot publish every project.</p>
+<p>While developing software, there will inevitably be moments when personal preferences and practical requirements conflict.</p>
+<p>When that happens, I want to consider the program&#39;s purpose and the amount of work I can realistically maintain rather than cling rigidly to a principle.</p>
+<p>That does not mean I plan to abandon my standards whenever things become inconvenient.</p>
+<p>Having a set of criteria to return to when making difficult choices matters in itself.</p>
+<p>That is why I wanted to write down these six principles.</p>
+<h2 id="closing-thoughts">Closing thoughts</h2>
+<p>In this post, I have described six principles that matter to me when developing software.</p>
+<p>I prefer portable distribution, reducing runtime costs for users, keeping memory usage modest, removing unnecessary features, publishing source code where possible, and recording the process of solving problems.</p>
+<p>They may seem like separate concerns, but for me they point in a similar direction.</p>
+<p>I want to avoid placing unnecessary burdens on the people who use my software, while building simple and efficient programs within the limits of what I can develop and maintain.</p>
+<p>I know many developers will disagree with these choices.</p>
+<p>Some may place more importance on a wide range of features. Others may prioritize accessibility or support for multiple platforms.</p>
+<p>Those can be entirely reasonable decisions too.</p>
+<p>I do not want to claim that my approach is inherently superior.</p>
+<p>I am also still learning.</p>
+<p>I do not know whether every principle I value today will remain unchanged.</p>
+<p>A future project may show me that something I believed was mistaken, or that an issue I had overlooked is more important than I realized.</p>
+<p>If that happens, I am willing to change my approach.</p>
+<p>This post is not a declaration of permanent rules. It is <strong>a record of how I currently think about building software</strong>.</p>
+<p>As I create more programs, I would like to look back at how these principles work in practice and how they may change.</p>

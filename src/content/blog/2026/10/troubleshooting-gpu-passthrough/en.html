@@ -1,0 +1,12 @@
+<h2 id="still-troubleshooting-gpu-passthrough">Still Troubleshooting GPU Passthrough</h2>
+<p>I previously wrote about setting up GPU passthrough so I could use Linux and Windows at the same time. I tried the setup again on new hardware, but I have not managed to get it working yet. I want to briefly record where things stand.</p>
+<p>I configured IOMMU and GPU passthrough itself. But when I pass the GPU to a Windows virtual machine and enable its driver, the guest operating system blue-screens. If I do not pass through the GPU and let the virtual machine use CPU-based graphics, Windows boots normally.</p>
+<p>Windows can boot while the driver is disabled, but I have not figured out what goes wrong when the driver is enabled. The blue screen seems to point to a memory-address access issue, but I cannot determine the cause from that message alone. The crash is intermittent, which also makes it difficult to reproduce and analyze.</p>
+<h2 id="i-am-not-ready-to-share-the-cause-yet">I am not ready to share the cause yet</h2>
+<p>I have tried several approaches, but I have not found the root cause. I need to learn more about how the graphics driver and hardware interact.</p>
+<p>I am also looking into developing a patcher for the official NVIDIA graphics driver. For now, I am investigating which memory access triggers the problem and why the address appears to be invalid. I do not have a reliable fix, and I have not verified any result, so I am going to keep the details private for the time being.</p>
+<p>I would like to study and solve this problem on my own. If I can identify the cause and fix it, I hope to share the process and results to help others attempting a similar setup.</p>
+<h2 id="the-linux-distributions-i-use">The Linux distributions I use</h2>
+<p>I currently use Arch Linux as the host operating system for my virtual machines. My servers run Debian. Ubuntu was the first Linux desktop I used. At the time, I installed it without knowing much about Linux distributions. Later, I started using Arch Linux because I wanted to learn more deeply and configure the system myself. Debian works better for me on servers. Ubuntu, which is based on Debian, is also a good option, but I personally prefer Debian.</p>
+<p>Once I solve the GPU passthrough problem, I plan to return to Linux as my main desktop operating system. That could mean changing my primary OS from Windows back to Linux.</p>
+<p>For now, I am only documenting the problem and what I have confirmed so far. I will write more after I identify the cause and verify a solution.</p>

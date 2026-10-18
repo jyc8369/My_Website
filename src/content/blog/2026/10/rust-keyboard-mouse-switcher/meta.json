@@ -1,0 +1,14 @@
+{
+  "slug": "rust-keyboard-mouse-switcher",
+  "titles": {
+    "ko": "Rust로 키보드와 마우스 전환 프로그램을 만든 이야기",
+    "en": "Building a Keyboard and Mouse Switcher in Rust",
+    "ja": "Rustでキーボードとマウスの切り替えプログラムを作った話"
+  },
+  "published_at": "2026-10-15T00:51:03-06:00",
+  "descriptions": {
+    "ko": "Linux와 Windows를 동시에 사용하던 시절, Rust와 쉘 스크립트로 입력 장치를 전환하던 프로그램의 개발 과정과 소스 코드 유실에서 배운 점을 기록합니다.",
+    "en": "How I built a Rust and shell-script tool to switch input devices between Linux and Windows, and what I learned after losing its source code.",
+    "ja": "LinuxとWindowsの間で入力デバイスを切り替えるRustとシェルスクリプトのツールを作った経験と、ソースコードを失って学んだことを振り返ります。"
+  }
+}

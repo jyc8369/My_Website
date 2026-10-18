@@ -1,41 +1,44 @@
 # Static multilingual blog generator
 
-Each post is one Markdown file at `src/content/blog/YYYY/MM/english-slug.md`. A post is published only when all required metadata and all three language bodies are present. Invalid files are logged and skipped independently.
+Each post is a folder at `src/content/blog/YYYY/MM/english-slug/`. A post is generated only when shared metadata and all three localized HTML bodies are present and valid.
 
-## Metadata and body format
+## Source structure
 
-```yaml
----
-title: "한국어 제목"
-title_en: "English title"
-title_ja: "日本語タイトル"
-published_at: "2026-10-14T21:30:00-07:00"
-description: "한국어 소개"
-description_en: "Short English introduction"
-description_ja: "日本語の短い紹介"
----
-
-<!-- lang:ko -->
-## 한국어 소제목
-한국어 본문입니다.
-
-<!-- lang:en -->
-## English heading
-The English article body goes here.
-
-<!-- lang:ja -->
-## 日本語の見出し
-日本語の本文をここに書きます。
+```text
+src/content/blog/YYYY/MM/english-slug/
+├── meta.json
+├── ko.html
+├── en.html
+└── ja.html
 ```
 
-Each marker must be on its own line. Markers inside fenced code blocks are treated as code, not section boundaries. Do not put text before the first marker. Every section must contain actual content. The marker is removed during rendering. This syntax was selected as the implementation default because v4.1 left the exact delimiter syntax open.
+`meta.json` contains shared post metadata. HTML files contain only the article body; the generator provides the document, site navigation, footer, SEO metadata, localized routes, and previous/next navigation.
 
-Supported Markdown includes headings (`#` through `###`), paragraphs, lists, blockquotes, fenced code, inline code, emphasis, and safe links. A table of contents is generated independently for each language when headings exist. Images and downloadable attachments are outside the initial publishing workflow.
+```json
+{
+  "slug": "why-i-like-rust",
+  "titles": {
+    "ko": "내가 Rust를 좋아하는 이유",
+    "en": "Why I Like Rust",
+    "ja": "Rustが好きな理由"
+  },
+  "published_at": "2026-10-14T21:30:00-07:00",
+  "descriptions": {
+    "ko": "한국어 글 소개",
+    "en": "Short English summary",
+    "ja": "日本語の概要"
+  }
+}
+```
+
+Use semantic body markup such as `<h2 id="...">`, `<p>`, `<ul>`, `<blockquote>`, and `<figure class="code-block"><pre><code>...`. Keep heading IDs unique within each language. The table of contents is derived from `h1`–`h3` elements that have IDs. The generator embeds body HTML as-is, so escape text and attribute values when authoring markup.
 
 ## Generated behavior
 
-- Routes: `/ko/blog/YYYY/MM/slug/`, `/en/blog/YYYY/MM/slug/`, and `/ja/blog/YYYY/MM/slug/`.
-- Lists sort by `published_at` newest first, 20 posts per page, and use localized titles. The displayed date and route year/month come from the timestamp's calendar date in its stated timezone. Identical timestamps use the English filename slug as a stable tie-breaker.
-- With zero valid posts, Blog stays Coming Soon and is marked `noindex`; Lab is always Coming Soon and `noindex`.
-- A post with a missing or invalid translation is excluded in all languages; other valid posts continue building.
-- `npm test` checks three-language output, per-file rejection, and marker handling in code blocks.
+- Routes remain `/ko/blog/YYYY/MM/slug/`, `/en/blog/YYYY/MM/slug/`, and `/ja/blog/YYYY/MM/slug/`.
+- Lists sort by `published_at` newest first, 20 posts per page, and use localized titles. Displayed date and route year/month come from the timestamp's calendar date in its stated timezone. Identical timestamps use the English slug as a stable tie-breaker.
+- Previous/next navigation follows the same timestamp ordering and route structure.
+- A missing or invalid translation excludes that post in all languages; other valid posts continue building.
+- `npm test` checks localized output, metadata validation, timestamp ordering, TOC extraction, and preservation of HTML links/code.
+
+The one-time `migrate-markdown-to-html.mjs` script converted the former Markdown sources mechanically with the existing Markdown renderer. It is not part of the normal build.

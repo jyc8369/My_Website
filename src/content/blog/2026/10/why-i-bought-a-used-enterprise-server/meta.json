@@ -1,0 +1,14 @@
+{
+  "slug": "why-i-bought-a-used-enterprise-server",
+  "titles": {
+    "ko": "약 8만 원에 들여온 중고 엔터프라이즈 서버, 선택한 이유와 장단점",
+    "en": "Why I Bought a Used Enterprise Server for About 80,000 Won: Advantages and Disadvantages",
+    "ja": "約8万ウォンで購入した中古エンタープライズサーバー：選んだ理由と長所・短所"
+  },
+  "published_at": "2026-10-15T02:57:30-06:00",
+  "descriptions": {
+    "ko": "약 8만 원에 구매한 Cisco UCS C220 M5의 CPU 교체 경험과 CIMC 진단, 메모리 확장성, 소음과 전용 부품 등 직접 느낀 장단점을 소개합니다.",
+    "en": "A used Cisco UCS C220 M5, a CPU replacement that solved its boot problem, and the practical benefits and limitations of enterprise server hardware.",
+    "ja": "約8万ウォンで購入したCisco UCS C220 M5のCPU交換、CIMCによる診断、拡張性、騒音や専用部品などの長所と短所を紹介します。"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "slug": "using-ios-android-macos-and-windows",
+  "titles": {
+    "ko": "iOS, Android, macOS, Windows를 모두 사용하면서 느낀 장단점",
+    "en": "What I Like and Dislike About iOS, Android, macOS, and Windows",
+    "ja": "iOS、Android、macOS、Windowsを使って感じた長所と短所"
+  },
+  "published_at": "2026-10-15T03:47:00-06:00",
+  "descriptions": {
+    "ko": "iOS, Android, macOS, Windows를 직접 사용하며 느낀 생태계, 배터리, UI, 개발 편의성, 보안과 호환성의 장단점을 정리합니다.",
+    "en": "My experience using iOS, Android, macOS, and Windows, from ecosystem integration and battery life to developer workflows, security, and compatibility.",
+    "ja": "iOS、Android、macOS、Windowsを実際に使い、エコシステム、バッテリー、UI、開発の自由度、セキュリティ、互換性について感じたことを紹介します。"
+  }
+}

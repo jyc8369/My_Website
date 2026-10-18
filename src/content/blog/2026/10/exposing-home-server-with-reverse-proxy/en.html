@@ -1,0 +1,192 @@
+<h2 id="exposing-my-home-server-without-port-forwarding">Exposing My Home Server Without Port Forwarding</h2>
+<p>I run several servers at home.</p>
+<p>I enjoy setting up and operating my own infrastructure, so naturally I wanted to make some of the services running on those machines accessible from outside my home.</p>
+<p>But publishing a home server on the internet raises an important question: how do people connect to it?</p>
+<p>A common approach is to configure port forwarding on a router. I wanted to avoid revealing my home server&#39;s public IP address directly whenever possible.</p>
+<p>So I chose <strong>a combination of a VPS, a reverse proxy, and an encrypted network tunnel</strong>.</p>
+<p>I briefly mentioned this setup in my earlier post, <a href="/en/blog/2026/10/my-infrastructure-in-canada/">“Servers in Canada and a Warm Room”</a>.</p>
+<p>That article was about my infrastructure in general, so I did not explain the arrangement in detail. But it occurred to me that this setup could be useful not only to people who want to avoid directly exposing a home IP address, but also to those dealing with other network restrictions.</p>
+<p>This time, I want to explain how the pieces fit together and where the same approach can be useful.</p>
+<h2 id="1-what-is-a-reverse-proxy">1. What is a reverse proxy?</h2>
+<p>First, let me explain what a reverse proxy is.</p>
+<p>A conventional web server can receive requests directly from visitors.</p>
+<p>When someone opens a website, a server associated with its address receives the request and returns content such as HTML pages or images.</p>
+<p>A reverse proxy sits between the visitor and the server running the application.</p>
+<p>Instead of connecting directly to the application server, the visitor connects to the reverse proxy.</p>
+<p>The proxy forwards the request to the appropriate server and then returns that server&#39;s response to the visitor.</p>
+<p>Imagine I have a web server running at home.</p>
+<p>Rather than having each visitor connect to my home server, I put a reverse proxy in front of it. Requests arrive at the proxy first, and the proxy passes them on to the server at home.</p>
+<p>The visitor can use the website without needing to know much about the intermediate server.</p>
+<p>Reverse proxies have several uses. They can provide a single entry point, route requests among services, handle HTTPS connections, or filter certain requests.</p>
+<p>With a suitable configuration, they can also keep the application server&#39;s IP address out of the information visitors normally see.</p>
+<p>That last possibility was particularly interesting to me.</p>
+<h2 id="2-why-did-i-want-to-avoid-exposing-my-home-ip-address">2. Why did I want to avoid exposing my home IP address?</h2>
+<p>My main reasons were security and network management.</p>
+<p>Exposing a service from home commonly involves configuring a router or firewall to accept inbound connections.</p>
+<p>I wanted to avoid having my home internet connection and servers directly receive public traffic whenever possible.</p>
+<p>One thing I was especially concerned about was a DDoS attack.</p>
+<p>If someone floods my public home IP address with traffic, the effect might not be limited to a particular application. It could also disrupt the internet connection I use at home.</p>
+<p>Publishing an IP address does not automatically mean an attack will happen, of course.</p>
+<p>And concealing an address does not guarantee that every attack will be prevented.</p>
+<p>Still, I preferred to place the public entry point somewhere other than my home.</p>
+<p>I therefore decided to run the actual services at home while giving visitors the public address of a separate VPS.</p>
+<p>VPS stands for Virtual Private Server: a virtual machine provided by a hosting or cloud company.</p>
+<p>Put simply, it is a remote computer you rent and can access over the internet.</p>
+<p>For this role, I provisioned a virtual server using the free tier of Oracle Cloud Infrastructure (OCI).</p>
+<p>That VPS became the public entry point to my home-hosted services.</p>
+<h2 id="3-connecting-an-oracle-cloud-vps-to-my-home-server">3. Connecting an Oracle Cloud VPS to my home server</h2>
+<p>A VPS does not automatically have a way to reach a computer on my home network.</p>
+<p>The two machines need a network path between them.</p>
+<p>I used Tailscale to establish that path.</p>
+<p>Tailscale is a service that helps connect devices through an encrypted network built on WireGuard.</p>
+<p>WireGuard is a VPN technology that encrypts network traffic between devices. Tailscale adds conveniences such as device authentication, connection management, and NAT traversal.</p>
+<p>This can let devices on different networks communicate as though they were part of the same private network.</p>
+<p>In my setup, I connected the Oracle Cloud VPS and my home server through Tailscale.</p>
+<p>The VPS can receive a request from the public internet and forward it to my home server using its Tailscale connection.</p>
+<p>An important point is that <strong>traffic between the VPS and my home server travels through a WireGuard-based encrypted connection</strong>.</p>
+<p>An encrypted tunnel does not solve every security problem, but it gives me a different network architecture from exposing the internal service directly to the internet.</p>
+<h2 id="4-what-path-does-the-traffic-actually-follow">4. What path does the traffic actually follow?</h2>
+<p>The overall path looks like this:</p>
+<p><strong>Visitor → reverse proxy on Oracle Cloud VPS → encrypted Tailscale connection → web application on my home server</strong></p>
+<p>The response travels back in the other direction:</p>
+<p><strong>Home server → Tailscale → VPS → visitor</strong></p>
+<p>Here is what happens in more detail.</p>
+<h3 id="step-one-the-visitor-connects-to-the-vps">Step one: the visitor connects to the VPS</h3>
+<p>Suppose someone wants to access a service I have made public.</p>
+<p>To simplify the explanation, imagine they connect directly to an IPv4 address rather than using a domain name.</p>
+<p>They connect to the public IP address assigned to my Oracle Cloud VPS, not the address of my home server.</p>
+<p>The VPS is the public entry point.</p>
+<p>If I use a domain name that points to the VPS, the basic principle is the same.</p>
+<h3 id="step-two-the-reverse-proxy-forwards-the-request">Step two: the reverse proxy forwards the request</h3>
+<p>A reverse proxy program is running on the VPS.</p>
+<p>It receives the visitor&#39;s request and forwards it to the server hosting the actual service.</p>
+<p>But that application server is not in the VPS&#39;s data center.</p>
+<p>It is in my home.</p>
+<p>The reverse proxy therefore uses the route provided by Tailscale to reach the home server.</p>
+<p>It can use an address reachable through the Tailscale network instead of directly targeting the home server&#39;s public IP.</p>
+<h3 id="step-three-the-home-server-handles-the-request">Step three: the home server handles the request</h3>
+<p>When the request arrives, the application on my home server processes it.</p>
+<p>It might serve a web page or respond to an API request.</p>
+<p>From the application&#39;s perspective, the request is delivered through the VPS instead of arriving as a direct connection from the visitor over the public internet.</p>
+<h3 id="step-four-the-response-returns-to-the-visitor">Step four: the response returns to the visitor</h3>
+<p>The home server sends its response back over Tailscale to the VPS.</p>
+<p>The reverse proxy then sends that response to the visitor.</p>
+<p>That is how visitors can use a service running on my home server.</p>
+<p>They do not have to install Tailscale themselves.</p>
+<p>Only the connection between the VPS and the home server uses Tailscale; ordinary visitors connect to the public VPS.</p>
+<p>Any authentication required by the application itself is a separate concern.</p>
+<h2 id="5-does-this-completely-hide-the-real-server-s-ip-address">5. Does this completely hide the real server&#39;s IP address?</h2>
+<p>I want to be precise about this part.</p>
+<p>Using a reverse proxy and Tailscale does not somehow encrypt the home server&#39;s public IP address and make it disappear.</p>
+<p>What gets encrypted is the network traffic carried over the Tailscale connection.</p>
+<p>My goal is <strong>to make it unnecessary for ordinary visitors to know or use my home server&#39;s public IP address when accessing the service</strong>.</p>
+<p>Visitors connect to the public VPS. The route to the actual server is behind it.</p>
+<p>If the service&#39;s DNS records and responses do not separately disclose the home address, and there are no direct public access paths to the home server, visitors would not ordinarily learn that IP just by using the service.</p>
+<p>But this setup does not provide absolute anonymity.</p>
+<p>Other DNS records, previously published addresses, or application configuration mistakes could still reveal the origin IP.</p>
+<p>The VPS itself also remains exposed to the public internet.</p>
+<p>An attacker could target the VPS or exploit vulnerabilities in an application reachable through the proxy.</p>
+<p>So the presence of a reverse proxy does not mean security is complete.</p>
+<p>Access controls, firewalls, and software updates still matter.</p>
+<p>It is also important to restrict which devices and services are reachable through the Tailscale network connecting the VPS and home server.</p>
+<p>I view this design not as a perfect security solution, but as <strong>a way to reduce the direct public exposure of my home server</strong>.</p>
+<h2 id="6-it-is-useful-when-port-forwarding-is-unavailable">6. It is useful when port forwarding is unavailable</h2>
+<p>So far, I have explained why I chose this setup.</p>
+<p>But hiding an origin IP is not its only advantage.</p>
+<p>For other people, its most useful feature may be the ability to publish a service when port forwarding is difficult or impossible.</p>
+<h3 id="what-is-port-forwarding">What is port forwarding?</h3>
+<p>On a typical home network, several devices share one internet connection through a router.</p>
+<p>Each local computer usually has a private IP address.</p>
+<p>That private address cannot ordinarily be reached directly from the public internet.</p>
+<p>To forward an incoming connection to a particular computer, the router may need a rule identifying which internal device should receive traffic arriving at a given port.</p>
+<p>This is called port forwarding.</p>
+<p>For example, a router could be configured to send connections arriving on a particular public port to a web server inside the home.</p>
+<p>This makes the internal service reachable from outside.</p>
+<p>But not everyone can configure such rules.</p>
+<h3 id="what-if-you-cannot-control-the-router">What if you cannot control the router?</h3>
+<p>In an apartment building or dormitory, for example, you might not have administrative access to the network equipment.</p>
+<p>Several households might share one managed network, or you might not be allowed to change the upstream router.</p>
+<p>Double-router setups can create a similar problem.</p>
+<p>Having two routers does not automatically make port forwarding impossible. If you can configure both, you may be able to create the necessary forwarding rules.</p>
+<p>But if you cannot access the upstream router, things become more difficult.</p>
+<p>Another example is CGNAT (Carrier-Grade NAT), where an internet provider places customers behind its own network address translation. Configuring port forwarding on your personal router may not make ordinary inbound IPv4 connections possible.</p>
+<p>In these situations, running a server is easy enough, but giving outsiders a route to it can be difficult.</p>
+<p>This is where a VPS with a public IP and a connection tool such as Tailscale can help.</p>
+<p>Instead of opening an inbound port on the home router, the home server and VPS establish connectivity, and the VPS accepts and forwards the public requests.</p>
+<p>The local network must still allow the outbound traffic needed for Tailscale, and the connection must actually succeed.</p>
+<p>Depending on network conditions, Tailscale may establish a direct peer-to-peer connection or use a relay.</p>
+<p>Performance is therefore not guaranteed to be the same in every environment.</p>
+<p>Even with those qualifications, it is worth considering when you do not have permission to configure port forwarding.</p>
+<h2 id="7-this-can-work-for-more-than-web-servers">7. This can work for more than web servers</h2>
+<p>Is this only useful for hosting websites?</p>
+<p>Not at all.</p>
+<p>Using a public VPS to accept traffic and forward it into a private network can support different kinds of services.</p>
+<p>However, the exact setup depends on the network protocol each service uses.</p>
+<h3 id="websites-and-backend-apis">Websites and backend APIs</h3>
+<p>Web servers are the most straightforward example.</p>
+<p>I could run a personal website on a machine at home and let visitors connect through the VPS.</p>
+<p>A backend API can work similarly.</p>
+<p>For HTTP or HTTPS services, a conventional web reverse proxy such as NGINX can forward requests to the internal application.</p>
+<p>If several services share the VPS, the proxy can route traffic according to domain names or URL paths.</p>
+<h3 id="game-servers-such-as-minecraft">Game servers such as Minecraft</h3>
+<p>The same broad approach can be adapted for game servers.</p>
+<p>For example, a Minecraft server could run at home while players connect to the VPS&#39;s public address.</p>
+<p>There is an important distinction, though.</p>
+<p>The HTTP reverse proxy configuration used for websites does not necessarily work unchanged for game servers.</p>
+<p>They may use different network protocols.</p>
+<p>Minecraft Java Edition generally uses TCP, whereas Bedrock Edition uses UDP.</p>
+<p>Depending on the game, you need a proxy or port-forwarding arrangement that can carry the relevant TCP or UDP traffic.</p>
+<p>The underlying idea is similar, but the specific software and configuration can be different.</p>
+<p>Assuming every service works through an ordinary HTTP reverse proxy can lead to problems.</p>
+<h3 id="other-personal-services">Other personal services</h3>
+<p>The approach can also be used for personal web dashboards or test applications.</p>
+<p>However, I would not recommend making every administration tool public just because it is technically possible.</p>
+<p>Sensitive services such as administrator dashboards or server management interfaces may be better kept inside a private network, accessible only to authorized devices.</p>
+<p>The important question is not how to publish everything, but <strong>which services should be accessible to whom</strong>.</p>
+<h2 id="8-things-to-consider-when-operating-this-setup">8. Things to consider when operating this setup</h2>
+<p>So far, this might sound like a very convenient design.</p>
+<p>It is useful, but there are trade-offs.</p>
+<p>First, the network path becomes longer.</p>
+<p>Instead of communicating directly with the home server, visitors go through the VPS.</p>
+<p>And Tailscale does not always establish a direct connection between peers.</p>
+<p>If network conditions require a relay, latency or throughput may be affected further.</p>
+<p>I previously experienced concerns about routes and connection stability while self-hosting my website.</p>
+<p>I discussed those experiences in <a href="/en/blog/2026/10/why-i-moved-my-website-hosting/">“Why I Moved My Website Away from Self-Hosting”</a>.</p>
+<p>So I would not claim that a VPS-based route is always faster than a direct connection.</p>
+<p>The VPS also becomes a dependency.</p>
+<p>Even if the home server is healthy, visitors may lose access when the VPS goes down or the tunnel becomes unavailable.</p>
+<p>Costs matter too.</p>
+<p>I used Oracle Cloud&#39;s free tier, but free resources come with limits and conditions.</p>
+<p>Heavy traffic could make VPS bandwidth or processing capacity a bottleneck.</p>
+<p>And using a free tier does not necessarily guarantee that no charge is possible under every circumstance. The applicable service terms and account settings should be checked.</p>
+<p>Finally, there is security administration.</p>
+<p>The VPS&#39;s public ports and firewall rules, Tailscale access permissions, and the internal server&#39;s accepted connections all need attention.</p>
+<p>For a website, HTTPS between the visitor and the VPS needs to be configured separately.</p>
+<p>Encrypting traffic between the VPS and home server with Tailscale does not automatically make the visitor-to-VPS connection HTTPS.</p>
+<p>If an application behind the proxy needs a visitor&#39;s original IP address, it may also need to process forwarding headers correctly—and only trust those headers from a trusted proxy.</p>
+<p>All of this means that a reverse proxy and encrypted tunnel introduce another set of components to maintain.</p>
+<p>Depending on the application, the maintenance cost may outweigh the benefits.</p>
+<h2 id="9-you-do-not-need-to-have-the-same-reason-i-did">9. You do not need to have the same reason I did</h2>
+<p>My main reason for adopting this structure was that I did not want visitors to connect directly to my home server&#39;s public IP address.</p>
+<p>But other people may have completely different reasons.</p>
+<p>Perhaps they cannot configure port forwarding, or their home connection is not directly reachable from the internet.</p>
+<p>Perhaps they want to manage several internal services behind one public address.</p>
+<p>Or perhaps they want to keep the applications running at home while moving only the public entry point to a cloud server.</p>
+<p>All of these can be reasonable motivations.</p>
+<p>A VPS and reverse proxy are not always the right answer, however.</p>
+<p>If only you need access to a service, connecting over a private network such as Tailscale without publishing it at all may be simpler.</p>
+<p>And for a static website, a dedicated static hosting service might be more convenient.</p>
+<p>That is what my own blog uses today: Cloudflare Workers Static Assets.</p>
+<p>The VPS-to-home-server architecture described here is therefore <strong>not</strong> the architecture currently serving this blog&#39;s pages.</p>
+<p>It is the approach I have used to make services running on my home infrastructure accessible from outside.</p>
+<p>What matters is understanding the problem in your own environment before choosing a technology.</p>
+<h2 id="closing-thoughts">Closing thoughts</h2>
+<p>In this post, I have explained the network architecture I used to expose services running on my home server.</p>
+<p>I placed an Oracle Cloud VPS at the public entry point, connected it to my home server through Tailscale, and used a reverse proxy to forward requests over the encrypted network.</p>
+<p>For me, the biggest benefit was avoiding direct exposure of my home server&#39;s public IP address to ordinary visitors.</p>
+<p>The same arrangement can also be useful when port forwarding is unavailable or when several internal services need a single public entry point.</p>
+<p>It adds complexity to the network path and introduces more components to manage, so I would not recommend it unconditionally.</p>
+<p>But if you run servers at home and are unsure how to make a service accessible from outside, I think it is worth learning about.</p>
+<p>I did not begin with a complete understanding of every networking technology involved.</p>
+<p>I learned about different approaches while operating my servers and solving the problems that came up, then chose the combination that suited my goals.</p>
+<p>I hope this explanation gives others in similar environments a useful starting point.</p>

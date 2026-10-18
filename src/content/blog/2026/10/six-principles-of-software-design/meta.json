@@ -1,0 +1,14 @@
+{
+  "slug": "six-principles-of-software-design",
+  "titles": {
+    "ko": "내가 프로그램을 설계할 때 중요하게 생각하는 6가지 원칙",
+    "en": "Six Principles That Guide How I Design Software",
+    "ja": "私がソフトウェアを設計するときに大切にしている6つの原則"
+  },
+  "published_at": "2026-10-15T01:34:50-06:00",
+  "descriptions": {
+    "ko": "포터블 배포, 실행 효율과 메모리 절약, 기능의 단순함, 오픈 소스, 문제 해결 기록까지 제가 프로그램을 설계할 때 따르는 여섯 가지 기준을 소개합니다.",
+    "en": "Six personal software design principles: portable distribution, efficient runtime and memory usage, simplicity, open source, and documenting solutions.",
+    "ja": "ポータブルな配布、実行時の効率とメモリ節約、機能の単純さ、オープンソース、問題解決の記録という六つの開発原則を紹介します。"
+  }
+}

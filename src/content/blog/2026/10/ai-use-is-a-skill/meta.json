@@ -1,0 +1,14 @@
+{
+  "slug": "ai-use-is-a-skill",
+  "titles": {
+    "ko": "AI를 적극적으로 쓰되, 사용법도 배워야 한다",
+    "en": "Use AI Actively, and Learn How to Use It Well",
+    "ja": "AIを積極的に使い、使い方も学ぶ"
+  },
+  "published_at": "2026-10-15T04:13:19Z",
+  "descriptions": {
+    "ko": "AI 코딩의 속도와 위험을 함께 바라보며, 프롬프트와 검토를 익히는 일이 왜 중요한지 이야기합니다.",
+    "en": "I consider both the speed and risks of AI-assisted coding, and why learning to prompt and review matters.",
+    "ja": "AIによるコーディングの速さとリスクの両方を考えながら、指示の出し方とレビューを学ぶ大切さについて書きます。"
+  }
+}

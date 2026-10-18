@@ -1,0 +1,46 @@
+<h2 id="why-i-left-linux-and-went-back-to-windows">Why I Left Linux and Went Back to Windows</h2>
+<p>Windows is currently the operating system I use most on my desktop. But I have not always used Windows. For quite a long time, Linux was my primary operating system, and I would still like to return to it if I can.</p>
+<p>So why am I using Windows now? The answer comes from my experience with computers and a hardware virtualization problem. In this post, I will talk about the operating systems I have used, why I chose Linux, and why I currently use Windows.</p>
+<h2 id="1-windows-was-the-first-operating-system-i-used">1. Windows was the first operating system I used</h2>
+<p>I first encountered computers in elementary school. I had almost no technical knowledge then and mostly thought of a computer as a device for games and everyday programs. Naturally, Windows was the first operating system I used.</p>
+<p>After starting middle school, especially around the middle of those years, I became more interested in programming and computer systems. I tried making programs, fixing them when they did not work, and sometimes abandoning a project and starting over. From then on, a computer became more than a device for running programs; it became a tool for making things myself.</p>
+<p>Generative AI coding tools were not common then. When something went wrong, I had to analyze the error, search for answers, and read the official documentation myself. It could feel inefficient, but I think the experience helped me understand computer systems.</p>
+<h2 id="2-choosing-linux-as-my-primary-operating-system">2. Choosing Linux as my primary operating system</h2>
+<p>As my interest in programming grew, I started using Linux. It gave me the freedom to configure my development environment, inspect how the system worked, and automate tasks with scripts and programs. That freedom suited me, and over time I switched my primary operating system from Windows to Linux.</p>
+<p>That did not mean I could get rid of Windows completely. Some programs only worked properly on Windows, and certain websites required Windows security software. Even while using Linux most of the time, I still had reasons to use Windows.</p>
+<p>I considered how to use both operating systems and chose virtualization instead of dual booting.</p>
+<h2 id="3-running-windows-in-a-virtual-machine-on-linux">3. Running Windows in a virtual machine on Linux</h2>
+<p>The computer I used at the time had two GPUs. I used one with Linux and passed the other directly to a Windows virtual machine. This is called GPU passthrough: it allows a virtual machine to use a physical graphics card instead of a virtual graphics device.</p>
+<p>The setup looked like this:</p>
+<ul><li>The first monitor was connected to Linux.</li><li>The second monitor was connected to the Windows virtual machine.</li><li>One GPU was used by Linux.</li><li>The other GPU was assigned to Windows.</li></ul>
+<p>I could use both operating systems at the same time on one computer.</p>
+<p>Setting it up was not simple. Before starting the Windows virtual machine, I had to detach the second GPU from Linux and prepare it for the virtual machine. I wrote a script to automate this process.</p>
+<ol><li>Stop using the second GPU in Linux.</li><li>Detach the GPU from the Linux driver.</li><li>Prepare the device for assignment to the virtual machine.</li><li>Start the Windows virtual machine with the GPU attached.</li></ol>
+<p>The second monitor went dark briefly, then came back on when Windows started. A virtual machine cannot guarantee the exact same performance as a physical Windows installation, but my computer was powerful enough for everyday work and even some AAA games.</p>
+<p>After shutting down Windows, I ran another script to restore the GPU for Linux. Once it was reattached to the Linux driver, Linux could use the second monitor again. I could use both operating systems at once when I needed Windows, then return to a dual-monitor Linux desktop when I did not.</p>
+<h2 id="4-writing-a-rust-program-to-switch-input-devices">4. Writing a Rust program to switch input devices</h2>
+<p>Moving between operating systems made switching my keyboard and mouse inconvenient. When I used Windows, I had to pass the input devices to the Windows virtual machine, then return them to the host when I wanted to use Linux again.</p>
+<p>To solve this, I wrote a separate program in Rust. It could switch USB devices to the operating system I wanted to use.</p>
+<p>One unusual part of the setup was using a separate keyboard as a controller rather than for typing. The program detected HID input from that keyboard and ran a predefined switching action when I pressed a particular key. In effect, I used a keyboard as a simple physical control panel.</p>
+<p>When something in my system is inconvenient, writing a program to fix it is one of my usual habits. Rust worked well for this kind of task too.</p>
+<h2 id="5-a-computer-upgrade-made-gpu-passthrough-difficult">5. A computer upgrade made GPU passthrough difficult</h2>
+<p>I was happy with this setup until I upgraded my computer. The new computer also had two GPUs, and its CPU supported virtualization. I expected to recreate my old setup, but ran into an IOMMU group problem.</p>
+<p>An IOMMU group describes how hardware devices are grouped for isolation. If a GPU is in its own group, assigning it to a virtual machine is more straightforward. If it is grouped with other devices, it can be difficult to separate and pass through safely.</p>
+<p>On the new computer, the GPUs were not separated in the way I needed. I could not reproduce my previous GPU passthrough setup as it was.</p>
+<h3 id="a-problem-that-may-not-be-solved-by-operating-system-settings-alone">A problem that may not be solved by operating-system settings alone</h3>
+<p>At first, I looked into changing Linux or virtualization settings. But IOMMU grouping is affected not only by the operating system, but also by the motherboard&#39;s PCIe layout and device isolation capabilities. Changing a few configuration files may not be enough.</p>
+<p>There are patches such as ACS override that can make device groups appear split in the Linux kernel. But making groups look separate in software does not improve the hardware&#39;s actual isolation. If possible, I prefer to preserve the isolation properties provided by the hardware.</p>
+<p>I also considered modifying the motherboard&#39;s BIOS firmware directly. A bad firmware flash can prevent the system from booting and may be difficult to recover from. For now, I do not want to try that approach.</p>
+<h2 id="6-going-back-to-windows-as-my-primary-desktop-os">6. Going back to Windows as my primary desktop OS</h2>
+<p>Because of this issue, Windows is currently my primary desktop operating system again. I have not removed Linux; I installed both systems in a dual-boot configuration.</p>
+<p>With dual booting, though, I cannot use both operating systems at once. To use Linux, I have to shut down Windows and boot into Linux. To return to Windows, I have to reboot again. Compared with my old setup, where both systems were available at the same time, this is inconvenient. I use Linux on my desktop less often as a result.</p>
+<p>I mainly use Linux on servers now and Windows more often on my desktop.</p>
+<h2 id="what-might-i-do-next">What might I do next?</h2>
+<p>I have not decided yet. If I can solve the IOMMU group issue without modifying the BIOS firmware directly, I would like to try. I also want to see whether changing the PCIe slot arrangement or other hardware settings could help.</p>
+<p>If those options do not work, I may build another computer. Most of my other computers currently run Linux and are configured more like servers than ordinary desktops. I could build a Windows-only desktop and keep my existing computer for Linux, or keep this computer dedicated to Windows and build a separate Linux desktop.</p>
+<h2 id="i-still-prefer-linux">I still prefer Linux</h2>
+<p>Even though Windows is my primary operating system now, Linux is still my personal preference. That is not simply because Linux is always faster or lighter. Resource use depends on the installed programs, system settings, and the work being done.</p>
+<p>I prefer Linux because I can control the system directly and configure my development environment the way I want. Its design and the freedom it gives users also fit my values. Some Windows product policies and system management choices do not fit my preferences as well.</p>
+<p>Of course, Windows has advantages: broad software compatibility, strong game support, and access to many commercial programs. Those are some of the reasons I have not abandoned it completely.</p>
+<p>I use Windows now not because it is my favorite operating system, but because it is the most practical choice for my current hardware and day-to-day needs. I hope I can make Linux my primary desktop environment again someday.</p>
+<p>Related reading: <a href="/en/blog/2026/10/rust-keyboard-mouse-switcher/">Building a Keyboard and Mouse Switcher in Rust</a> · <a href="/en/blog/2026/10/why-i-like-rust/">Why Rust Is My Favorite Programming Language</a>.</p>
