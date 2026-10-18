@@ -1,0 +1,17 @@
+<h2 id="purpose">Why I Built a Status Page</h2>
+<p>On October 18, 2026, I built and deployed <a href="https://status.jyc8369.dev/">status.jyc8369.dev</a>, a small service for checking the health of several Linux servers in one place. It displays CPU usage and operating-system uptime and indicates whether each server is responding to status requests.</p>
+<h2 id="backend">A Lightweight API for Linux Server Metrics</h2>
+<p>I started by building a lightweight backend API in Rust. It returns host-wide CPU usage, operating-system uptime, and the collection timestamp as JSON. CPU usage is sampled once per second in the background, and a separate health-check endpoint is available.</p>
+<p>I only needed a few metrics for this project. Instead of building a complex monitoring platform, I focused on a small API that reports the information the page actually uses.</p>
+<h2 id="network">Reaching Multiple Nodes Through One Cloudflare Tunnel</h2>
+<p>Rather than installing Cloudflare Tunnel on every server, I configured one tunnel on a proxy server. That proxy can reach the other devices over a private Tailscale network. Status requests from the Cloudflare side travel through this route to reach each server's API.</p>
+<p>The main benefit is that I can query several devices through a single entry point without managing a separate tunnel on each node.</p>
+<h2 id="frontend">A Status Dashboard on Cloudflare Pages</h2>
+<p>I deployed the user-facing interface to Cloudflare Pages. The static page uses Pages Functions to retrieve JSON status reports and display them in the dashboard. The current frontend refreshes every 30 seconds, updating CPU usage, uptime, and whether each device responded.</p>
+<p>Because this page only needs periodic checks, I do not need to stream every metric with minimal latency.</p>
+<h2 id="limitations">What This Simpler Design Trades Off</h2>
+<p>Using one proxy makes the setup easier to manage, but it also concentrates requests on a single path. If the proxy or the network route fails, the dashboard may show servers as unavailable even when those servers are still running. Additional hops can also affect response time.</p>
+<p>That makes the design a poor default for workloads that require extremely low latency or immediate fault detection. For my goal of checking basic server health at intervals, simpler operations are the priority for now.</p>
+<h2 id="open-source">Open Source and Next Steps</h2>
+<p>I published both projects on GitHub: the <a href="https://github.com/jyc8369/Website_Status">status page</a> and the <a href="https://github.com/jyc8369/Server_Status">backend API server</a>.</p>
+<p>I have deliberately left out the detailed proxy configuration, internal request routing, and security settings. After reviewing the full flow and its security implications, I may document the parts that are safe to share and update this article.</p>
