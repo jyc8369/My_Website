@@ -29,7 +29,7 @@ export function addPageMetadata(html, relativePath) {
     const title = updated.match(/<title\b[^>]*>([\s\S]*?)<\/title\s*>/i)?.[1];
     const description = updated.match(/<meta\b(?=[^>]*\bname="description")(?=[^>]*\bcontent="([^"]*)")[^>]*>/i)?.[1];
     if (!title || !description) throw new Error(`[static metadata] Missing title or description in ${relativePath}.`);
-    updated = addToHead(updated, `<meta property="og:type" content="website"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:image" content="https://jyc8369.dev/assets/og.svg">`);
+    updated = addToHead(updated, `<meta property="og:type" content="website"><meta property="og:title" content="${title}"><meta property="og:description" content="${description}"><meta property="og:image" content="https://jyc8369.dev/assets/images/og.svg">`);
   }
 
   return updated;

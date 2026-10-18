@@ -4,7 +4,7 @@ This guide documents the verified development and deployment workflow for the st
 
 ## Source layout
 
-- `site/` contains the hand-maintained static HTML, CSS, JavaScript, and assets that seed the published site. Korean and English pages live under `site/ko/` and `site/en/`.
+- `site/` contains the hand-maintained static HTML and assets that seed the published site. Korean and English pages live under `site/ko/` and `site/en/`; shared styles, scripts, and images are grouped in `site/assets/css/`, `site/assets/js/`, and `site/assets/images/`.
 - `src/content/blog/YYYY/MM/` contains authored multilingual Markdown; the build turns each valid post into localized HTML pages.
 - `scripts/localization/generate.mjs` explicitly generates Japanese pages, the 404 page, and the English privacy page during the build.
 - `scripts/blog/generate.mjs` turns valid posts into pages for Korean, English, and Japanese.
