@@ -23,7 +23,7 @@ Visit [jyc8369.dev](https://jyc8369.dev/) in your browser. No installation or do
 
 ### License and content rights
 
-The website software is available under the [MIT License](LICENSE). Personal writing, its translations and rendered copies, biographies, and original branding and illustrations are not covered by that license. They are Copyright (c) 2026 jyc8369, all rights reserved, unless a separate license is stated. The MIT license for the software does not grant permission to republish these materials.
+Website software is available under the [MIT License](LICENSE). Original writing and creative works published on the site, including original blog posts and their author-created translations, are available under [CC BY 4.0](CONTENT-LICENSE.md), unless a page says otherwise. Third-party materials and branding are excluded; see the content license for details.
 
 <a id="korean"></a>
 ## 한국어
@@ -44,7 +44,7 @@ jyc8369.dev는 제가 좋아하는 것을 기록하고 직접 만든 것을 나�
 
 ### 라이선스와 콘텐츠 권리
 
-웹사이트 소프트웨어에는 [MIT 라이선스](LICENSE)가 적용됩니다. 개인이 작성한 글과 번역·렌더링된 사본, 자기소개 및 원본 브랜딩·일러스트레이션은 해당 라이선스에 포함되지 않습니다. 별도 라이선스가 명시되지 않은 경우 이 자료의 저작권은 jyc8369에게 있으며 2026년 기준 모든 권리를 보유합니다. 소프트웨어에 적용된 MIT 라이선스는 이 자료를 다시 게시할 권한을 부여하지 않습니다.
+웹사이트 소프트웨어에는 [MIT 라이선스](LICENSE)가 적용됩니다. 사이트에 게시한 직접 작성 콘텐츠와 창작물, 블로그 글 및 직접 번역한 글에는 별도 표시가 없는 한 [CC BY 4.0](CONTENT-LICENSE.md)이 적용됩니다. 제3자 자료와 브랜드 요소는 제외됩니다. 자세한 적용 범위와 출처 표기 방법은 콘텐츠 라이선스를 확인해 주세요.
 
 <a id="japanese"></a>
 ## 日本語
@@ -65,4 +65,4 @@ jyc8369.dev は、興味のあることを記録し、自分で作ったもの�
 
 ### ライセンスとコンテンツの権利
 
-ウェブサイトのソフトウェアには [MIT License](LICENSE) が適用されます。個人が執筆した文章、その翻訳・生成ページ、プロフィール文、オリジナルのブランド素材やイラストは対象外です。別途ライセンスが明記されていない限り、これらの著作権は jyc8369 に帰属し、2026年時点ですべての権利を留保します。ソフトウェアに適用される MIT License は、これらの素材を再掲載する許可を与えるものではありません。
+ウェブサイトのソフトウェアには [MIT License](LICENSE) が適用されます。サイトに掲載したオリジナルの文章や創作物、ブログ記事および自ら翻訳した文章には、別途表示がない限り [CC BY 4.0](CONTENT-LICENSE.md) が適用されます。第三者の素材とブランド要素は対象外です。適用範囲とクレジット表記についてはコンテンツライセンスをご覧ください。

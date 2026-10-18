@@ -63,4 +63,4 @@ The deployment target is Cloudflare Workers Static Assets, configured to use `di
 
 ## Licensing
 
-The software source is licensed under the [MIT License](../LICENSE). The root README documents the separate copyright status of personal writing, translated or rendered copies, and original branding and illustrations.
+The software source is licensed under the [MIT License](../LICENSE). Original site writing and creative works follow the scope and attribution terms in the [content license](../CONTENT-LICENSE.md). Third-party assets keep their own licenses.
