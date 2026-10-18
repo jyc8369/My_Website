@@ -64,13 +64,9 @@ for (const file of await htmlFiles("dist")) {
   }
   if (relative === "ko/about/index.html" || relative === "en/about/index.html") {
     const ko = locale === "ko";
-    const section = ko
-      ? '<section id="about-ai-use" data-ui="about-ai-use"><h2>AI 활용</h2><p>대부분의 프로젝트에서 AI가 코드 생성을 돕습니다. 저는 방향을 정하고 결과를 검토하며 실제 운영에 참여합니다.</p><p>사용 도구 이름은 확인된 목록이 정리되면 추가할 수 있도록 남겨 두었습니다.</p></section>'
-      : '<section id="about-ai-use" data-ui="about-ai-use"><h2>How I Use AI</h2><p>AI generates code for many of my projects. I set direction, review the results, and take part in operating what I build.</p><p>I will add the tool names once I have a confirmed list.</p></section>';
-    html = html.replace(/(<section id="about-why-this-site-exists")/, `${section}$1`);
     const toc = ko
-      ? '<nav class="about-toc" aria-label="목차"><details><summary>목차</summary><ol><li><a href="#about-things-i-enjoy">소개와 관심사</a></li><li><a href="#about-how-i-think">가치관</a></li><li><a href="#about-ai-use">AI 활용</a></li><li><a href="#about-why-this-site-exists">사이트 이야기</a></li><li><a href="#about-get-in-touch">연락처</a></li></ol></details></nav>'
-      : '<nav class="about-toc" aria-label="Contents"><details><summary>Contents</summary><ol><li><a href="#about-things-i-enjoy">Introduction and interests</a></li><li><a href="#about-how-i-think">Values</a></li><li><a href="#about-ai-use">How I use AI</a></li><li><a href="#about-why-this-site-exists">About this site</a></li><li><a href="#about-get-in-touch">Contact</a></li></ol></details></nav>';
+      ? '<nav class="about-toc" aria-label="목차"><details><summary>목차</summary><ol><li><a href="#about-things-i-enjoy">좋아하는 것들</a></li><li><a href="#about-what-matters">중요하게 생각하는 것</a></li><li><a href="#about-ai-workflow">AI 활용</a></li><li><a href="#about-why-this-site-exists">사이트를 만든 이유</a></li><li><a href="#about-get-in-touch">연락처</a></li></ol></details></nav>'
+      : '<nav class="about-toc" aria-label="Contents"><details><summary>Contents</summary><ol><li><a href="#about-things-i-enjoy">Things I Enjoy</a></li><li><a href="#about-what-matters">What Matters to Me</a></li><li><a href="#about-ai-workflow">How I Use AI</a></li><li><a href="#about-why-this-site-exists">Why I Made This Site</a></li><li><a href="#about-get-in-touch">Get in Touch</a></li></ol></details></nav>';
     html = html.replace('<div id="about-content" class="about-layout" data-ui="about-content">', `<div id="about-content" class="about-layout" data-ui="about-content">${toc}`);
   }
   html = html.replace(/<a\b[^>]*\bhref="https?:\/\/[^\"]*"[^>]*>/gi, (anchor) => {
