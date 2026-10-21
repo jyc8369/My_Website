@@ -1,0 +1,14 @@
+<h2 id="bringing-back-an-android-phone-stuck-in-safe-mode">Bringing Back an Android Phone Stuck in Safe Mode</h2>
+<p>The volume button on an Android phone I used before broke. The hardware kept registering the button as pressed. Whenever I rebooted the phone in that state, it entered safe mode, where I could not use the apps I had installed.</p>
+<h2 id="using-only-chrome-for-two-or-three-months">Using Only Chrome for Two or Three Months</h2>
+<p>In safe mode, third-party apps are usually disabled, leaving only the apps included by the manufacturer available. Chrome still worked on my device, so for two or three months I used the phone mostly to read webtoons in Chrome.</p>
+<p>Eventually, I started looking for another option. I found an ADB (Android Debug Bridge) command that could restrict entry into safe mode. On my Android 15-based device, after running the command below, the phone could boot into normal mode even while it continued to register the volume button as pressed.</p>
+<figure class="code-block"><pre tabindex="0"><code class="language-sh">adb shell settings put global safe_boot_disallowed 1</code></pre></figure>
+<p>This did not fix the hardware problem. The button is still detected as pressed. It did, however, let me get around the issue where the phone would only boot into safe mode.</p>
+<h2 id="making-the-phone-ignore-the-faulty-button-input">Making the Phone Ignore the Faulty Button Input</h2>
+<p>After getting the phone to boot normally, I made a simple accessibility app to prevent the physical button input from affecting it. The app keeps the volume interface from appearing and prevents the button from triggering its usual action.</p>
+<p>There are still limitations. I cannot easily enter modes that require button combinations, such as download mode or recovery mode. Still, I am happy that I can install and use ordinary apps again.</p>
+<p>Getting the phone usable again also gave me an idea for a new project. It is still at an early stage, where I am checking whether the idea is feasible. I will share more once I have made further progress.</p>
+<h2 id="this-will-not-work-on-every-device">This Will Not Work on Every Device</h2>
+<p>This setting worked for me on an Android 15-based device. Its behavior may vary by manufacturer, model, and Android version, so the same result is not guaranteed everywhere. This method also does not repair the physical button.</p>
+<p>Still, if a faulty volume button keeps making your phone start in safe mode, you could check whether the device supports this ADB setting. For me, it brought a phone I could barely use back to normal mode.</p>

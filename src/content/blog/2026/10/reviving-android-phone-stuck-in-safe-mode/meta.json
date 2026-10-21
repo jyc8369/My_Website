@@ -1,0 +1,14 @@
+{
+  "slug": "reviving-android-phone-stuck-in-safe-mode",
+  "titles": {
+    "ko": "안전 모드에 갇혔던 안드로이드폰을 다시 살리다",
+    "en": "Bringing Back an Android Phone Stuck in Safe Mode",
+    "ja": "セーフモードからAndroidスマートフォンを復活させる"
+  },
+  "published_at": "2026-10-21T05:09:52Z",
+  "descriptions": {
+    "ko": "고장 난 볼륨 버튼 때문에 안전 모드로만 부팅되던 안드로이드폰을 ADB 설정과 접근성 앱으로 다시 사용할 수 있게 된 경험입니다.",
+    "en": "How I made an Android phone that kept booting into safe mode usable again with an ADB setting and an accessibility app.",
+    "ja": "故障した音量ボタンのためセーフモードでしか起動しなかったAndroid端末を、ADB設定とユーザー補助アプリで再び使えるようにした経験です。"
+  }
+}
